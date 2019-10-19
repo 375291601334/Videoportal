@@ -1,0 +1,23 @@
+<div class="course-card">
+  <div class="flex heading">
+    <h2>{{course.title}}</h2>
+    <div>
+      <span>
+        <img src='./assets/icons/ic-clock.svg' class="icon">
+        {{course.duration | time}}
+      </span>
+      <span>
+        <img src='./assets/icons/ic-calendar.svg' class="icon">
+        {{course.date | date}}
+      </span>  
+    </div>
+  </div>
+
+  <div class="flex">
+    <p>{{course.description}}</p>
+    <div>
+      <button>Edit</button>
+      <button>Delete</button>
+    </div>
+  </div>
+</div>

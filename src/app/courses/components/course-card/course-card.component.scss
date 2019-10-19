@@ -1,0 +1,48 @@
+:host {
+  .flex {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .course-card {
+    padding: 25px;
+    margin-bottom: 25px;
+    border-radius: 8px;
+    box-shadow: 0 1px 24px 0 rgba(18, 21, 35, 0.08);
+    background-color: #ffffff;
+
+    .heading {
+      width: 75%;
+    }
+
+    h2 {
+      display: inline;
+      margin: 0;
+      font-size: 24px;
+      color: #2c2f3c;
+    }
+
+    span {
+      margin-right: 16px;
+      font-size: 12px;
+      color: #b9bdce;
+    }
+
+    p {
+      width: 75%;
+      color: #525462;
+    }
+
+    button {
+      width: 75px;
+      height: 24px;
+      margin: 6px;
+      border: 0;
+      border-radius: 3px;
+      font-size: 12px;
+      background-color: #30b6dd;
+      color: #ffffff;
+    }
+  }
+}
