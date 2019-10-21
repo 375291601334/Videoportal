@@ -1,0 +1,21 @@
+language: node_js
+node_js:
+  - "9"
+dist: trusty
+sudo: required
+branches:
+  only:
+  - master
+before_script:
+  - npm install -g @angular/cli
+script:
+  - ng lint
+  - npm run test-headless
+  - ng build --prod --base-href https://375291601334.github.io/videoportal/
+deploy:
+  provider: pages
+  skip_cleanup: true
+  github_token: $GITHUB_TOKEN
+  local_dir: dist/videoportal
+  on:
+    branch: master
