@@ -1,6 +1,18 @@
+@import "../../../../../node_modules/bootstrap//scss/functions";
+@import "../../../../../node_modules/bootstrap/scss/variables";
+@import "../../../../../node_modules/bootstrap/scss/mixins/breakpoints";
+
 :host {
   .courses-page-container {
-    padding: 25px 85px;  
-    background-color: #f2f3f7; 
+    padding: 25px 85px;
+    background-color: #f2f3f7;
+  }
+}
+
+@include media-breakpoint-down(ms) {
+  :host {
+    .courses-page-container {
+      padding: 15px 25px;
+    }
   }
 }

@@ -60,4 +60,12 @@ export class CoursesListComponent implements OnInit {
       ),
     ];
   }
+
+  loadMoreCourses() {
+    console.log('Loading more courses...');
+  }
+
+  deleteCourse(id: string) {
+    console.log(`Deleting course with id=${id}!!!`);
+  }
 }

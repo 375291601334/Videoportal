@@ -1,3 +1,7 @@
+@import "../../../../../node_modules/bootstrap//scss/functions";
+@import "../../../../../node_modules/bootstrap/scss/variables";
+@import "../../../../../node_modules/bootstrap/scss/mixins/breakpoints";
+
 :host {
   display: flex;
   align-items: center;
@@ -12,5 +16,13 @@
   .breadcrumb-item {
     font-weight: 600;
     color: #2c2f3c;
+  }
+}
+
+@include media-breakpoint-down(sm) {
+  :host {
+    .breadcrumbs-container {
+      margin-left: 25px;
+    }
   }
 }

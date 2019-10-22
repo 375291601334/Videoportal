@@ -9,4 +9,8 @@ export class SearchBarComponent implements OnInit {
   constructor() {}
 
   ngOnInit() {}
+
+  onClick(text: string): void {
+    console.log(text);
+  }
 }

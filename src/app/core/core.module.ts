@@ -6,12 +6,15 @@ import { FooterComponent } from './components/footer/footer.component';
 import { LogoComponent } from './components/logo/logo.component';
 import { BreadcrumbsComponent } from './components/breadcrumbs/breadcrumbs.component';
 
+import { NotFoundPageComponent } from './pages/not-found.page';
+
 @NgModule({
   declarations: [
     HeaderComponent,
     FooterComponent,
     LogoComponent,
     BreadcrumbsComponent,
+    NotFoundPageComponent,
   ],
   imports: [
     CommonModule,

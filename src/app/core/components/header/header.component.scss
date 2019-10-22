@@ -1,9 +1,13 @@
+@import "../../../../../node_modules/bootstrap//scss/functions";
+@import "../../../../../node_modules/bootstrap/scss/variables";
+@import "../../../../../node_modules/bootstrap/scss/mixins/breakpoints";
+
 :host {
   display: flex;
   justify-content: space-between;
   align-items: center;
   width: 100%;
-  height: 64px; 
+  height: 64px;
   background-color: #414452;
 
   app-logo {
@@ -22,5 +26,13 @@
 
   .log-off {
     cursor: pointer;
+  }
+}
+
+@include media-breakpoint-down(sm) {
+  :host {
+    app-logo {
+      margin-left: 25px;
+    }
   }
 }

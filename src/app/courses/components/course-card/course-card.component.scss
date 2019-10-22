@@ -1,10 +1,8 @@
-:host {
-  .flex {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-  }
+@import "../../../../../node_modules/bootstrap/scss/functions";
+@import "../../../../../node_modules/bootstrap/scss/variables";
+@import "../../../../../node_modules/bootstrap/scss/mixins/breakpoints";
 
+:host {
   .course-card {
     padding: 25px;
     margin-bottom: 25px;
@@ -24,7 +22,7 @@
     }
 
     span {
-      margin-right: 16px;
+      margin: 0 8px;
       font-size: 12px;
       color: #b9bdce;
     }
@@ -43,6 +41,16 @@
       font-size: 12px;
       background-color: #30b6dd;
       color: #ffffff;
+    }
+  }
+}
+
+@include media-breakpoint-down(md) {
+  :host {
+    .course-card .heading,
+    .buttons-wrapper,
+    .course-card p {
+      width: 100%;
     }
   }
 }
