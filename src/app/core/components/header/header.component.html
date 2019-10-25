@@ -1,5 +1,6 @@
 <app-logo></app-logo>
-<div class = "autorization-section d-flex">
+
+<div class="autorization-section">
   <div>
     <img src="./assets/icons/ic-user.png">
     {{user.firstName}} {{user.lastName}}
@@ -8,4 +9,8 @@
     <img src="./assets/icons/ic-exit.png">
     <span>Log off</span>
   </div>
+</div>
+
+<div class="mobile-autorization-section">
+  <img src="./assets/icons/ic-menu.svg" alt="" (click)="openMenu()">
 </div>

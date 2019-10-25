@@ -15,4 +15,8 @@ export class HeaderComponent implements OnInit {
   ngOnInit() {
     this.user = new User('0', 'User', 'Name');
   }
+
+  openMenu() {
+
+  }
 }

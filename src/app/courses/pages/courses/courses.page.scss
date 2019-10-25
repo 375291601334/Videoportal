@@ -3,16 +3,13 @@
 @import '~bootstrap/scss/mixins';
 
 :host {
-  .courses-page-container {
-    padding: 25px 85px;
-    background-color: #f2f3f7;
-  }
+  flex-grow: 1;
+  padding: 25px 85px;
+  background-color: #f2f3f7;
 }
 
 @include media-breakpoint-down(ms) {
   :host {
-    .courses-page-container {
-      padding: 15px 25px;
-    }
+    padding: 15px 25px;
   }
 }

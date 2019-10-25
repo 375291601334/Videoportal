@@ -12,9 +12,41 @@ export class CourseCardComponent implements OnInit {
 
   @Output() deleteCourse = new EventEmitter<string>();
 
-  constructor() { }
+  constructor() {
+    console.log('Constructor');
+  }
 
-  ngOnInit() {}
+  ngOnInit() {
+    console.log('OnInit');
+  }
+
+  ngOnDestroy() {
+    console.log('OnDestroy');
+  }
+
+  ngOnChanges() {
+    console.log('OnChanges');
+  }
+
+  ngDoCheck() {
+    console.log('DoCheck');
+  }
+
+  ngAfterContentInit() {
+    console.log('AfterContentInit');
+  }
+
+  ngAfterContentChecked() {
+    console.log('AfterContentChecked');
+  }
+
+  ngAfterViewInit() {
+    console.log('AfterViewInit');
+  }
+
+  ngAfterViewChecked() {
+    console.log('AfterViewChecked');
+  }
 
   onEdit() {
     console.log('Edit');

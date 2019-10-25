@@ -3,6 +3,7 @@
 @import '~bootstrap/scss/mixins';
 
 :host {
+  flex-shrink: 0;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -24,6 +25,13 @@
     }
   }
 
+  .mobile-autorization-section {
+    img {
+      width: 30px;
+      margin: 5px 25px;
+    }
+  }
+
   .log-off {
     cursor: pointer;
   }
@@ -33,6 +41,18 @@
   :host {
     app-logo {
       margin-left: 25px;
+    }
+
+    .autorization-section {
+      display: none;
+    }
+  }
+}
+
+@include media-breakpoint-up(md) {
+  :host {
+    .mobile-autorization-section {
+      display: none;
     }
   }
 }
