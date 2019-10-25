@@ -1,4 +1,17 @@
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import {
+  Component,
+  OnInit,
+  Input,
+  Output,
+  EventEmitter,
+  OnChanges,
+  DoCheck,
+  AfterViewInit,
+  AfterViewChecked,
+  AfterContentInit,
+  AfterContentChecked,
+  OnDestroy,
+ } from '@angular/core';
 
 import { Course } from '../../models/course.model';
 
@@ -7,7 +20,8 @@ import { Course } from '../../models/course.model';
   templateUrl: './course-card.component.html',
   styleUrls: ['./course-card.component.scss'],
 })
-export class CourseCardComponent implements OnInit {
+export class CourseCardComponent implements OnInit,OnChanges, DoCheck, AfterViewInit,
+  AfterViewChecked, AfterContentInit, AfterContentChecked, OnDestroy {
   @Input() course: Course;
 
   @Output() deleteCourse = new EventEmitter<string>();
