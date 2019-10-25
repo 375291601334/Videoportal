@@ -20,7 +20,7 @@ import { Course } from '../../models/course.model';
   templateUrl: './course-card.component.html',
   styleUrls: ['./course-card.component.scss'],
 })
-export class CourseCardComponent implements OnInit,OnChanges, DoCheck, AfterViewInit,
+export class CourseCardComponent implements OnInit, OnChanges, DoCheck, AfterViewInit,
   AfterViewChecked, AfterContentInit, AfterContentChecked, OnDestroy {
   @Input() course: Course;
 
