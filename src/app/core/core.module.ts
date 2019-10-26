@@ -7,6 +7,8 @@ import { LogoComponent } from './components/logo/logo.component';
 import { BreadcrumbsComponent } from './components/breadcrumbs/breadcrumbs.component';
 
 import { NotFoundPageComponent } from './pages/not-found.page';
+import { MenuComponent } from './components/menu/menu.component';
+import { MenuDirective } from './directives/menu.directive';
 
 @NgModule({
   declarations: [
@@ -15,6 +17,8 @@ import { NotFoundPageComponent } from './pages/not-found.page';
     LogoComponent,
     BreadcrumbsComponent,
     NotFoundPageComponent,
+    MenuComponent,
+    MenuDirective,
   ],
   imports: [
     CommonModule,
@@ -23,6 +27,9 @@ import { NotFoundPageComponent } from './pages/not-found.page';
     HeaderComponent,
     FooterComponent,
     BreadcrumbsComponent,
+  ],
+  entryComponents: [
+    MenuComponent,
   ],
 })
 export class CoreModule { }
