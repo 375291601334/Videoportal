@@ -4,7 +4,7 @@ import { MenuDirective } from './menu.directive';
 import { ViewContainerRef, Component } from '@angular/core';
 
 @Component({
-  selector: 'view-container-ref-demo',
+  selector: 'app-parent',
   template: `<ng-template appMenu></ng-template>`,
 })
 class ParentComponent {
