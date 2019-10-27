@@ -1,24 +1,22 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 
-import { HeaderComponent } from './header.component';
+import { MenuComponent } from './menu.component';
 
 import { User } from '../../models/user.model';
 
-describe('HeaderComponent', () => {
-  let component: HeaderComponent;
-  let fixture: ComponentFixture<HeaderComponent>;
+describe('MenuComponent', () => {
+  let component: MenuComponent;
+  let fixture: ComponentFixture<MenuComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [HeaderComponent],
-      schemas: [CUSTOM_ELEMENTS_SCHEMA],
+      declarations: [MenuComponent],
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(HeaderComponent);
+    fixture = TestBed.createComponent(MenuComponent);
     component = fixture.componentInstance;
     component.user = new User('0', 'User', 'Name');
     fixture.detectChanges();

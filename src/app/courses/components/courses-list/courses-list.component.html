@@ -2,9 +2,9 @@
   <button>
     <img src='./assets/icons/ic-plus.svg' class="icon">
     Add course
-  </button> 
+  </button>
 </div>
 
-<app-course-card *ngFor="let course of courses | slice:0:3" [course]="course"></app-course-card>
+<app-course-card *ngFor="let course of courses | slice:0:3" [course]="course" (deleteCourse)="deleteCourse($event)"></app-course-card>
 
-<div *ngIf="courses.length>3" class="load-more-block"><a href="/">LOAD MORE</a></div>
+<div *ngIf="courses.length>3" class="load-more-block" (click)="loadMoreCourses()">LOAD MORE</div>

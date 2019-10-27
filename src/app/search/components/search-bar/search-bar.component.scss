@@ -1,3 +1,7 @@
+@import '~bootstrap/scss/functions';
+@import '~bootstrap/scss/variables';
+@import '~bootstrap/scss/mixins';
+
 :host {
   position: relative;
 
@@ -5,14 +9,9 @@
     width: 360px;
     height: 48px;
     margin-right: 6px;
-    padding-left: 48px; 
+    padding-left: 48px;
     border-radius: 3px;
     border: solid 1px #d9dbe3;
-    color: #c0c3ce;
-
-    ::placeholder {
-      color: red;
-    }
   }
 
   button {
@@ -31,5 +30,13 @@
     left: 12px;
     width: 24px;
     height: 24px;
+  }
+}
+
+@include media-breakpoint-down(sm) {
+  :host {
+    input {
+      width: 100%;
+    }
   }
 }

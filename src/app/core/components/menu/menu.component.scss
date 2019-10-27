@@ -1,0 +1,53 @@
+:host {
+  .menu-container {
+    position: fixed;
+    top: 0;
+    right: 0;
+    left: 0;
+    bottom: 0;
+    z-index: 1;
+
+    .menu {
+      position: fixed;
+      background-color: #7a7c83;
+      width: 280px;
+      height: 100%;
+      overflow-y: auto;
+      font-size: 20px;
+      color: #ffffff;
+
+      div {
+        padding: 10px 0;
+        border-bottom: 1px solid #e7e6e6;
+      }
+
+      img {
+        margin: 0 15px;
+      }
+    }
+
+    .menu-overlay {
+      position: fixed;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(#414452, 0.5);
+    }
+
+    .close-section {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 60px;
+      width: 40px;
+      background-color: #30b6dd;
+      position: absolute;
+      left: 280px;
+      top: 0;
+      cursor: pointer;
+
+      img {
+        width: 30px;
+      }
+    }
+  }
+}

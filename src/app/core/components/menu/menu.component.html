@@ -1,0 +1,18 @@
+<div class="menu-container">
+  <div class="menu-overlay"></div>
+
+  <span class="close-section" (click)="onCloseMenu()">
+    <img src="./assets/icons/ic-close.svg" alt="">
+  </span>
+
+  <div class="menu">
+    <div>
+      <img src="./assets/icons/ic-user.png">
+      {{user.firstName}} {{user.lastName}}
+    </div>
+    <div class="log-off" (click)="onLogOff()">
+      <img src="./assets/icons/ic-exit.png">
+      <span>Log off</span>
+    </div>
+  </div>
+</div>
