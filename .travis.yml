@@ -11,11 +11,11 @@ before_script:
 script:
   - ng lint
   - npm run test-headless
-  - ng build --prod --base-href https://375291601334.github.io/videoportal/
+  - ng build --prod --base-href /videoportal/
 deploy:
   provider: pages
   skip_cleanup: true
   github_token: $GITHUB_TOKEN
-  local_dir: dist/videoportal
+  local_dir: dist/courses-listing-app
   on:
     branch: master
