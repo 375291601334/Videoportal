@@ -15,7 +15,17 @@ class TestHostComponent {
   course = new Course('', '', new Date(), '', 0);
 }
 
-describe('CourseCardComponent', () => {
+describe('CourseCardComponent: Test as a class', () => {
+  it('should console log once onDestroy happened', () => {
+    const component = new CourseCardComponent();
+    spyOn(console, 'log');
+
+    component.ngOnDestroy();
+    expect(console.log).toHaveBeenCalledWith('OnDestroy');
+  });
+});
+
+describe('CourseCardComponent: Stand Alone testing', () => {
   let component: CourseCardComponent;
   let fixture: ComponentFixture<CourseCardComponent>;
 
@@ -24,7 +34,6 @@ describe('CourseCardComponent', () => {
       declarations: [
         CourseCardComponent,
         TimePipe,
-        TestHostComponent,
       ],
     })
     .compileComponents();
@@ -58,14 +67,37 @@ describe('CourseCardComponent', () => {
     fixture.debugElement.query(By.css('.edit-button')).triggerEventHandler('click', null);
     expect(console.log).toHaveBeenCalledWith('Edit');
   });
+});
+
+describe('CourseCardComponent: Host testing', () => {
+  let component: TestHostComponent;
+  let fixture: ComponentFixture<TestHostComponent>;
+
+  beforeEach(async(() => {
+    TestBed.configureTestingModule({
+      declarations: [
+        TestHostComponent,
+        CourseCardComponent,
+        TimePipe,
+      ],
+    })
+    .compileComponents();
+  }));
+
+  beforeEach(() => {
+    fixture = TestBed.createComponent(TestHostComponent);
+    component = fixture.componentInstance;
+    component.course = new Course('1', 'Title', new Date(), '...', 543);
+    fixture.detectChanges();
+  });
 
   it('ngOnChanges should console log "OnChanges"', () => {
     const testHostFixture = TestBed.createComponent(TestHostComponent);
     const testHostComponent = testHostFixture.componentInstance;
     spyOn(console, 'log');
-    testHostComponent.course = new Course('2', 'New Name', new Date(44643665), 'New text', 5543);
+    component.course = new Course('2', 'New Name', new Date(44643665), 'New text', 5543);
 
-    testHostFixture.detectChanges();
+    fixture.detectChanges();
     expect(console.log).toHaveBeenCalledWith('OnChanges');
   });
 });
