@@ -5,6 +5,16 @@
   </button>
 </div>
 
-<app-course-card *ngFor="let course of courses | slice:0:3" [course]="course" (deleteCourse)="deleteCourse($event)"></app-course-card>
+<app-course-card
+  *ngFor="let course of courses | filterPipe:'title':searchTerm | slice:0:3; t"
+  [course]="course"
+  (deleteCourse)="deleteCourse($event)"
+></app-course-card>
 
-<div *ngIf="courses.length>3" class="load-more-block" (click)="loadMoreCourses()">LOAD MORE</div>
+<div *ngIf="(courses | filterPipe:'title':searchTerm).length > 3" class="load-more-block" (click)="loadMoreCourses()">
+  {{'Load more' | uppercase }}
+</div>
+
+<div *ngIf="!((courses | filterPipe:'title':searchTerm).length)" class="add-course-block" (click)="addCourse()">
+  {{'No data, feel free to add new course' | uppercase}}
+</div>

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 
 import { Course, ICourse } from '../../models/course.model';
 
@@ -8,6 +8,8 @@ import { Course, ICourse } from '../../models/course.model';
   styleUrls: ['./courses-list.component.scss'],
 })
 export class CoursesListComponent implements OnInit {
+  @Input() searchTerm: string;
+
   courses: ICourse[];
 
   constructor() { }
@@ -16,19 +18,20 @@ export class CoursesListComponent implements OnInit {
     this.courses = [
       new Course(
         '0',
-        'Video Course 1. Name tag',
-        new Date(2018, 10, 9),
+        'Javascript',
+        new Date(2019, 10, 9),
         'Learn about where you can find course descriptions, what information they include, ' +
           'how they work, and details about various components of a course description. Course ' +
           'descriptions report information about a university or college\'s classes. They\'re published ' +
           'both in course catalogs that outline degree requirements and in course schedules that contain ' +
           'descriptions for all courses offered during a particular semester.',
         88,
+        true,
       ),
       new Course(
         '1',
-        'Video Course 1. Name tag',
-        new Date(2018, 10, 9),
+        'Programming: Angular',
+        new Date(2019, 9, 29),
         'Learn about where you can find course descriptions, what information they include, ' +
           'how they work, and details about various components of a course description. Course ' +
           'descriptions report information about a university or college\'s classes. They\'re published ' +
@@ -38,7 +41,7 @@ export class CoursesListComponent implements OnInit {
       ),
       new Course(
         '2',
-        'Video Course 1. Name tag',
+        'Python',
         new Date(2018, 10, 9),
         'Learn about where you can find course descriptions, what information they include, ' +
           'how they work, and details about various components of a course description. Course ' +
@@ -46,10 +49,11 @@ export class CoursesListComponent implements OnInit {
           'both in course catalogs that outline degree requirements and in course schedules that contain ' +
           'descriptions for all courses offered during a particular semester.',
         88,
+        true,
       ),
       new Course(
         '2',
-        'Video Course 1. Name tag',
+        'Programming: C#',
         new Date(2018, 10, 9),
         'Learn about where you can find course descriptions, what information they include, ' +
           'how they work, and details about various components of a course description. Course ' +
@@ -57,6 +61,7 @@ export class CoursesListComponent implements OnInit {
           'both in course catalogs that outline degree requirements and in course schedules that contain ' +
           'descriptions for all courses offered during a particular semester.',
         88,
+        true,
       ),
     ];
   }
@@ -67,5 +72,9 @@ export class CoursesListComponent implements OnInit {
 
   deleteCourse(id: string) {
     console.log(`Deleting course with id=${id}!!!`);
+  }
+
+  addCourse() {
+    console.log('Adding new course...');
   }
 }

@@ -3,8 +3,8 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 
 import { CourseCardComponent } from './course-card.component';
-
-import { TimePipe } from '../../pipes/time.pipe';
+import { TimePipe } from '../../pipes/time/time.pipe';
+import { StartDateDirective } from '../../directives/start-date.directive';
 
 import { Course } from '../../models/course.model';
 
@@ -31,10 +31,7 @@ describe('CourseCardComponent: Stand Alone testing', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [
-        CourseCardComponent,
-        TimePipe,
-      ],
+      declarations: [CourseCardComponent, TimePipe, StartDateDirective],
     })
     .compileComponents();
   }));
@@ -79,6 +76,7 @@ describe('CourseCardComponent: Host testing', () => {
         TestHostComponent,
         CourseCardComponent,
         TimePipe,
+        StartDateDirective,
       ],
     })
     .compileComponents();

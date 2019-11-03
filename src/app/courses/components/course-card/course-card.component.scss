@@ -10,6 +10,10 @@
     box-shadow: 0 1px 24px 0 rgba(18, 21, 35, 0.08);
     background-color: #ffffff;
 
+    &.top-rated {
+      background-color: #fddede;
+    }
+
     .heading {
       width: 75%;
     }
@@ -41,6 +45,10 @@
       font-size: 12px;
       background-color: #30b6dd;
       color: #ffffff;
+    }
+
+    .top-rated-course-icon {
+      margin: 0 10px;
     }
   }
 }
