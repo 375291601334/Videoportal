@@ -25,15 +25,16 @@ export class HeaderComponent implements OnInit {
 
   openMenu() {
     const componentFactory = this.factoryResolver.resolveComponentFactory(MenuComponent);
+    const viewContainerRef = this.adHost.viewContainerRef;
 
-    const viewContainerRef: any = this.adHost.viewContainerRef;
     viewContainerRef.clear();
 
-    const componentRef: any = viewContainerRef.createComponent(componentFactory);
-    (<MenuComponent>componentRef.instance).user = this.user;
+    const componentRef = viewContainerRef.createComponent(componentFactory);
+    this.menuInit(componentRef);
+  }
 
-    (<MenuComponent>componentRef.instance).closeMenu.subscribe(() => {
-      componentRef.destroy();
-    });
+  menuInit(menu: any) {
+    menu.instance.user = this.user;
+    menu.instance.closeMenu.subscribe(() => menu.destroy());
   }
 }

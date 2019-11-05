@@ -12,7 +12,7 @@ export class SearchBarComponent implements OnInit {
 
   ngOnInit() {}
 
-  onClick(text: string): void {
-    console.log(text);
+  onClick(): void {
+    console.log(this.searchTearm);
   }
 }

@@ -23,5 +23,4 @@ export class MenuComponent implements OnInit {
   onLogOff() {
     console.log('logging off');
   }
-
 }
