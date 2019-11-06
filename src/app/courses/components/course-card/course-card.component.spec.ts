@@ -90,8 +90,6 @@ describe('CourseCardComponent: Host testing', () => {
   });
 
   it('ngOnChanges should console log "OnChanges"', () => {
-    const testHostFixture = TestBed.createComponent(TestHostComponent);
-    const testHostComponent = testHostFixture.componentInstance;
     spyOn(console, 'log');
     component.course = new Course('2', 'New Name', new Date(44643665), 'New text', 5543);
 

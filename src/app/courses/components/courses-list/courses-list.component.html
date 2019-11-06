@@ -1,4 +1,11 @@
 <div class="add-course-button-container">
+  <label>
+    Sort by:
+    <select [ngModel]="selectedOrder" (ngModelChange)="onSortingSelect($event)">
+      <option [ngValue]="0" selected disabled hidden>Please select</option>
+      <option *ngFor="let order of orders" [ngValue]="order">{{order.name}}</option>
+    </select>
+  </label>
   <button>
     <img src='./assets/icons/ic-plus.svg' class="icon">
     Add course
@@ -6,15 +13,15 @@
 </div>
 
 <app-course-card
-  *ngFor="let course of courses | filterPipe:'title':searchTerm | slice:0:3; t"
+  *ngFor="let course of filteredCourses | slice:0:3"
   [course]="course"
   (deleteCourse)="deleteCourse($event)"
 ></app-course-card>
 
-<div *ngIf="(courses | filterPipe:'title':searchTerm).length > 3" class="load-more-block" (click)="loadMoreCourses()">
+<div *ngIf="filteredCourses.length > 3" class="load-more-block" (click)="loadMoreCourses()">
   {{'Load more' | uppercase }}
 </div>
 
-<div *ngIf="!((courses | filterPipe:'title':searchTerm).length)" class="add-course-block" (click)="addCourse()">
+<div *ngIf="!filteredCourses.length" class="add-course-block" (click)="addCourse()">
   {{'No data, feel free to add new course' | uppercase}}
 </div>

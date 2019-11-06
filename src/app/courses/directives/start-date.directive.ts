@@ -13,10 +13,8 @@ export class StartDateDirective implements OnInit {
 
     if (this.startDate > currentDate) {
       this.element.nativeElement.style.border = '1px solid blue';
-      console.log('blue');
     } else if (this.startDate < currentDate && this.startDate >= this.addDays(currentDate, -14)) {
       this.element.nativeElement.style.border = '1px solid green';
-      console.log('green');
     }
   }
 

@@ -1,6 +1,10 @@
 import { Component, OnInit, Input } from '@angular/core';
 
+import { FilterPipe } from '../../pipes/filter/filter.pipe';
+import { OrderByPipe } from '../../pipes/order-by/order-by.pipe';
+
 import { Course, ICourse } from '../../models/course.model';
+import { Order } from '../../models/order.model';
 
 @Component({
   selector: 'app-courses-list',
@@ -11,8 +15,19 @@ export class CoursesListComponent implements OnInit {
   @Input() searchTerm: string;
 
   courses: ICourse[];
+  filteredCourses: ICourse[];
+  orders: Order[] = [
+    { name: 'Duration', prop: 'duration', isDesc: false },
+    { name: 'Duration DESC', prop: 'duration', isDesc: true },
+    { name: 'Start date', prop: 'date', isDesc: false },
+    { name: 'Start date DESC', prop: 'date', isDesc: true },
+  ];
+  selectedOrder: Order | number = 0;
 
-  constructor() { }
+  constructor(
+    private filter: FilterPipe,
+    private order: OrderByPipe,
+  ) {}
 
   ngOnInit() {
     this.courses = [
@@ -25,7 +40,7 @@ export class CoursesListComponent implements OnInit {
           'descriptions report information about a university or college\'s classes. They\'re published ' +
           'both in course catalogs that outline degree requirements and in course schedules that contain ' +
           'descriptions for all courses offered during a particular semester.',
-        88,
+        807,
         true,
       ),
       new Course(
@@ -37,7 +52,7 @@ export class CoursesListComponent implements OnInit {
           'descriptions report information about a university or college\'s classes. They\'re published ' +
           'both in course catalogs that outline degree requirements and in course schedules that contain ' +
           'descriptions for all courses offered during a particular semester.',
-        88,
+        18,
       ),
       new Course(
         '2',
@@ -48,7 +63,7 @@ export class CoursesListComponent implements OnInit {
           'descriptions report information about a university or college\'s classes. They\'re published ' +
           'both in course catalogs that outline degree requirements and in course schedules that contain ' +
           'descriptions for all courses offered during a particular semester.',
-        88,
+        109,
         true,
       ),
       new Course(
@@ -60,10 +75,20 @@ export class CoursesListComponent implements OnInit {
           'descriptions report information about a university or college\'s classes. They\'re published ' +
           'both in course catalogs that outline degree requirements and in course schedules that contain ' +
           'descriptions for all courses offered during a particular semester.',
-        88,
+        60,
         true,
       ),
     ];
+
+    this.filteredCourses = this.courses;
+  }
+
+  onSortingSelect(selectedOrder: Order): void {
+    this.filteredCourses = this.order.transform(this.filteredCourses, selectedOrder.prop, selectedOrder.isDesc);
+  }
+
+  ngOnChanges() {
+    this.filteredCourses = this.filter.transform(this.courses, 'title', this.searchTerm);
   }
 
   loadMoreCourses() {
