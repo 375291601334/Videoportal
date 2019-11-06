@@ -5,7 +5,7 @@ import { Pipe, PipeTransform } from '@angular/core';
 })
 export class OrderByPipe implements PipeTransform {
   public transform(items: any[], prop: string, isDesc: boolean): any {
-    let direction: number = isDesc ? 1 : -1;
+    const direction: number = isDesc ? 1 : -1;
 
     return [...items].sort((first, second) => {
       if (first[prop] > second[prop]) {

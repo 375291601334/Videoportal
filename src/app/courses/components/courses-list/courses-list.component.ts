@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, OnChanges } from '@angular/core';
 
 import { FilterPipe } from '../../pipes/filter/filter.pipe';
 import { OrderByPipe } from '../../pipes/order-by/order-by.pipe';
@@ -11,7 +11,7 @@ import { Order } from '../../models/order.model';
   templateUrl: './courses-list.component.html',
   styleUrls: ['./courses-list.component.scss'],
 })
-export class CoursesListComponent implements OnInit {
+export class CoursesListComponent implements OnInit, OnChanges {
   @Input() searchTerm: string;
 
   courses: ICourse[];
