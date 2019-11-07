@@ -13,6 +13,10 @@ describe('OrderByPipe', () => {
     expect(pipe).toBeTruthy();
   });
 
+  it('should not sort items', () => {
+    expect(pipe.transform(items, '', true)).toEqual(items);
+  });
+
   it('should sort items by id', () => {
     expect(pipe.transform(items, 'id', true)).toEqual([{ id: 2 }, { id: 1 }, { id: 1 }, { id: 0 }]);
   });

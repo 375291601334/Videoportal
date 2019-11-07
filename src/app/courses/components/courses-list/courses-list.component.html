@@ -2,7 +2,7 @@
   <label>
     Sort by:
     <select [ngModel]="selectedOrder" (ngModelChange)="onSortingSelect($event)">
-      <option [ngValue]="0" selected disabled hidden>Please select</option>
+      <option [ngValue]="defaultOrder" selected disabled hidden>Please select</option>
       <option *ngFor="let order of orders" [ngValue]="order">{{order.name}}</option>
     </select>
   </label>

@@ -22,7 +22,8 @@ export class CoursesListComponent implements OnInit, OnChanges {
     { name: 'Start date', prop: 'date', isDesc: false },
     { name: 'Start date DESC', prop: 'date', isDesc: true },
   ];
-  selectedOrder: Order | number = 0;
+  defaultOrder: Order = { name: '', prop: '', isDesc: false };
+  selectedOrder: Order = this.defaultOrder;
 
   constructor(
     private filter: FilterPipe,
@@ -84,11 +85,16 @@ export class CoursesListComponent implements OnInit, OnChanges {
   }
 
   onSortingSelect(selectedOrder: Order): void {
+    this.selectedOrder = selectedOrder;
     this.filteredCourses = this.order.transform(this.filteredCourses, selectedOrder.prop, selectedOrder.isDesc);
   }
 
   ngOnChanges() {
-    this.filteredCourses = this.filter.transform(this.courses, 'title', this.searchTerm);
+    this.filteredCourses = this.order.transform(
+      this.filter.transform(this.courses, 'title', this.searchTerm),
+      this.selectedOrder.prop,
+      this.selectedOrder.isDesc,
+    );
   }
 
   loadMoreCourses() {

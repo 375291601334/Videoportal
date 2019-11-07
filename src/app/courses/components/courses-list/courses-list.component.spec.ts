@@ -1,5 +1,5 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+import { CUSTOM_ELEMENTS_SCHEMA, Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 
@@ -85,47 +85,42 @@ describe('CoursesListComponent', () => {
   });
 });
 
-// @Component({
-//   template: '<app-courses-list [searchTerm]="searchTerm"></app-courses-list>',
-// })
-// class TestHostComponent {
-//   searchTerm = '';
-// }
+@Component({
+  template: '<app-courses-list [searchTerm]="searchTerm"></app-courses-list>',
+})
+class TestHostComponent {
+  searchTerm = '';
+}
 
-// describe('CoursesListComponent: Host testing', () => {
-//   let component: TestHostComponent;
-//   let fixture: ComponentFixture<TestHostComponent>;
-//   let filter: Partial<FilterPipe>;
+describe('CoursesListComponent: Host testing', () => {
+  let component: TestHostComponent;
+  let fixture: ComponentFixture<TestHostComponent>;
 
-//   filter = {
-//     transform: () => {},
-//   };
+  beforeEach(async(() => {
+    TestBed.configureTestingModule({
+      declarations: [
+        TestHostComponent,
+        CoursesListComponent,
+      ],
+      providers: [FilterPipe, OrderByPipe],
+      imports: [FormsModule],
+      schemas: [CUSTOM_ELEMENTS_SCHEMA],
+    })
+    .compileComponents();
+  }));
 
-//   beforeEach(async(() => {
-//     TestBed.configureTestingModule({
-//       declarations: [
-//         TestHostComponent,
-//         CoursesListComponent,
-//       ],
-//       providers: [{provide: FilterPipe, useValue: filter }, OrderByPipe],
-//       imports: [FormsModule],
-//       schemas: [CUSTOM_ELEMENTS_SCHEMA],
-//     })
-//     .compileComponents();
-//   }));
+  beforeEach(() => {
+    fixture = TestBed.createComponent(TestHostComponent);
+    component = fixture.componentInstance;
+    fixture.detectChanges();
+  });
 
-//   beforeEach(() => {
-//     fixture = TestBed.createComponent(TestHostComponent);
-//     component = fixture.componentInstance;
-//     filter = TestBed.get(FilterPipe);
-//     fixture.detectChanges();
-//   });
+  it('ngOnChanges should be called when searchTerm changed', () => {
+    component.searchTerm = 'test';
+    const coursesListComponent = fixture.debugElement.query(By.css('app-courses-list')).componentInstance;
+    spyOn(coursesListComponent, 'ngOnChanges');
 
-//   it('ngOnChanges should filter courses', () => {
-//     component.searchTerm = 'test';
-//     const coursesListComponent = fixture.debugElement.query(By.css('app-courses-list')).nativeElement;
-
-//     fixture.detectChanges();
-//     expect(filter).toHaveBeenCalled();
-//   });
-// });
+    fixture.detectChanges();
+    expect(coursesListComponent.ngOnChanges).toHaveBeenCalled();
+  });
+});
