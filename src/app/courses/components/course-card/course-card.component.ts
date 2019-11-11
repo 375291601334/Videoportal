@@ -5,11 +5,6 @@ import {
   Output,
   EventEmitter,
   OnChanges,
-  DoCheck,
-  AfterViewInit,
-  AfterViewChecked,
-  AfterContentInit,
-  AfterContentChecked,
   OnDestroy,
  } from '@angular/core';
 
@@ -20,19 +15,14 @@ import { Course } from '../../models/course.model';
   templateUrl: './course-card.component.html',
   styleUrls: ['./course-card.component.scss'],
 })
-export class CourseCardComponent implements OnInit, OnChanges, DoCheck, AfterViewInit,
-  AfterViewChecked, AfterContentInit, AfterContentChecked, OnDestroy {
+export class CourseCardComponent implements OnInit, OnChanges, OnDestroy {
   @Input() course: Course;
 
   @Output() deleteCourse = new EventEmitter<string>();
 
-  constructor() {
-    console.log('Constructor');
-  }
+  constructor() {}
 
-  ngOnInit() {
-    console.log('OnInit');
-  }
+  ngOnInit() {}
 
   ngOnDestroy() {
     console.log('OnDestroy');
@@ -40,26 +30,6 @@ export class CourseCardComponent implements OnInit, OnChanges, DoCheck, AfterVie
 
   ngOnChanges() {
     console.log('OnChanges');
-  }
-
-  ngDoCheck() {
-    console.log('DoCheck');
-  }
-
-  ngAfterContentInit() {
-    console.log('AfterContentInit');
-  }
-
-  ngAfterContentChecked() {
-    console.log('AfterContentChecked');
-  }
-
-  ngAfterViewInit() {
-    console.log('AfterViewInit');
-  }
-
-  ngAfterViewChecked() {
-    console.log('AfterViewChecked');
   }
 
   onEdit() {

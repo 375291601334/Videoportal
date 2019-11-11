@@ -1,2 +1,2 @@
-<app-search-bar></app-search-bar>
-<app-courses-list></app-courses-list>
+<app-search-bar (search)="onSearch($event)"></app-search-bar>
+<app-courses-list [searchTerm]="searchTerm"></app-courses-list>

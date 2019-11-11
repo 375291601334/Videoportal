@@ -1,6 +1,9 @@
-<div class="course-card">
+<div class="course-card" [ngClass]="{'top-rated': course.topRated}" [appStartDate]="course.date">
   <div class="d-flex flex-lg-nowrap flex-wrap justify-content-between align-items-center heading">
-    <h2>{{course.title}}</h2>
+    <div class="d-flex align-items-center">
+      <h2>{{course.title | uppercase }}</h2>
+      <img *ngIf="course.topRated" src='./assets/icons/ic-star.svg' class="big-icon top-rated-course-icon">
+    </div>
     <div>
       <span>
         <img src='./assets/icons/ic-clock.svg' class="icon">

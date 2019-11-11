@@ -6,7 +6,13 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./courses.page.scss'],
 })
 export class CoursesPageComponent implements OnInit {
+  searchTerm: string;
+
   constructor() { }
 
   ngOnInit() {}
+
+  onSearch(text: string) {
+    this.searchTerm = text;
+  }
 }

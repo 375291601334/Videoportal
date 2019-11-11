@@ -9,8 +9,8 @@ export class TimePipe implements PipeTransform {
     const hours = Math.floor(value / minInHour);
     const min = value % minInHour;
     let result = hours > 0 ? `${hours}h ` : ``;
-    result += min > 0 ? `${min} min` : ``;
+    result += min > 0 ? `${min}min` : ``;
 
-    return result;
+    return result.trim();
   }
 }

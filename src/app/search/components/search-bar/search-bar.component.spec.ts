@@ -26,11 +26,11 @@ describe('SearchBarComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should console log once clicking Search', () => {
+  it('should emit search once clicking Search', () => {
     component.searchTearm = 'test';
-    spyOn(console, 'log');
+    spyOn(component.search, 'emit');
 
     fixture.debugElement.query(By.css('button')).triggerEventHandler('click', null);
-    expect(console.log).toHaveBeenCalledWith('test');
+    expect(component.search.emit).toHaveBeenCalledWith('test');
   });
 });
