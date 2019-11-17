@@ -1,11 +1,8 @@
 <app-logo></app-logo>
 
 <div class="autorization-section">
-  <div>
-    <img src="./assets/icons/ic-user.png">
-    {{user.firstName}} {{user.lastName}}
-  </div>
-  <div class="log-off">
+  <ng-container *ngIf="isUserAuthentificated; then autorized; else unautorized;"></ng-container>
+  <div class="log-off"  (click)="onLogout()">
     <img src="./assets/icons/ic-exit.png">
     <span>Log off</span>
   </div>
@@ -15,3 +12,17 @@
   <img src="./assets/icons/ic-menu.svg" alt="" (click)="openMenu()">
   <ng-template appMenu></ng-template>
 </div>
+
+<ng-template #autorized>
+  <div>
+    <img src="./assets/icons/ic-user.png">
+    {{user.firstName}} {{user.lastName}}
+  </div>
+</ng-template>
+
+<ng-template #unautorized>
+  <div class="log-in" (click)="onLogin()">
+    <img src="./assets/icons/ic-user.png">
+    Login
+  </div>
+</ng-template>

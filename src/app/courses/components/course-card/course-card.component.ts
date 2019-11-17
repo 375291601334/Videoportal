@@ -37,8 +37,6 @@ export class CourseCardComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   onDelete() {
-    console.log('Delete');
-
     this.deleteCourse.emit(this.course.id);
   }
 }

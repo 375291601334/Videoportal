@@ -8,9 +8,12 @@ import { IUser } from '../../models/user.model';
   styleUrls: ['./menu.component.scss'],
 })
 export class MenuComponent implements OnInit {
+  @Input() isUserAuthentificated: boolean;
   @Input() user: IUser;
 
   @Output() closeMenu = new EventEmitter();
+  @Output() login = new EventEmitter();
+  @Output() logout = new EventEmitter();
 
   constructor() {}
 
@@ -20,7 +23,12 @@ export class MenuComponent implements OnInit {
     this.closeMenu.emit(null);
   }
 
-  onLogOff() {
-    console.log('logging off');
+  onLogin() {
+    this.login.emit(null);
+  }
+
+  onLogout() {
+    this.logout.emit(null);
+    this.isUserAuthentificated = false;
   }
 }

@@ -35,11 +35,20 @@ describe('MenuComponent', () => {
     expect(component.closeMenu.emit).toHaveBeenCalled();
   });
 
-  it('should console log once logging off', () => {
-    spyOn(console, 'log');
+  it('should emit login once logging in', () => {
+    spyOn(component.login, 'emit');
+
+    fixture.debugElement.query(By.css('.log-in')).triggerEventHandler('click', null);
+    fixture.detectChanges();
+    expect(component.login.emit).toHaveBeenCalled();
+  });
+
+  it('should emit logout once logging off', () => {
+    spyOn(component.logout, 'emit');
 
     fixture.debugElement.query(By.css('.log-off')).triggerEventHandler('click', null);
     fixture.detectChanges();
-    expect(console.log).toHaveBeenCalledWith('logging off');
+    expect(component.logout.emit).toHaveBeenCalled();
+    expect(component.isUserAuthentificated).toEqual(false);
   });
 });

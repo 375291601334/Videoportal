@@ -47,14 +47,11 @@ describe('CourseCardComponent: Stand Alone testing', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should console log end emit deleteCourse once deleting course', () => {
+  it('should emit deleteCourse once deleting course', () => {
     component.course.id = '3';
-
-    spyOn(console, 'log');
     spyOn(component.deleteCourse, 'emit');
 
     fixture.debugElement.query(By.css('.delete-button')).triggerEventHandler('click', null);
-    expect(console.log).toHaveBeenCalledWith('Delete');
     expect(component.deleteCourse.emit).toHaveBeenCalledWith('3');
   });
 
