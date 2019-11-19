@@ -1,6 +1,7 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { FormsModule } from '@angular/forms';
 import { NgModule } from '@angular/core';
+import { SweetAlert2Module } from '@sweetalert2/ngx-sweetalert2';
 
 import { AppRoutingModule } from './app-routing.module';
 
@@ -17,6 +18,7 @@ import { AppComponent } from './app.component';
     BrowserModule,
     FormsModule,
     AppRoutingModule,
+    SweetAlert2Module,
     CoreModule,
     CoursesModule,
   ],

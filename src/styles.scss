@@ -25,3 +25,70 @@ button {
   width: 20px;
   height: 20px;
 }
+
+// Swal2 styles
+.swal2-container.swal2-backdrop-show {
+  background-color: rgba(30, 32, 42, 0.62) !important;
+}
+
+.swal2-popup {
+  width: 394px !important;
+  height: 211.5px !important;
+  padding: 0 !important;
+  justify-content: flex-start !important;
+  border-radius: 6px !important;
+  box-shadow: 0 1px 24px 0 rgba(0, 0, 0, 0.04) !important;
+  background-color: #ffffff !important;
+}
+
+.swal2-header {
+  flex-direction: row !important;
+  height: 54px !important;
+  padding: 0 24px !important;
+  border-radius: 6px !important;
+  background-color: #eaedf5 !important;
+  text-align: left !important;
+}
+
+.swal2-title {
+  margin: 0 !important;
+  font-style: 'Source Sans Pro', sans-serif !important;
+  font-size: 18px !important;
+  font-weight: 600 !important;
+}
+
+.swal2-close {
+  top: unset !important;
+}
+
+.swal2-content {
+  flex-grow: 1 !important;
+  padding: 24px !important;
+  font-family: 'Source Sans Pro', sans-serif !important;
+  font-size: 14px !important;
+  text-align: left !important;
+}
+
+.swal2-actions {
+  width: auto !important;
+  margin: 0 !important;
+  padding: 24px !important;
+  padding-top: 0 !important;
+  justify-content: flex-end !important;
+}
+
+.swal2-styled.swal2-cancel {
+  border-radius: 3px !important;
+  font-size: 14px !important;
+  font-weight: 600 !important;
+  color: #525462 !important;
+  background: #d9dbe3 !important;
+}
+
+.swal2-styled.swal2-confirm {
+  border-radius: 3px !important;
+  font-size: 14px !important;
+  font-weight: 600 !important;
+  color: #fff !important;
+  background: #9bc837 !important;
+}

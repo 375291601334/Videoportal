@@ -1,13 +1,16 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
+import { LoginModule } from '../login/login.module';
+
 import { HeaderComponent } from './components/header/header.component';
 import { FooterComponent } from './components/footer/footer.component';
 import { LogoComponent } from './components/logo/logo.component';
 import { BreadcrumbsComponent } from './components/breadcrumbs/breadcrumbs.component';
+import { MenuComponent } from './components/menu/menu.component';
 
 import { NotFoundPageComponent } from './pages/not-found.page';
-import { MenuComponent } from './components/menu/menu.component';
+
 import { MenuDirective } from './directives/menu.directive';
 
 @NgModule({
@@ -22,6 +25,7 @@ import { MenuDirective } from './directives/menu.directive';
   ],
   imports: [
     CommonModule,
+    LoginModule,
   ],
   exports: [
     HeaderComponent,

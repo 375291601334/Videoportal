@@ -6,6 +6,11 @@
   flex-grow: 1;
   padding: 25px 85px;
   background-color: #f2f3f7;
+
+  app-breadcrumbs {
+    width: 100vw;
+    margin: -15px 0 15px -25px;
+  }
 }
 
 @include media-breakpoint-down(ms) {

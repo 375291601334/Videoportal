@@ -1,4 +1,9 @@
 <div class="add-course-button-container">
+  <button (click)="addCourse()">
+    <img src='./assets/icons/ic-plus.svg' class="icon">
+    Add course
+  </button>
+
   <label>
     Sort by:
     <select [ngModel]="selectedOrder" (ngModelChange)="onSortingSelect($event)">
@@ -6,10 +11,6 @@
       <option *ngFor="let order of orders" [ngValue]="order">{{order.name}}</option>
     </select>
   </label>
-  <button>
-    <img src='./assets/icons/ic-plus.svg' class="icon">
-    Add course
-  </button>
 </div>
 
 <app-course-card
