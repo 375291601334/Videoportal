@@ -1,7 +1,9 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
+import { Store } from '@ngrx/store';
 
-import { AuthService } from '../../services/auth.service';
+import * as fromAuth from '../../../store/reducers/auth';
+import * as AuthActions from '../../../store/actions/auth';
 
 @Component({
   selector: 'app-login',
@@ -11,11 +13,11 @@ import { AuthService } from '../../services/auth.service';
 export class LoginPageComponent {
   constructor(
     private router: Router,
-    private auth: AuthService,
+    private store: Store<fromAuth.State>,
   ) {}
 
   onLogin() {
-    this.auth.login();
+    this.store.dispatch(AuthActions.Login());
     this.router.navigate(['']);
   }
 }

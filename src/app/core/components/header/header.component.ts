@@ -1,46 +1,48 @@
-import { Component, AfterContentChecked, ComponentFactoryResolver, ViewChild } from '@angular/core';
+import { Component, ComponentFactoryResolver, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
+import { Observable, Subscription } from 'rxjs';
+import { Store, select } from '@ngrx/store';
 
-import { AuthService } from 'src/app/login/services/auth.service';
+import * as fromAuth from '../../../store/reducers/auth';
+import * as AuthActions from '../../../store/actions/auth';
 
 import { MenuComponent } from '../menu/menu.component';
-import { MenuDirective } from '../../directives/menu.directive';
+import { MenuDirective } from '../../directives/menu/menu.directive';
 
-import { IUser, User } from '../../models/user.model';
+import { IUser } from '../../../login/models/user.model';
 
 @Component({
   selector: 'app-header',
   templateUrl: './header.component.html',
   styleUrls: ['./header.component.scss'],
 })
-export class HeaderComponent implements AfterContentChecked {
+export class HeaderComponent {
   @ViewChild(MenuDirective, {static: true}) public adHost: MenuDirective;
 
   user: IUser;
+  userSubscription: Subscription;
+  isUserAuthentificatedSubscription: Subscription;
   isUserAuthentificated: boolean;
 
   constructor(
     private factoryResolver: ComponentFactoryResolver,
     private router: Router,
-    private auth: AuthService,
-  ) {}
-
-  ngAfterContentChecked() {
-    this.isUserAuthentificated = this.auth.isUserAuthentificated();
-
-    if (this.isUserAuthentificated) {
-      this.user = this.auth.getUserInfo();
-    }
+    private store: Store<fromAuth.State>,
+  ) {
+    this.isUserAuthentificatedSubscription = this.store.pipe(select(fromAuth.isUserAuthentificated)).subscribe(
+      isUserAuthentificated => this.isUserAuthentificated = isUserAuthentificated,
+    );
+    this.userSubscription = this.store.pipe(select(fromAuth.getUserIngo)).subscribe(
+      user => this.user = user,
+    );
   }
 
-  openMenu() {
-    const componentFactory = this.factoryResolver.resolveComponentFactory(MenuComponent);
-    const viewContainerRef = this.adHost.viewContainerRef;
+  onLogin() {
+    this.router.navigate(['login']);
+  }
 
-    viewContainerRef.clear();
-
-    const componentRef = viewContainerRef.createComponent(componentFactory);
-    this.menuInit(componentRef);
+  onLogout() {
+    this.store.dispatch(AuthActions.Logout());
   }
 
   menuInit(menu: any) {
@@ -54,12 +56,13 @@ export class HeaderComponent implements AfterContentChecked {
     menu.instance.closeMenu.subscribe(() => menu.destroy());
   }
 
-  onLogin() {
-    this.router.navigate(['login']);
-  }
+  openMenu() {
+    const componentFactory = this.factoryResolver.resolveComponentFactory(MenuComponent);
+    const viewContainerRef = this.adHost.viewContainerRef;
 
-  onLogout() {
-    this.auth.logout();
-    this.isUserAuthentificated = this.auth.isUserAuthentificated();
+    viewContainerRef.clear();
+
+    const componentRef = viewContainerRef.createComponent(componentFactory);
+    this.menuInit(componentRef);
   }
 }

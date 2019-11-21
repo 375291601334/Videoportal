@@ -1,79 +1,37 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { provideMockStore } from '@ngrx/store/testing';
+import { Router } from '@angular/router';
 import { CUSTOM_ELEMENTS_SCHEMA, Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 
-import { CoursesService } from '../../services/courses.service';
+import { CoursesService } from '../../services/courses/courses.service';
 
 import { CoursesListComponent } from './courses-list.component';
 
-import { FilterPipe } from '../../pipes/filter/filter.pipe';
-import { OrderByPipe } from '../../pipes/order-by/order-by.pipe';
+import { FilterPipe } from '../../../shared/pipes/filter/filter.pipe';
+import { OrderByPipe } from '../../../shared/pipes/order-by/order-by.pipe';
 
 import { Course } from '../../models/course.model';
 
-class MockCoursesService {
-  getCourses() {
-    return [new Course(
-      '0',
-      'Javascript',
-      new Date(2019, 10, 9),
-      'Learn about where you can find course descriptions, what information they include, ' +
-        'how they work, and details about various components of a course description. Course ' +
-        'descriptions report information about a university or college\'s classes. They\'re published ' +
-        'both in course catalogs that outline degree requirements and in course schedules that contain ' +
-        'descriptions for all courses offered during a particular semester.',
-      807,
-      true,
-    ),
-    new Course(
-      '1',
-      'Programming: Angular',
-      new Date(2019, 9, 29),
-      'Learn about where you can find course descriptions, what information they include, ' +
-        'how they work, and details about various components of a course description. Course ' +
-        'descriptions report information about a university or college\'s classes. They\'re published ' +
-        'both in course catalogs that outline degree requirements and in course schedules that contain ' +
-        'descriptions for all courses offered during a particular semester.',
-      18,
-    ),
-    new Course(
-      '2',
-      'Python',
-      new Date(2018, 10, 9),
-      'Learn about where you can find course descriptions, what information they include, ' +
-        'how they work, and details about various components of a course description. Course ' +
-        'descriptions report information about a university or college\'s classes. They\'re published ' +
-        'both in course catalogs that outline degree requirements and in course schedules that contain ' +
-        'descriptions for all courses offered during a particular semester.',
-      109,
-      true,
-    ),
-    new Course(
-      '2',
-      'Programming: C#',
-      new Date(2018, 10, 9),
-      'Learn about where you can find course descriptions, what information they include, ' +
-        'how they work, and details about various components of a course description. Course ' +
-        'descriptions report information about a university or college\'s classes. They\'re published ' +
-        'both in course catalogs that outline degree requirements and in course schedules that contain ' +
-        'descriptions for all courses offered during a particular semester.',
-      60,
-      true,
-    )];
-  }
+const initialState = {
+  courses: [
+    new Course('0', 'Javascript', new Date(2019, 10, 9), '...', 807, true),
+    new Course('1', 'Programming: Angular', new Date(2019, 9, 29), '...', 18),
+    new Course('2', 'Python', new Date(2018, 10, 9), '...', 109, true),
+    new Course('2', 'Programming: C#', new Date(2018, 10, 9), '...', 60, true),
+  ],
+};
 
-  getCourse() {}
-
-  createCourse() {}
-
-  removeCourse() {}
+class MockRouter {
+  navigate() {}
 }
 
 describe('CoursesListComponent', () => {
   let component: CoursesListComponent;
   let fixture: ComponentFixture<CoursesListComponent>;
   let coursesService: CoursesService;
+  let router: Router;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
@@ -81,7 +39,8 @@ describe('CoursesListComponent', () => {
       providers: [
         FilterPipe,
         OrderByPipe,
-        { provide: CoursesService, useClass: MockCoursesService },
+        provideMockStore({ initialState }),
+        { provide: Router, useClass: MockRouter },
       ],
       imports: [FormsModule],
       schemas: [CUSTOM_ELEMENTS_SCHEMA],
@@ -93,6 +52,7 @@ describe('CoursesListComponent', () => {
     fixture = TestBed.createComponent(CoursesListComponent);
     component = fixture.componentInstance;
     coursesService = TestBed.get(CoursesService);
+    router = TestBed.get(Router);
     fixture.detectChanges();
   });
 
@@ -100,22 +60,37 @@ describe('CoursesListComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should console log once clicking LOAD MORE', () => {
-    spyOn(console, 'log');
+  // it('should delete course once deleting course', () => {
+  //   const coursesAmount = component.courses.length;
+  //   const course = new Course('0', 'Javascript', new Date(2019, 10, 9), '...', 807, true);
+
+  //   fixture.debugElement.query(By.css('app-course-card')).triggerEventHandler('deleteCourse', course);
+  //   fixture.detectChanges();
+  //   expect(component.courses.length).toEqual(coursesAmount - 1);
+  // });
+
+  it('should redirect to new page once click Edit course', () => {
+    spyOn(router, 'navigate');
+
+    fixture.debugElement.query(By.css('app-course-card')).triggerEventHandler('editCourse', null);
+    expect(router.navigate).toHaveBeenCalledWith(['courses', 'new']);
+  });
+
+  it('should increase maxCoursesNumber once clicking LOAD MORE', () => {
+    const maxCoursesNumber = component.maxCoursesNumber;
 
     fixture.debugElement.query(By.css('.load-more-block')).triggerEventHandler('click', null);
-    fixture.detectChanges();
-    expect(console.log).toHaveBeenCalledWith('Loading more courses...');
+    expect(component.maxCoursesNumber).toEqual(maxCoursesNumber + 3);
   });
 
   it('should add new course once clicking NO DATA, FEEL FREE TO ADD NEW COURSE', () => {
     component.courses = [];
     component.filteredCourses = [];
     fixture.detectChanges();
-    spyOn(coursesService, 'createCourse');
+    spyOn(router, 'navigate');
 
     fixture.debugElement.query(By.css('.add-course-block')).triggerEventHandler('click', null);
-    expect(coursesService.createCourse).toHaveBeenCalled();
+    expect(router.navigate).toHaveBeenCalledWith(['courses', 'new']);
   });
 
   it('should call onSortingSelect when select Duration order', () => {
@@ -130,8 +105,8 @@ describe('CoursesListComponent', () => {
 
   it('should change filteredCourses order once onSortingSelect', () => {
     component.filteredCourses = [
-      { id: '0', title: '', date: new Date(2019, 10, 5), description: '', duration: 49, topRated: false },
-      { id: '1', title: '', date: new Date(2019, 10, 5), description: '', duration: 19, topRated: false },
+      { id: '0', title: '', date: new Date(2019, 10, 5), description: '', duration: 49, topRated: false, authors: []},
+      { id: '1', title: '', date: new Date(2019, 10, 5), description: '', duration: 19, topRated: false, authors: []},
     ];
     const selectedOrder = { name: 'Duration', prop: 'duration', isDesc: false };
     component.onSortingSelect(selectedOrder);
@@ -139,48 +114,8 @@ describe('CoursesListComponent', () => {
     fixture.detectChanges();
 
     expect(component.filteredCourses).toEqual([
-      { id: '1', title: '', date: new Date(2019, 10, 5), description: '', duration: 19, topRated: false },
-      { id: '0', title: '', date: new Date(2019, 10, 5), description: '', duration: 49, topRated: false },
+      { id: '1', title: '', date: new Date(2019, 10, 5), description: '', duration: 19, topRated: false, authors: []},
+      { id: '0', title: '', date: new Date(2019, 10, 5), description: '', duration: 49, topRated: false, authors: []},
     ]);
-  });
-});
-
-@Component({
-  template: '<app-courses-list [searchTerm]="searchTerm"></app-courses-list>',
-})
-class TestHostComponent {
-  searchTerm = '';
-}
-
-describe('CoursesListComponent: Host testing', () => {
-  let component: TestHostComponent;
-  let fixture: ComponentFixture<TestHostComponent>;
-
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
-      declarations: [
-        TestHostComponent,
-        CoursesListComponent,
-      ],
-      providers: [FilterPipe, OrderByPipe],
-      imports: [FormsModule],
-      schemas: [CUSTOM_ELEMENTS_SCHEMA],
-    })
-    .compileComponents();
-  }));
-
-  beforeEach(() => {
-    fixture = TestBed.createComponent(TestHostComponent);
-    component = fixture.componentInstance;
-    fixture.detectChanges();
-  });
-
-  it('ngOnChanges should be called when searchTerm changed', () => {
-    component.searchTerm = 'test';
-    const coursesListComponent = fixture.debugElement.query(By.css('app-courses-list')).componentInstance;
-    spyOn(coursesListComponent, 'ngOnChanges');
-
-    fixture.detectChanges();
-    expect(coursesListComponent.ngOnChanges).toHaveBeenCalled();
   });
 });

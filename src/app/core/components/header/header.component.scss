@@ -3,10 +3,10 @@
 @import '~bootstrap/scss/mixins';
 
 :host {
-  flex-shrink: 0;
   display: flex;
   justify-content: space-between;
   align-items: center;
+  flex-shrink: 0;
   width: 100%;
   height: 64px;
   background-color: #414452;

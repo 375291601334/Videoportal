@@ -1,5 +1,5 @@
-<div class="add-course-button-container">
-  <button (click)="addCourse()">
+<div class="d-flex justify-content-end add-course-button-container">
+  <button (click)="goToNewCoursePage()">
     <img src='./assets/icons/ic-plus.svg' class="icon">
     Add course
   </button>
@@ -14,15 +14,16 @@
 </div>
 
 <app-course-card
-  *ngFor="let course of filteredCourses | slice:0:3"
+  *ngFor="let course of filteredCourses | slice:0:maxCoursesNumber"
   [course]="course"
-  (deleteCourse)="deleteCourse($event)"
+  (editCourse)="onEditCourse($event)"
+  (deleteCourse)="onDeleteCourse($event)"
 ></app-course-card>
 
-<div *ngIf="filteredCourses.length > 3" class="load-more-block" (click)="loadMoreCourses()">
+<div *ngIf="filteredCourses.length > maxCoursesNumber" class="load-more-block" (click)="loadMoreCourses()">
   {{'Load more' | uppercase }}
 </div>
 
-<div *ngIf="!filteredCourses.length" class="add-course-block" (click)="addCourse()">
+<div *ngIf="!filteredCourses.length" class="add-course-block" (click)="goToNewCoursePage()">
   {{'No data, feel free to add new course' | uppercase}}
 </div>
