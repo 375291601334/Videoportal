@@ -1,0 +1,37 @@
+<app-breadcrumbs [breadcrumbs]="['Courses', 'New']"></app-breadcrumbs>
+
+<div class="new-course-container">
+  <h3>New course</h3>
+
+  <label for="title">Title:</label>
+  <input type="text" name="title" placeholder="Text input" [(ngModel)]="newCourseProps.title">
+
+  <label for="description">Description:</label>
+  <textarea name="description" placeholder="Add description" [(ngModel)]="newCourseProps.description"></textarea>
+
+  <div class="row">
+    <div class="d-flex flex-column field col-3">
+      <label for="duration">Duration:</label>
+      <app-duration-input [duration]="newCourseProps.duration"></app-duration-input>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="d-flex flex-column field col-3">
+      <label for="date">Date:</label>
+      <app-date-input name="date" [date]="newCourseProps.date"></app-date-input>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="d-flex flex-column field col-6">
+      <label for="authors">Authors:</label>
+      <app-multi-select [authors]="newCourseProps.authors"></app-multi-select>
+    </div>
+  </div>
+
+  <div class="d-flex justify-content-end">
+    <button (click)="onCancel()">Cancel</button>
+    <button (click)="addNewCourse()">Save</button>
+  </div>
+</div>

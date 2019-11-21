@@ -1,0 +1,28 @@
+@import '~bootstrap/scss/functions';
+@import '~bootstrap/scss/variables';
+@import '~bootstrap/scss/mixins';
+
+:host {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  height: 64px;
+  background-color: #ffffff;
+
+  .breadcrumbs-container {
+    margin-left: 85px;
+  }
+
+  .breadcrumb-item {
+    font-weight: 600;
+    color: #2c2f3c;
+  }
+}
+
+@include media-breakpoint-down(sm) {
+  :host {
+    .breadcrumbs-container {
+      margin-left: 25px;
+    }
+  }
+}
