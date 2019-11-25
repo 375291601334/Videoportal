@@ -42,19 +42,22 @@ export class CoursesListComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.coursesSubscription = combineLatest([
+      this.store.pipe(select(fromCourses.isCoursesFetched)),
       this.store.pipe(select(fromCourses.getCourses)),
       this.store.pipe(select(fromSearch.getSearchTerm)),
-    ]).subscribe(([courses, searchTerm]) => {
+    ]).subscribe(([isCoursesFetched, courses, searchTerm]) => {
         this.courses = courses;
         this.filteredCourses = this.order.transform(
           this.filter.transform(courses, 'title', searchTerm),
           this.selectedOrder.prop,
           this.selectedOrder.isDesc,
         );
+
+        if (!isCoursesFetched) {
+          this.store.dispatch(CoursesActions.FetchCourses());
+        }
       },
     );
-
-    this.store.dispatch(CoursesActions.FetchCourses());
   }
 
   onEditCourse() {
@@ -82,6 +85,7 @@ export class CoursesListComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
+    this.store.dispatch(CoursesActions.FetchCourses());
     this.coursesSubscription.unsubscribe();
   }
 

@@ -15,12 +15,16 @@ import { OrderByPipe } from '../../../shared/pipes/order-by/order-by.pipe';
 import { Course } from '../../models/course.model';
 
 const initialState = {
-  courses: [
-    new Course('0', 'Javascript', new Date(2019, 10, 9), '...', 807, true),
-    new Course('1', 'Programming: Angular', new Date(2019, 9, 29), '...', 18),
-    new Course('2', 'Python', new Date(2018, 10, 9), '...', 109, true),
-    new Course('2', 'Programming: C#', new Date(2018, 10, 9), '...', 60, true),
-  ],
+  courses: {
+    isCoursesFetched: true,
+    items: [
+      new Course('0', 'Javascript', new Date(2019, 10, 9), '...', 807, true),
+      new Course('1', 'Programming: Angular', new Date(2019, 9, 29), '...', 18),
+      new Course('2', 'Python', new Date(2018, 10, 9), '...', 109, true),
+      new Course('2', 'Programming: C#', new Date(2018, 10, 9), '...', 60, true),
+    ],
+  },
+  searchTerm: '',
 };
 
 class MockRouter {

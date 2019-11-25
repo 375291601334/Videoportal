@@ -1,4 +1,4 @@
-import { createReducer, on, Action } from '@ngrx/store';
+import { createReducer, createSelector, on, Action } from '@ngrx/store';
 import { Guid } from 'guid-typescript';
 
 import * as fromRoot from './index';
@@ -7,28 +7,48 @@ import * as CoursesActions from '../actions/courses';
 import { ICourse } from '../../courses/models/course.model';
 
 export interface State extends fromRoot.State {
-  courses: ICourse[];
+  courses: CoursesState;
 }
 
-const initialState: ICourse[] = [];
+export interface CoursesState {
+  isCoursesFetched: boolean;
+  items: ICourse[];
+}
+
+const initialState: CoursesState = {
+  isCoursesFetched: false,
+  items: [],
+};
 
 export const coursesReducer = createReducer(
   initialState,
-  on(CoursesActions.FetchCoursesSuccess, (state, { courses }) => ([
+  on(CoursesActions.FetchCoursesSuccess, (state, { courses }) => ({
+    isCoursesFetched: true,
+    items: courses,
+  })),
+  on(CoursesActions.AddNewCourse, (state, { course }) => ({
     ...state,
-    ...courses,
-  ])),
-  on(CoursesActions.AddNewCourse, (state, { course }) => ([
+    items: [
+      ...state.items,
+      { ...course, id: Guid.create().toString() },
+    ],
+  })),
+  on(CoursesActions.RemoveCourse, (state, { id }) => ({
     ...state,
-    { ...course, id: Guid.create().toString() },
-  ])),
-  on(CoursesActions.RemoveCourse, (state, { id }) => ([
-    ...state.filter(course => course.id !== id),
-  ])),
+    items: state.items.filter(course => course.id !== id),
+  })),
 );
 
-export function reducer(state: ICourse[], action: Action) {
+export function reducer(state: CoursesState, action: Action) {
   return coursesReducer(state, action);
 }
 
-export const getCourses = (state: State): ICourse[] => state.courses;
+export const getCoursesState = (state: State): CoursesState => state.courses;
+
+export const getCourses = createSelector(
+  getCoursesState, (state: CoursesState) => state.items,
+);
+
+export const isCoursesFetched = createSelector(
+  getCoursesState, (state: CoursesState) => state.isCoursesFetched,
+);

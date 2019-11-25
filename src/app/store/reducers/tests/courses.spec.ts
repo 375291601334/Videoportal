@@ -1,10 +1,13 @@
-import { reducer } from '../courses';
+import { reducer, CoursesState } from '../courses';
 import * as CoursesActions from '../../actions/courses';
 
 import { ICourse, Course } from '../../../courses/models/course.model';
 
 describe('CoursesReducer', () => {
-  const initialState: ICourse[] = [];
+  const initialState: CoursesState = {
+    isCoursesFetched: false,
+    items: [],
+  };
   const mockCourses = [
     new Course('7', 'Test course', new Date(2018, 7, 4), 'Test description', 58, true),
   ];
@@ -22,7 +25,10 @@ describe('CoursesReducer', () => {
       const action = CoursesActions.FetchCoursesSuccess({ courses: mockCourses });
       const result = reducer(initialState, action);
 
-      expect(result).toEqual(mockCourses);
+      expect(result).toEqual({
+        isCoursesFetched: true,
+        items: mockCourses,
+      });
     });
   });
 
@@ -32,16 +38,25 @@ describe('CoursesReducer', () => {
       const action = CoursesActions.AddNewCourse({ course: newCourse });
       const result = reducer(initialState, action);
 
-      expect(result.length).toBe(1);
+      expect(result.items.length).toBe(1);
     });
   });
 
   describe('Remove Course', () => {
     it('should remove course', () => {
       const action = CoursesActions.RemoveCourse({ id: '7' });
-      const result = reducer(mockCourses, action);
+      const result = reducer(
+        {
+          isCoursesFetched: true,
+          items: mockCourses,
+        },
+        action,
+      );
 
-      expect(result).toEqual(initialState);
+      expect(result).toEqual({
+        isCoursesFetched: true,
+        items: [],
+      });
     });
   });
 });

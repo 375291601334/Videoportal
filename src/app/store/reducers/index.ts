@@ -8,7 +8,7 @@ import { ICourse } from 'src/app/courses/models/course.model';
 
 export interface State {
   auth: fromAuth.AuthState;
-  courses: ICourse[];
+  courses: fromCourses.CoursesState;
   searchTerm: string;
 }
 

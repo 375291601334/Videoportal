@@ -15,6 +15,8 @@ import { AppComponent } from './app.component';
 import { AuthEffects } from './store/effects/auth';
 import { CoursesEffects } from './store/effects/courses';
 import { reducers } from './store/reducers/index';
+import { StoreDevtoolsModule } from '@ngrx/store-devtools';
+import { environment } from '../environments/environment';
 
 @NgModule({
   declarations: [
@@ -29,6 +31,7 @@ import { reducers } from './store/reducers/index';
     CoursesModule,
     StoreModule.forRoot(reducers),
     EffectsModule.forRoot([AuthEffects, CoursesEffects]),
+    StoreDevtoolsModule.instrument({ maxAge: 25, logOnly: environment.production }),
   ],
   providers: [],
   bootstrap: [
