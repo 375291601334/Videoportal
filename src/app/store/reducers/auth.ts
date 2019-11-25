@@ -1,4 +1,4 @@
-import { createSelector, createReducer, on } from '@ngrx/store';
+import { createSelector, createReducer, on, Action } from '@ngrx/store';
 
 import * as fromRoot from './index';
 import * as AuthActions from '../actions/auth';
@@ -23,7 +23,7 @@ const initialState: AuthState = {
   },
 };
 
-export const reducer = createReducer(
+const authReducer = createReducer(
   initialState,
   on(AuthActions.LoginSuccess, (state, { user }) => ({
     ...state,
@@ -34,6 +34,10 @@ export const reducer = createReducer(
     ...initialState,
   })),
 );
+
+export function reducer(state: AuthState, action: Action) {
+  return authReducer(state, action);
+}
 
 export const getAuthState = (state: State): AuthState  => state.auth;
 

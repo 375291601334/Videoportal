@@ -7,7 +7,7 @@ import { Component, Input, ChangeDetectionStrategy } from '@angular/core';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class DurationInputComponent {
-  @Input() duration: Number;
+  @Input() duration: number;
 
   constructor() {}
 }

@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
 import { Store, select } from '@ngrx/store';
 import { Subscription, combineLatest } from 'rxjs';
@@ -38,7 +38,9 @@ export class CoursesListComponent implements OnInit, OnDestroy {
     private order: OrderByPipe,
     private store: Store<fromCourses.State>,
     private router: Router,
-  ) {
+  ) {}
+
+  ngOnInit() {
     this.coursesSubscription = combineLatest([
       this.store.pipe(select(fromCourses.getCourses)),
       this.store.pipe(select(fromSearch.getSearchTerm)),
@@ -51,9 +53,7 @@ export class CoursesListComponent implements OnInit, OnDestroy {
         );
       },
     );
-  }
 
-  ngOnInit() {
     this.store.dispatch(CoursesActions.FetchCourses());
   }
 

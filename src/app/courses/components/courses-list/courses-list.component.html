@@ -16,7 +16,7 @@
 <app-course-card
   *ngFor="let course of filteredCourses | slice:0:maxCoursesNumber"
   [course]="course"
-  (editCourse)="onEditCourse($event)"
+  (editCourse)="onEditCourse()"
   (deleteCourse)="onDeleteCourse($event)"
 ></app-course-card>
 
