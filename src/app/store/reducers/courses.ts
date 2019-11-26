@@ -24,7 +24,7 @@ export const coursesReducer = createReducer(
   initialState,
   on(CoursesActions.FetchCoursesSuccess, (state, { courses }) => ({
     isCoursesFetched: true,
-    items: courses,
+    items: [...state.items, ...courses],
   })),
   on(CoursesActions.AddNewCourse, (state, { course }) => ({
     ...state,

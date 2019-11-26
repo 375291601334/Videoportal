@@ -7,7 +7,7 @@ import { Component, Input, ChangeDetectionStrategy } from '@angular/core';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class MultiSelectComponent {
-  @Input() authors: string[];
+  @Input() authors: string;
 
   constructor() {}
 }

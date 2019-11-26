@@ -85,7 +85,6 @@ export class CoursesListComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    this.store.dispatch(CoursesActions.FetchCourses());
     this.coursesSubscription.unsubscribe();
   }
 

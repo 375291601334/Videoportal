@@ -12,21 +12,21 @@
   <div class="row">
     <div class="d-flex flex-column field col-3">
       <label for="duration">Duration:</label>
-      <app-duration-input [duration]="newCourseProps.duration"></app-duration-input>
+      <app-duration-input #duration name="duration" [duration]="newCourseProps.duration"></app-duration-input>
     </div>
   </div>
 
   <div class="row">
     <div class="d-flex flex-column field col-3">
       <label for="date">Date:</label>
-      <app-date-input name="date" [date]="newCourseProps.date"></app-date-input>
+      <app-date-input #date name="date" [date]="newCourseProps.date"></app-date-input>
     </div>
   </div>
 
   <div class="row">
     <div class="d-flex flex-column field col-6">
       <label for="authors">Authors:</label>
-      <app-multi-select [authors]="newCourseProps.authors"></app-multi-select>
+      <app-multi-select #authors name="authors" [authors]="newCourseProps.authors"></app-multi-select>
     </div>
   </div>
 
