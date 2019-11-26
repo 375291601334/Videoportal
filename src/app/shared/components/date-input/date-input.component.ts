@@ -1,13 +1,12 @@
-import { Component, Input, ChangeDetectionStrategy } from '@angular/core';
+import { Component } from '@angular/core';
 
 @Component({
   selector: 'app-date-input',
   templateUrl: './date-input.component.html',
   styleUrls: ['./date-input.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class DateInputComponent {
-  @Input() date: Date;
+  date: Date;
 
   constructor() { }
 }

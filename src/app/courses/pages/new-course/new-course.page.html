@@ -4,29 +4,29 @@
   <h3>New course</h3>
 
   <label for="title">Title:</label>
-  <input type="text" name="title" placeholder="Text input" [(ngModel)]="newCourseProps.title">
+  <input type="text" name="title" placeholder="Text input" [(ngModel)]="title">
 
   <label for="description">Description:</label>
-  <textarea name="description" placeholder="Add description" [(ngModel)]="newCourseProps.description"></textarea>
+  <textarea name="description" placeholder="Add description" [(ngModel)]="description"></textarea>
 
   <div class="row">
     <div class="d-flex flex-column field col-3">
       <label for="duration">Duration:</label>
-      <app-duration-input #duration name="duration" [duration]="newCourseProps.duration"></app-duration-input>
+      <app-duration-input #duration name="duration"></app-duration-input>
     </div>
   </div>
 
   <div class="row">
     <div class="d-flex flex-column field col-3">
       <label for="date">Date:</label>
-      <app-date-input #date name="date" [date]="newCourseProps.date"></app-date-input>
+      <app-date-input #date name="date"></app-date-input>
     </div>
   </div>
 
   <div class="row">
     <div class="d-flex flex-column field col-6">
       <label for="authors">Authors:</label>
-      <app-multi-select #authors name="authors" [authors]="newCourseProps.authors"></app-multi-select>
+      <app-multi-select #authors name="authors"></app-multi-select>
     </div>
   </div>
 

@@ -21,15 +21,8 @@ export class NewCoursePageComponent {
   @ViewChild('authors', { static: true }) authorsElement: MultiSelectComponent;
   @ViewChild('date', { static: true }) dateElement: DateInputComponent;
 
-  newCourseProps: ICourse = {
-    id: '',
-    title: '',
-    date: new Date(),
-    description: '',
-    duration: null,
-    topRated: false,
-    authors: [],
-  };
+  title = '';
+  description = '';
 
   constructor(
     private route: Router,
@@ -37,14 +30,15 @@ export class NewCoursePageComponent {
   ) {}
 
   addNewCourse() {
+    console.log(this.authorsElement.authors);
     const newCourse = new Course(
       '',
-      this.newCourseProps.title,
+      this.title,
       this.dateElement.date,
-      this.newCourseProps.description,
+      this.description,
       this.durationElement.duration,
       false,
-      this.authorsElement.authors.split(','),
+      this.authorsElement.authors ? this.authorsElement.authors.split(',') : [],
     );
 
     this.store.dispatch(CoursesActions.AddNewCourse({ course: newCourse }));
