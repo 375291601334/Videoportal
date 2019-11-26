@@ -46,7 +46,6 @@ export class NewCoursePageComponent {
       false,
       this.authorsElement.authors.split(','),
     );
-    console.log(newCourse);
 
     this.store.dispatch(CoursesActions.AddNewCourse({ course: newCourse }));
     this.route.navigate(['']);
