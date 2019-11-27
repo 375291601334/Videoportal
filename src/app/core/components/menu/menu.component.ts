@@ -1,6 +1,7 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { Observable } from 'rxjs';
 
-import { IUser } from '../../models/user.model';
+import { IUser } from '../../../login/models/user.model';
 
 @Component({
   selector: 'app-menu',
@@ -29,6 +30,5 @@ export class MenuComponent implements OnInit {
 
   onLogout() {
     this.logout.emit(null);
-    this.isUserAuthentificated = false;
   }
 }

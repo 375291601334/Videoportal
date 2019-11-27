@@ -3,7 +3,7 @@ import { By } from '@angular/platform-browser';
 
 import { MenuComponent } from './menu.component';
 
-import { User } from '../../models/user.model';
+import { User } from '../../../login/models/user.model';
 
 describe('MenuComponent', () => {
   let component: MenuComponent;
@@ -49,6 +49,6 @@ describe('MenuComponent', () => {
     fixture.debugElement.query(By.css('.log-off')).triggerEventHandler('click', null);
     fixture.detectChanges();
     expect(component.logout.emit).toHaveBeenCalled();
-    expect(component.isUserAuthentificated).toEqual(false);
+    expect(component.isUserAuthentificated).toBeFalsy();
   });
 });

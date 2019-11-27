@@ -3,39 +3,37 @@ import { EventEmitter, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { BrowserDynamicTestingModule } from '@angular/platform-browser-dynamic/testing';
 import { Router } from '@angular/router';
 import { By } from '@angular/platform-browser';
-
-import { AuthService } from '../../../login/services/auth.service';
+import { provideMockStore, MockStore } from '@ngrx/store/testing';
 
 import { HeaderComponent } from './header.component';
 import { MenuComponent } from '../menu/menu.component';
-import { MenuDirective } from '../../directives/menu.directive';
-
-import { User } from '../../models/user.model';
-
-let isUserAuthentificated = false;
-
-class MockAuthService {
-  logout() {}
-  login() {}
-  isUserAuthentificated() { return isUserAuthentificated; }
-  getUserInfo() { return {id: '0', firstName: 'Anastasiya', lastName: 'Hushcha'}; }
-}
+import { MenuDirective } from '../../directives/menu/menu.directive';
 
 class MockRouter {
   navigate() {}
 }
 
-describe('HeaderComponent', () => {
+describe('HeaderComponent: Authentificated', () => {
+  const initialState = {
+    auth: {
+      isUserAuthentificated: true,
+      user: {
+        id: '0',
+        firstName: 'Kate',
+        lastName: 'White',
+      },
+    },
+  };
+
   let component: HeaderComponent;
   let fixture: ComponentFixture<HeaderComponent>;
-  let authService: AuthService;
   let router: Router;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [HeaderComponent, MenuDirective, MenuComponent],
       providers: [
-        { provide: AuthService, useClass: MockAuthService },
+        provideMockStore({ initialState }),
         { provide: Router, useClass: MockRouter },
       ],
       schemas: [CUSTOM_ELEMENTS_SCHEMA],
@@ -53,13 +51,8 @@ describe('HeaderComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(HeaderComponent);
     component = fixture.componentInstance;
-    authService = TestBed.get(AuthService);
     router = TestBed.get(Router);
     fixture.detectChanges();
-  });
-
-  it('should create', () => {
-    expect(component).toBeTruthy();
   });
 
   it('should open menu once clicking', () => {
@@ -81,8 +74,8 @@ describe('HeaderComponent', () => {
   it('should initialize menu component', () => {
     const menu = {
       instance: {
-        isUserAuthentificated: false,
-        user: null,
+        isUserAuthentificated: component.isUserAuthentificated,
+        user: component.user,
         login: new EventEmitter(),
         logout: new EventEmitter(),
         closeMenu: new EventEmitter(),
@@ -90,11 +83,9 @@ describe('HeaderComponent', () => {
       destroy: () => {},
     };
 
-    component.user = new User('1', 'Anastasiya', 'Hushcha');
-    component.isUserAuthentificated = true;
     spyOn(menu, 'destroy');
-    spyOn(authService, 'logout');
     spyOn(router, 'navigate');
+    spyOn(component, 'onLogout');
     component.menuInit(menu);
 
     expect(menu.instance.user).toEqual(component.user);
@@ -110,54 +101,61 @@ describe('HeaderComponent', () => {
 
     menu.instance.logout.emit();
     fixture.detectChanges();
-    expect(authService.logout).toHaveBeenCalled();
-
-  });
-
-  it('should render Login button if user is not authentificated', () => {
-    isUserAuthentificated = false;
-    fixture.detectChanges();
-
-    expect(fixture.debugElement.query(By.css('.log-in'))).toBeTruthy();
+    expect(component.onLogout).toHaveBeenCalled();
   });
 
   it('should render user info block if user is authentificated', () => {
-    isUserAuthentificated = true;
-    fixture.detectChanges();
-
     expect(
       fixture.debugElement.queryAll(By.css('.autorization-section>div'))[0].nativeElement.innerText,
-    ).toMatch('Anastasiya Hushcha');
+    ).toMatch('Kate White');
   });
 
   it('should get user info if user is authentificated', () => {
-    spyOn(authService, 'getUserInfo');
+    expect(component.user).toEqual({ id: '0', firstName: 'Kate', lastName: 'White' });
+  });
+});
 
-    isUserAuthentificated = true;
-    component.ngAfterContentChecked();
+describe('HeaderComponent: Nonauthentificated', () => {
+  const initialState = {
+    auth: {
+      isUserAuthentificated: false,
+      user: {
+        id: '',
+        firstName: '',
+        lastName: '',
+      },
+    },
+  };
 
-    expect(authService.getUserInfo).toHaveBeenCalled();
+  let component: HeaderComponent;
+  let fixture: ComponentFixture<HeaderComponent>;
+  let router: Router;
+
+  beforeEach(async(() => {
+    TestBed.configureTestingModule({
+      declarations: [HeaderComponent, MenuDirective, MenuComponent],
+      providers: [
+        provideMockStore({ initialState }),
+        { provide: Router, useClass: MockRouter },
+      ],
+      schemas: [CUSTOM_ELEMENTS_SCHEMA],
+    });
+
+    TestBed.compileComponents();
+  }));
+
+  beforeEach(() => {
+    fixture = TestBed.createComponent(HeaderComponent);
+    component = fixture.componentInstance;
+    router = TestBed.get(Router);
+    fixture.detectChanges();
   });
 
   it('should redirect to login page after clicking login', () => {
-    isUserAuthentificated = false;
-    fixture.detectChanges();
-
     spyOn(router, 'navigate');
-
     fixture.debugElement.query(By.css('.log-in')).triggerEventHandler('click', null);
     fixture.detectChanges();
+
     expect(router.navigate).toHaveBeenCalledWith(['login']);
-  });
-
-  it('should call authService.logout once logging off', () => {
-    isUserAuthentificated = true;
-    fixture.detectChanges();
-
-    spyOn(authService, 'logout');
-
-    fixture.debugElement.query(By.css('.log-off')).triggerEventHandler('click', null);
-    fixture.detectChanges();
-    expect(authService.logout).toHaveBeenCalled();
   });
 });

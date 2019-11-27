@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 
-import { ICourse, Course } from '../models/course.model';
+import { ICourse, Course } from '../../models/course.model';
 
 @Injectable({
   providedIn: 'root',
@@ -60,36 +60,5 @@ export class CoursesService {
 
   getCourses() {
     return this.coursesList;
-  }
-
-  createCourse(
-    coursesList: ICourse[],
-    id: string,
-    title: string,
-    date: Date,
-    description: string,
-    duration: number,
-    topRated: boolean = false,
-  ) {
-    const newCourse = new Course(id, title, date, description, duration, topRated);
-
-    coursesList.push(newCourse);
-    return coursesList;
-  }
-
-  getCourse(coursesList: ICourse[], id: string) {
-    return coursesList.find(course => course.id === id);
-  }
-
-  updateCourse(coursesList: ICourse[], id: string, value: ICourse) {
-    const index = coursesList.findIndex(course => course.id === id);
-
-    if (index !== -1) { this.coursesList[index] = value; }
-
-    return coursesList;
-  }
-
-  removeCourse(coursesList: ICourse[], id: string) {
-    return coursesList.filter(course => course.id !== id);
   }
 }

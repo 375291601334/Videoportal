@@ -1,14 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { provideMockStore } from '@ngrx/store/testing';
 import { Router } from '@angular/router';
 import { By } from '@angular/platform-browser';
 
-import { AuthService } from '../../services/auth.service';
-
 import { LoginPageComponent } from './login.page';
 
-class MockAuthService {
-  login() {}
-}
+const initialState = {
+  auth: {
+    isUserAuthentificated: false,
+    user: {
+      id: '',
+      firstName: '',
+      lastName: '',
+    },
+  },
+};
 
 class MockRouter {
   navigate() {}
@@ -17,14 +23,13 @@ class MockRouter {
 describe('LoginPageComponent', () => {
   let component: LoginPageComponent;
   let fixture: ComponentFixture<LoginPageComponent>;
-  let authService: AuthService;
   let router: Router;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [LoginPageComponent],
       providers: [
-        { provide: AuthService, useClass: MockAuthService },
+        provideMockStore({ initialState }),
         { provide: Router, useClass: MockRouter },
       ],
     })
@@ -34,7 +39,6 @@ describe('LoginPageComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(LoginPageComponent);
     component = fixture.componentInstance;
-    authService = TestBed.get(AuthService);
     router = TestBed.get(Router);
     fixture.detectChanges();
   });
@@ -43,13 +47,10 @@ describe('LoginPageComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should emit login and redirect to courses page once logging in', () => {
-    spyOn(authService, 'login');
+  it('should login and redirect to courses page once logging in', () => {
     spyOn(router, 'navigate');
 
     fixture.debugElement.query(By.css('button')).triggerEventHandler('click', null);
-    fixture.detectChanges();
     expect(router.navigate).toHaveBeenCalledWith(['']);
-    expect(authService.login).toHaveBeenCalled();
   });
 });

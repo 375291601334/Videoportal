@@ -1,42 +1,26 @@
-import {
-  Component,
-  OnInit,
-  Input,
-  Output,
-  EventEmitter,
-  OnChanges,
-  OnDestroy,
- } from '@angular/core';
+import { Component, Input, ChangeDetectionStrategy, Output, EventEmitter } from '@angular/core';
 
-import { Course } from '../../models/course.model';
+import { ICourse } from '../../models/course.model';
 
 @Component({
   selector: 'app-course-card',
   templateUrl: './course-card.component.html',
   styleUrls: ['./course-card.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class CourseCardComponent implements OnInit, OnChanges, OnDestroy {
-  @Input() course: Course;
+export class CourseCardComponent {
+  @Input() course: ICourse;
 
-  @Output() deleteCourse = new EventEmitter<string>();
+  @Output() editCourse = new EventEmitter();
+  @Output() deleteCourse = new EventEmitter();
 
   constructor() {}
 
-  ngOnInit() {}
-
-  ngOnDestroy() {
-    console.log('OnDestroy');
-  }
-
-  ngOnChanges() {
-    console.log('OnChanges');
-  }
-
   onEdit() {
-    console.log('Edit');
+    this.editCourse.emit(this.course);
   }
 
   onDelete() {
-    this.deleteCourse.emit(this.course.id);
+    this.deleteCourse.emit(this.course);
   }
 }

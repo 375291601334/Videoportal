@@ -1,10 +1,15 @@
-import { Component, OnInit, Input, OnChanges } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Router } from '@angular/router';
+import { Store, select } from '@ngrx/store';
+import { Subscription, combineLatest } from 'rxjs';
 import Swal from 'sweetalert2';
 
-import { CoursesService } from '../../services/courses.service';
+import * as fromCourses from '../../../store/reducers/courses';
+import * as fromSearch from '../../../store/reducers/search';
+import * as CoursesActions from '../../../store/actions/courses';
 
-import { FilterPipe } from '../../pipes/filter/filter.pipe';
-import { OrderByPipe } from '../../pipes/order-by/order-by.pipe';
+import { FilterPipe } from '../../../shared/pipes/filter/filter.pipe';
+import { OrderByPipe } from '../../../shared/pipes/order-by/order-by.pipe';
 
 import { ICourse } from '../../models/course.model';
 import { Order } from '../../models/order.model';
@@ -14,11 +19,11 @@ import { Order } from '../../models/order.model';
   templateUrl: './courses-list.component.html',
   styleUrls: ['./courses-list.component.scss'],
 })
-export class CoursesListComponent implements OnInit, OnChanges {
-  @Input() searchTerm: string;
-
+export class CoursesListComponent implements OnInit, OnDestroy {
   courses: ICourse[];
+  coursesSubscription: Subscription;
   filteredCourses: ICourse[];
+  maxCoursesNumber = 3;
   orders: Order[] = [
     { name: 'Duration', prop: 'duration', isDesc: false },
     { name: 'Duration DESC', prop: 'duration', isDesc: true },
@@ -31,33 +36,35 @@ export class CoursesListComponent implements OnInit, OnChanges {
   constructor(
     private filter: FilterPipe,
     private order: OrderByPipe,
-    private service: CoursesService,
+    private store: Store<fromCourses.State>,
+    private router: Router,
   ) {}
 
   ngOnInit() {
-    this.courses = this.service.getCourses();
-    this.filteredCourses = this.courses;
-  }
+    this.coursesSubscription = combineLatest([
+      this.store.pipe(select(fromCourses.isCoursesFetched)),
+      this.store.pipe(select(fromCourses.getCourses)),
+      this.store.pipe(select(fromSearch.getSearchTerm)),
+    ]).subscribe(([isCoursesFetched, courses, searchTerm]) => {
+        this.courses = courses;
+        this.filteredCourses = this.order.transform(
+          this.filter.transform(courses, 'title', searchTerm),
+          this.selectedOrder.prop,
+          this.selectedOrder.isDesc,
+        );
 
-  onSortingSelect(selectedOrder: Order): void {
-    this.selectedOrder = selectedOrder;
-    this.filteredCourses = this.order.transform(this.filteredCourses, selectedOrder.prop, selectedOrder.isDesc);
-  }
-
-  ngOnChanges() {
-    this.filteredCourses = this.order.transform(
-      this.filter.transform(this.courses, 'title', this.searchTerm),
-      this.selectedOrder.prop,
-      this.selectedOrder.isDesc,
+        if (!isCoursesFetched) {
+          this.store.dispatch(CoursesActions.FetchCourses());
+        }
+      },
     );
   }
 
-  loadMoreCourses() {
-    console.log('Loading more courses...');
+  onEditCourse() {
+    this.router.navigate(['courses', 'new']);
   }
 
-  deleteCourse(id: string) {
-    const course = this.service.getCourse(this.courses, id);
+  onDeleteCourse(course: ICourse) {
     Swal.fire({
       title: 'Delete course?',
       text: `Are you sure you want to delete ${course.title}?`,
@@ -67,26 +74,25 @@ export class CoursesListComponent implements OnInit, OnChanges {
       reverseButtons: true,
     }).then((result) => {
         if (result.value) {
-          this.courses = this.service.removeCourse(this.courses, id);
-          this.ngOnChanges();
+          this.store.dispatch(CoursesActions.RemoveCourse({ id: course.id }));
         }
       });
   }
 
-  addCourse() {
-    this.courses = this.service.createCourse(
-      this.courses,
-      '2',
-      'Scrum and Agile',
-      new Date(2020, 1, 9),
-      'Learn about where you can find course descriptions, what information they include, ' +
-        'how they work, and details about various components of a course description. Course ' +
-        'descriptions report information about a university or college\'s classes. They\'re published ' +
-        'both in course catalogs that outline degree requirements and in course schedules that contain ' +
-        'descriptions for all courses offered during a particular semester.',
-      340,
-      false,
-    );
-    this.ngOnChanges();
+  onSortingSelect(selectedOrder: Order): void {
+    this.selectedOrder = selectedOrder;
+    this.filteredCourses = this.order.transform(this.filteredCourses, selectedOrder.prop, selectedOrder.isDesc);
+  }
+
+  ngOnDestroy() {
+    this.coursesSubscription.unsubscribe();
+  }
+
+  loadMoreCourses() {
+    this.maxCoursesNumber += 3;
+  }
+
+  goToNewCoursePage() {
+    this.router.navigate(['courses', 'new']);
   }
 }
