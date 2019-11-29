@@ -59,4 +59,20 @@ describe('CoursesReducer', () => {
       });
     });
   });
+
+  describe('Update Course', () => {
+    it('should update course', () => {
+      const newCourse = new Course('796', 'New course', new Date(2016, 7, 6), 'Test description', 95, false);
+      const action = CoursesActions.UpdateCourse({ id: '7', value: newCourse });
+      const result = reducer(
+        {
+          isCoursesFetched: true,
+          items: mockCourses,
+        },
+        action,
+      );
+
+      expect(result.items).toEqual([newCourse]);
+    });
+  });
 });

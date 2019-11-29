@@ -1,9 +1,12 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { Store } from '@ngrx/store';
 import { EventEmitter, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { BrowserDynamicTestingModule } from '@angular/platform-browser-dynamic/testing';
 import { Router } from '@angular/router';
 import { By } from '@angular/platform-browser';
 import { provideMockStore, MockStore } from '@ngrx/store/testing';
+
+import { AuthState } from '../../../store/reducers/auth';
 
 import { HeaderComponent } from './header.component';
 import { MenuComponent } from '../menu/menu.component';
@@ -28,6 +31,7 @@ describe('HeaderComponent: Authentificated', () => {
   let component: HeaderComponent;
   let fixture: ComponentFixture<HeaderComponent>;
   let router: Router;
+  let store: MockStore<AuthState>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
@@ -52,6 +56,7 @@ describe('HeaderComponent: Authentificated', () => {
     fixture = TestBed.createComponent(HeaderComponent);
     component = fixture.componentInstance;
     router = TestBed.get(Router);
+    store = TestBed.get(Store);
     fixture.detectChanges();
   });
 
@@ -112,6 +117,14 @@ describe('HeaderComponent: Authentificated', () => {
 
   it('should get user info if user is authentificated', () => {
     expect(component.user).toEqual({ id: '0', firstName: 'Kate', lastName: 'White' });
+  });
+
+  it('should redirect to login page after clicking login', () => {
+    spyOn(store, 'dispatch');
+    component.onLogout();
+    fixture.detectChanges();
+
+    expect(store.dispatch).toHaveBeenCalled();
   });
 });
 

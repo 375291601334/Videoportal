@@ -1,6 +1,6 @@
 import { Component, ComponentFactoryResolver, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
-import { Observable, Subscription } from 'rxjs';
+import { Subscription } from 'rxjs';
 import { Store, select } from '@ngrx/store';
 
 import * as fromAuth from '../../../store/reducers/auth';
