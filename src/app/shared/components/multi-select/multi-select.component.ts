@@ -6,7 +6,7 @@ import { Component } from '@angular/core';
   styleUrls: ['./multi-select.component.scss'],
 })
 export class MultiSelectComponent {
-  authors: string;
+  prefilledValue = '';
 
   constructor() {}
 }

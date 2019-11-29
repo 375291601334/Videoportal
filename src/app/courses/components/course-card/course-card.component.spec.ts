@@ -36,7 +36,7 @@ describe('CourseCardComponent', () => {
     spyOn(component.editCourse, 'emit');
 
     fixture.debugElement.query(By.css('.edit-button')).triggerEventHandler('click', null);
-    expect(component.editCourse.emit).toHaveBeenCalledWith(component.course);
+    expect(component.editCourse.emit).toHaveBeenCalledWith(component.course.id);
   });
 
   it('should emit deleteCourse once click Delete', () => {

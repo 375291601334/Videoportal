@@ -23,5 +23,5 @@ export const RemoveCourse = createAction(
 
 export const UpdateCourse = createAction(
   '[Courses] Update Course',
-  props<{ id: string }>(),
+  props<{ id: string, value: ICourse }>(),
 );

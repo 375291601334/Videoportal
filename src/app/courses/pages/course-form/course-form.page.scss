@@ -87,3 +87,15 @@
     width: 100%;
   }
 }
+
+@include media-breakpoint-down(ms) {
+  :host {
+    app-breadcrumbs {
+      margin-bottom: 0;
+    }
+
+    .new-course-container {
+      margin-top: 0;
+    }
+  }
+}

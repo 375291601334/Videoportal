@@ -37,6 +37,10 @@ export const coursesReducer = createReducer(
     ...state,
     items: state.items.filter(course => course.id !== id),
   })),
+  on(CoursesActions.UpdateCourse, (state, { id, value }) => ({
+    ...state,
+    items: [value, ...state.items.filter(course => course.id !== id)],
+  })),
 );
 
 export function reducer(state: CoursesState, action: Action) {

@@ -18,6 +18,7 @@ export class CoursesService {
         'descriptions for all courses offered during a particular semester.',
       807,
       true,
+      ['Ann', 'Tom'],
     ),
     new Course(
       '1',
@@ -43,7 +44,7 @@ export class CoursesService {
       true,
     ),
     new Course(
-      '2',
+      '3',
       'Programming: C#',
       new Date(2018, 10, 9),
       'Learn about where you can find course descriptions, what information they include, ' +
