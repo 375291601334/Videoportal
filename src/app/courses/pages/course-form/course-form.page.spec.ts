@@ -37,14 +37,6 @@ describe('CourseFormPageComponent:', () => {
     let router: Router;
     let activatedRoute: ActivatedRoute;
 
-    class MockActivatedRoute {
-      snapshot: {
-        data: {
-          title: 'New course',
-        },
-      };
-    }
-
     beforeEach(async(() => {
       TestBed.configureTestingModule({
         declarations: [
@@ -59,7 +51,13 @@ describe('CourseFormPageComponent:', () => {
         providers: [
           provideMockStore({ initialState }),
           { provide: Router, useClass: MockRouter },
-          { provide: ActivatedRoute, useClass: MockActivatedRoute },
+          { provide: ActivatedRoute, useValue: {
+            snapshot: {
+              data: {
+                title: 'New course',
+              },
+            },
+          }},
         ],
       }).compileComponents();
     }));
@@ -79,10 +77,12 @@ describe('CourseFormPageComponent:', () => {
       expect(router.navigate).toHaveBeenCalledWith(['']);
     });
 
-    it('should return to main page once clicking Cancel button', () => {
+    it('should call addNewCourse method once clicking Save button', () => {
       spyOn(router, 'navigate');
+      spyOn(component, 'addNewCourse');
 
-      fixture.debugElement.queryAll(By.css('button'))[0].triggerEventHandler('click', null);
+      fixture.debugElement.queryAll(By.css('button'))[1].triggerEventHandler('click', null);
+      expect(component.addNewCourse).toHaveBeenCalled();
       expect(router.navigate).toHaveBeenCalledWith(['']);
     });
 
@@ -100,17 +100,6 @@ describe('CourseFormPageComponent:', () => {
     let router: Router;
     let activatedRoute: ActivatedRoute;
 
-    class MockActivatedRoute {
-      snapshot: {
-        data: {
-          title: 'Edit course',
-        },
-        params: {
-          id: '0',
-        }
-      };
-    }
-
     beforeEach(async(() => {
       TestBed.configureTestingModule({
         declarations: [
@@ -125,7 +114,16 @@ describe('CourseFormPageComponent:', () => {
         providers: [
           provideMockStore({ initialState }),
           { provide: Router, useClass: MockRouter },
-          { provide: ActivatedRoute, useClass: MockActivatedRoute },
+          { provide: ActivatedRoute, useValue: {
+            snapshot: {
+              data: {
+                title: 'Edit course',
+              },
+              params: {
+                id: '0',
+              },
+            },
+          }},
         ],
       }).compileComponents();
     }));
@@ -143,6 +141,15 @@ describe('CourseFormPageComponent:', () => {
       fixture.detectChanges();
 
       expect(component.title).toEqual('Javascript');
+    });
+
+    it('should call updateCourse method once clicking Save button', () => {
+      spyOn(router, 'navigate');
+      spyOn(component, 'updateCourse');
+
+      fixture.debugElement.queryAll(By.css('button'))[1].triggerEventHandler('click', null);
+      expect(component.updateCourse).toHaveBeenCalled();
+      expect(router.navigate).toHaveBeenCalledWith(['']);
     });
   });
 });

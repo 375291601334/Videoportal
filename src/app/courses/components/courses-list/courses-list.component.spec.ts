@@ -77,7 +77,7 @@ describe('CoursesListComponent', () => {
     spyOn(router, 'navigate');
 
     fixture.debugElement.query(By.css('app-course-card')).triggerEventHandler('editCourse', null);
-    expect(router.navigate).toHaveBeenCalledWith(['courses', 'null']);
+    expect(router.navigate).toHaveBeenCalledWith(['courses', null]);
   });
 
   it('should increase maxCoursesNumber once clicking LOAD MORE', () => {

@@ -10,6 +10,11 @@ import { AuthGuard } from './login/services/auth-guard/auth.guard';
 
 const routes: Routes = [
   {
+    path: '',
+    redirectTo: 'courses',
+    pathMatch: 'full',
+  },
+  {
     path: 'courses',
     children: [
       {
@@ -38,11 +43,6 @@ const routes: Routes = [
   {
     path: 'login',
     component: LoginPageComponent,
-  },
-  {
-    path: '',
-    redirectTo: '/courses',
-    pathMatch: 'full',
   },
   {
     path: '**',
