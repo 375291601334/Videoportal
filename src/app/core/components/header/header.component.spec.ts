@@ -119,7 +119,7 @@ describe('HeaderComponent: Authentificated', () => {
     expect(component.user).toEqual({ id: '0', firstName: 'Kate', lastName: 'White' });
   });
 
-  it('should redirect to login page after clicking login', () => {
+  it('should redirect to logout page after clicking logout', () => {
     spyOn(store, 'dispatch');
     component.onLogout();
     fixture.detectChanges();
