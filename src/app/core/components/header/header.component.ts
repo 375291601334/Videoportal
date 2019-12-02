@@ -43,6 +43,7 @@ export class HeaderComponent {
 
   onLogout() {
     this.store.dispatch(AuthActions.Logout());
+    this.router.navigate(['login']);
   }
 
   menuInit(menu: any) {
