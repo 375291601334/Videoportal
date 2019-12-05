@@ -6,7 +6,7 @@ import { Component } from '@angular/core';
   styleUrls: ['./date-input.component.scss'],
 })
 export class DateInputComponent {
-  date: Date;
+  date: string;
 
   constructor() { }
 }

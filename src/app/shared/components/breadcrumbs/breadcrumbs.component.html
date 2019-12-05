@@ -1,5 +1,6 @@
 <div class="breadcrumbs-container">
   <span *ngFor="let breadcrumb of breadcrumbs" class="breadcrumb-item">
-    {{breadcrumb}}
+    <a *ngIf="breadcrumb.url; else text" [href]="breadcrumb.url">{{breadcrumb.text}}</a>
+    <ng-template #text>{{breadcrumb.text}}</ng-template>
   </span>
 </div>

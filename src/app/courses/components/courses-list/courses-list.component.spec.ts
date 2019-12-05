@@ -1,11 +1,14 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { provideMockStore } from '@ngrx/store/testing';
+import { provideMockStore, MockStore } from '@ngrx/store/testing';
 import { Router } from '@angular/router';
+import { Store } from '@ngrx/store';
 import { CUSTOM_ELEMENTS_SCHEMA, Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 
 import { CoursesService } from '../../services/courses/courses.service';
+
+import { CoursesState } from '../../../store/reducers/courses';
 
 import { CoursesListComponent } from './courses-list.component';
 
@@ -14,24 +17,24 @@ import { OrderByPipe } from '../../../shared/pipes/order-by/order-by.pipe';
 
 import { Course } from '../../models/course.model';
 
-const initialState = {
-  courses: {
-    isCoursesFetched: true,
-    items: [
-      new Course('0', 'Javascript', new Date(2019, 10, 9), '...', 807, true),
-      new Course('1', 'Programming: Angular', new Date(2019, 9, 29), '...', 18),
-      new Course('2', 'Python', new Date(2018, 10, 9), '...', 109, true),
-      new Course('2', 'Programming: C#', new Date(2018, 10, 9), '...', 60, true),
-    ],
-  },
-  searchTerm: '',
-};
-
 class MockRouter {
   navigate() {}
 }
 
 describe('CoursesListComponent', () => {
+  const initialState = {
+    courses: {
+      isCoursesFetched: true,
+      items: [
+        new Course('0', 'Javascript', new Date(2019, 10, 9), '...', 807, true),
+        new Course('1', 'Programming: Angular', new Date(2019, 9, 29), '...', 18),
+        new Course('2', 'Python', new Date(2018, 10, 9), '...', 109, true),
+        new Course('2', 'Programming: C#', new Date(2018, 10, 9), '...', 60, true),
+      ],
+    },
+    searchTerm: '',
+  };
+
   let component: CoursesListComponent;
   let fixture: ComponentFixture<CoursesListComponent>;
   let coursesService: CoursesService;
@@ -77,7 +80,7 @@ describe('CoursesListComponent', () => {
     spyOn(router, 'navigate');
 
     fixture.debugElement.query(By.css('app-course-card')).triggerEventHandler('editCourse', null);
-    expect(router.navigate).toHaveBeenCalledWith(['courses', 'new']);
+    expect(router.navigate).toHaveBeenCalledWith(['courses', null]);
   });
 
   it('should increase maxCoursesNumber once clicking LOAD MORE', () => {
@@ -121,5 +124,51 @@ describe('CoursesListComponent', () => {
       { id: '1', title: '', date: new Date(2019, 10, 5), description: '', duration: 19, topRated: false, authors: []},
       { id: '0', title: '', date: new Date(2019, 10, 5), description: '', duration: 49, topRated: false, authors: []},
     ]);
+  });
+});
+
+describe('CoursesListComponent without courses in store:', () => {
+  const initialState = {
+    courses: {
+      isCoursesFetched: false,
+      items: [],
+    },
+    searchTerm: '',
+  };
+
+  let component: CoursesListComponent;
+  let fixture: ComponentFixture<CoursesListComponent>;
+  let coursesService: CoursesService;
+  let router: Router;
+  let store: MockStore<CoursesState>;
+
+  beforeEach(async(() => {
+    TestBed.configureTestingModule({
+      declarations: [CoursesListComponent],
+      providers: [
+        FilterPipe,
+        OrderByPipe,
+        provideMockStore({ initialState }),
+        { provide: Router, useClass: MockRouter },
+      ],
+      imports: [FormsModule],
+      schemas: [CUSTOM_ELEMENTS_SCHEMA],
+    })
+    .compileComponents();
+  }));
+
+  beforeEach(() => {
+    fixture = TestBed.createComponent(CoursesListComponent);
+    component = fixture.componentInstance;
+    coursesService = TestBed.get(CoursesService);
+    router = TestBed.get(Router);
+    store = TestBed.get(Store);
+  });
+
+  it('should dispatch action if no courses were fetched yet', () => {
+    spyOn(store, 'dispatch');
+    fixture.detectChanges();
+
+    expect(store.dispatch).toHaveBeenCalled();
   });
 });

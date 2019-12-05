@@ -60,8 +60,8 @@ export class CoursesListComponent implements OnInit, OnDestroy {
     );
   }
 
-  onEditCourse() {
-    this.router.navigate(['courses', 'new']);
+  onEditCourse(id: string) {
+    this.router.navigate(['courses', id]);
   }
 
   onDeleteCourse(course: ICourse) {

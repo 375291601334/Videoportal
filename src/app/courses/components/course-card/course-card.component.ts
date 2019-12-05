@@ -17,7 +17,7 @@ export class CourseCardComponent {
   constructor() {}
 
   onEdit() {
-    this.editCourse.emit(this.course);
+    this.editCourse.emit(this.course.id);
   }
 
   onDelete() {
