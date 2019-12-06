@@ -16,6 +16,6 @@ deploy:
   provider: pages
   skip_cleanup: true
   github_token: $GITHUB_TOKEN
-  local_dir: dist/instagram-search-app
+  local_dir: dist/courses-listing-app
   on:
     branch: master
