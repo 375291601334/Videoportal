@@ -11,7 +11,7 @@ before_script:
 script:
   - ng lint
   - npm run test-headless
-  - ng build --prod --base-href /videoportal/
+  - ng build --prod --base-href /Videoportal/
 deploy:
   provider: pages
   skip_cleanup: true
