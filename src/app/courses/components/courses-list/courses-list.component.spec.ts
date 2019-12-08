@@ -5,6 +5,7 @@ import { Store } from '@ngrx/store';
 import { CUSTOM_ELEMENTS_SCHEMA, Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 
 import { CoursesService } from '../../services/courses/courses.service';
 
@@ -49,7 +50,7 @@ describe('CoursesListComponent', () => {
         provideMockStore({ initialState }),
         { provide: Router, useClass: MockRouter },
       ],
-      imports: [FormsModule],
+      imports: [FormsModule, HttpClientTestingModule],
       schemas: [CUSTOM_ELEMENTS_SCHEMA],
     })
     .compileComponents();
@@ -92,7 +93,6 @@ describe('CoursesListComponent', () => {
 
   it('should add new course once clicking NO DATA, FEEL FREE TO ADD NEW COURSE', () => {
     component.courses = [];
-    component.filteredCourses = [];
     fixture.detectChanges();
     spyOn(router, 'navigate');
 
@@ -108,22 +108,6 @@ describe('CoursesListComponent', () => {
     fixture.detectChanges();
 
     expect(component.onSortingSelect).toHaveBeenCalledWith(selectedOrder);
-  });
-
-  it('should change filteredCourses order once onSortingSelect', () => {
-    component.filteredCourses = [
-      { id: '0', title: '', date: new Date(2019, 10, 5), description: '', duration: 49, topRated: false, authors: []},
-      { id: '1', title: '', date: new Date(2019, 10, 5), description: '', duration: 19, topRated: false, authors: []},
-    ];
-    const selectedOrder = { name: 'Duration', prop: 'duration', isDesc: false };
-    component.onSortingSelect(selectedOrder);
-
-    fixture.detectChanges();
-
-    expect(component.filteredCourses).toEqual([
-      { id: '1', title: '', date: new Date(2019, 10, 5), description: '', duration: 19, topRated: false, authors: []},
-      { id: '0', title: '', date: new Date(2019, 10, 5), description: '', duration: 49, topRated: false, authors: []},
-    ]);
   });
 });
 
@@ -151,7 +135,7 @@ describe('CoursesListComponent without courses in store:', () => {
         provideMockStore({ initialState }),
         { provide: Router, useClass: MockRouter },
       ],
-      imports: [FormsModule],
+      imports: [FormsModule, HttpClientTestingModule],
       schemas: [CUSTOM_ELEMENTS_SCHEMA],
     })
     .compileComponents();

@@ -6,7 +6,15 @@ import { By } from '@angular/platform-browser';
 import { SearchBarComponent } from './search-bar.component';
 
 const initialState = {
-  searchTearm: '',
+  courses: {
+    isCoursesFetched: false,
+    start: 0,
+    count: 4,
+    sort: '',
+    textFragment: '',
+    authors: [],
+    items: [],
+  },
 };
 
 describe('SearchBarComponent', () => {

@@ -25,6 +25,7 @@ export class CourseFormPageComponent implements OnInit {
   breadcrumbs = [{text: 'Courses', url: '/courses'}, {text: 'New', url: ''}];
   title = '';
   description = '';
+  authorsOptions: { id: string, name: string }[];
 
   constructor(
     private route: Router,
@@ -33,22 +34,30 @@ export class CourseFormPageComponent implements OnInit {
   ) {}
 
   ngOnInit() {
+    this.store.dispatch(CoursesActions.FetchAuthors());
+    this.store.pipe(select(fromCourses.getAuthors)).subscribe(
+      authors => this.authorsOptions = authors,
+    );
+
     this.pageTitle = this.activatedRoute.snapshot.data.title;
 
     if (this.pageTitle === 'Edit course') {
       const courseId = this.activatedRoute.snapshot.params.id;
 
+      this.store.dispatch(CoursesActions.FetchCourse({ id: courseId }));
+
       this.store.pipe(select(fromCourses.getCourses)).subscribe(
         courses => {
-          const currentCourse = courses.find(course => course.id === courseId);
+          const currentCourse = courses[0];
 
           if (!currentCourse) { return; }
+
           this.breadcrumbs = [{text: 'Courses', url: '/courses'}, {text: currentCourse.title, url: ''}];
           this.title = currentCourse.title;
           this.description = currentCourse.description;
           this.dateElement.date = currentCourse.date.toISOString().substr(0, 10);
           this.durationElement.duration = currentCourse.duration;
-          this.authorsElement.prefilledValue = currentCourse.authors.join(', ');
+          this.authorsElement.selectedOptions = currentCourse.authors;
       });
     }
   }
@@ -70,7 +79,7 @@ export class CourseFormPageComponent implements OnInit {
       this.description,
       this.durationElement.duration,
       false,
-      this.authorsElement.prefilledValue ? this.authorsElement.prefilledValue.split(',') : [],
+      this.authorsElement.selectedOptions || [],
     );
 
     this.store.dispatch(CoursesActions.AddNewCourse({ course: newCourse }));
@@ -78,18 +87,15 @@ export class CourseFormPageComponent implements OnInit {
 
   updateCourse() {
     const updatedCourse = new Course(
-      '',
+      this.activatedRoute.snapshot.params.id,
       this.title,
       new Date(this.dateElement.date),
       this.description,
       this.durationElement.duration,
       false,
-      this.authorsElement.prefilledValue ? this.authorsElement.prefilledValue.split(',') : [],
+      this.authorsElement.selectedOptions || [],
     );
 
-    this.store.dispatch(CoursesActions.UpdateCourse({
-      id: this.activatedRoute.snapshot.params.id,
-      value: updatedCourse,
-    }));
+    this.store.dispatch(CoursesActions.UpdateCourse({course: updatedCourse }));
   }
 }

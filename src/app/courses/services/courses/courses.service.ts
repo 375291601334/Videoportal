@@ -1,65 +1,79 @@
 import { Injectable } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
 
-import { ICourse, Course } from '../../models/course.model';
+import { ICourse } from '../../models/course.model';
 
 @Injectable({
   providedIn: 'root',
 })
 export class CoursesService {
-  coursesList: ICourse[] = [
-    new Course(
-      '0',
-      'Javascript',
-      new Date(2019, 10, 9),
-      'Learn about where you can find course descriptions, what information they include, ' +
-        'how they work, and details about various components of a course description. Course ' +
-        'descriptions report information about a university or college\'s classes. They\'re published ' +
-        'both in course catalogs that outline degree requirements and in course schedules that contain ' +
-        'descriptions for all courses offered during a particular semester.',
-      807,
-      true,
-      ['Ann', 'Tom'],
-    ),
-    new Course(
-      '1',
-      'Programming: Angular',
-      new Date(2019, 9, 29),
-      'Learn about where you can find course descriptions, what information they include, ' +
-        'how they work, and details about various components of a course description. Course ' +
-        'descriptions report information about a university or college\'s classes. They\'re published ' +
-        'both in course catalogs that outline degree requirements and in course schedules that contain ' +
-        'descriptions for all courses offered during a particular semester.',
-      18,
-    ),
-    new Course(
-      '2',
-      'Python',
-      new Date(2018, 10, 9),
-      'Learn about where you can find course descriptions, what information they include, ' +
-        'how they work, and details about various components of a course description. Course ' +
-        'descriptions report information about a university or college\'s classes. They\'re published ' +
-        'both in course catalogs that outline degree requirements and in course schedules that contain ' +
-        'descriptions for all courses offered during a particular semester.',
-      109,
-      true,
-    ),
-    new Course(
-      '3',
-      'Programming: C#',
-      new Date(2018, 10, 9),
-      'Learn about where you can find course descriptions, what information they include, ' +
-        'how they work, and details about various components of a course description. Course ' +
-        'descriptions report information about a university or college\'s classes. They\'re published ' +
-        'both in course catalogs that outline degree requirements and in course schedules that contain ' +
-        'descriptions for all courses offered during a particular semester.',
-      60,
-      true,
-    ),
-  ];
+  constructor(private http: HttpClient) {}
 
-  constructor() {}
+  private mapCourse(course: any): ICourse {
+    return {
+      id: course.id.toString(),
+      title: course.name,
+      date: new Date(course.date),
+      description: course.description,
+      duration: course.length,
+      topRated: course.isTopRated,
+      authors: course.authors,
+    };
+  }
 
-  getCourses() {
-    return this.coursesList;
+  getCourses(query: string) {
+    return this.http.get(`https://videoportal-app.herokuapp.com/courses?${query}`)
+      .pipe(
+        map((courses: any[]) => courses.map(
+          course => this.mapCourse(course),
+        )),
+      );
+  }
+
+  getAuthors(): Observable<{ id: string, name: string, lastName: string }[]> {
+    return this.http.get<{ id: string, name: string, lastName: string }[]>('https://videoportal-app.herokuapp.com/authors');
+  }
+
+  getCourse(id: string): Observable<ICourse> {
+    return this.http.get<ICourse>(`https://videoportal-app.herokuapp.com/courses/${id}`)
+      .pipe(
+        map((course: any) => this.mapCourse(course)),
+      );
+  }
+
+  addCourse(course: ICourse) {
+    return this.http.post(
+      'https://videoportal-app.herokuapp.com/courses',
+      {
+        id: Math.random().toString(36).substr(2, 9),
+        name: course.title,
+        date: course.date,
+        length: course.duration,
+        description: course.description,
+        authors: course.authors,
+        isTopRated: course.topRated,
+      },
+    );
+  }
+
+  updateCourse(course: ICourse) {
+    return this.http.patch(
+      'https://videoportal-app.herokuapp.com/courses',
+      {
+        id: +course.id,
+        name: course.title,
+        date: course.date,
+        length: course.duration,
+        description: course.description,
+        authors: course.authors,
+        isTopRated: course.topRated,
+      },
+    );
+  }
+
+  deleteCourse(id: string) {
+    return this.http.delete(`https://videoportal-app.herokuapp.com/courses/${id}`);
   }
 }

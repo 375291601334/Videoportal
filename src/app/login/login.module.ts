@@ -1,7 +1,11 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
+import { HTTP_INTERCEPTORS } from '@angular/common/http';
 
 import { LoginPageComponent } from './pages/login/login.page';
+
+import { TokenInterceptor } from './interceptors/auth.interceptor';
 
 @NgModule({
   declarations: [
@@ -9,6 +13,14 @@ import { LoginPageComponent } from './pages/login/login.page';
   ],
   imports: [
     CommonModule,
+    FormsModule,
+  ],
+  providers: [
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: TokenInterceptor,
+      multi: true,
+    },
   ],
   exports: [
     LoginPageComponent,

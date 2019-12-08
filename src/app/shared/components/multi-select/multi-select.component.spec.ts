@@ -1,5 +1,6 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';
+import { NgSelectModule } from '@ng-select/ng-select';
 
 import { MultiSelectComponent } from './multi-select.component';
 
@@ -10,7 +11,7 @@ describe('MultiSelectComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [MultiSelectComponent],
-      imports: [FormsModule],
+      imports: [FormsModule, NgSelectModule],
     })
     .compileComponents();
   }));
@@ -22,6 +23,7 @@ describe('MultiSelectComponent', () => {
   });
 
   it('should create', () => {
+    component.options = [];
     expect(component).toBeTruthy();
   });
 });

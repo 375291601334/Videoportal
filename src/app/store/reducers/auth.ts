@@ -8,6 +8,7 @@ import { IUser } from '../../login/models/user.model';
 export interface AuthState {
   isUserAuthentificated: boolean;
   user: IUser;
+  token: string;
 }
 
 export interface State extends fromRoot.State {
@@ -21,17 +22,22 @@ const initialState: AuthState = {
     firstName: '',
     lastName: '',
   },
+  token: '',
 };
 
 const authReducer = createReducer(
   initialState,
-  on(AuthActions.LoginSuccess, (state, { user }) => ({
+  on(AuthActions.LoginSuccess, (state, { token }) => ({
     ...state,
-    user,
+    token,
     isUserAuthentificated: true,
   })),
   on(AuthActions.Logout, (state) => ({
     ...initialState,
+  })),
+  on(AuthActions.FetchUserInfoSuccess, (state, { user }) => ({
+    ...state,
+    user,
   })),
 );
 
@@ -45,6 +51,10 @@ export const isUserAuthentificated = createSelector(
   getAuthState, (state: AuthState) => state.isUserAuthentificated,
 );
 
-export const getUserIngo = createSelector(
+export const getUserInfo = createSelector(
   getAuthState, (state: AuthState) => state.user,
+);
+
+export const getUserToken = createSelector(
+  getAuthState, (state: AuthState) => state.token,
 );

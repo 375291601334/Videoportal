@@ -1,9 +1,12 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { provideMockStore } from '@ngrx/store/testing';
-import { Router } from '@angular/router';
+import { provideMockStore, MockStore } from '@ngrx/store/testing';
+import { FormsModule } from '@angular/forms';
+import { Store } from '@ngrx/store';
 import { By } from '@angular/platform-browser';
 
 import { LoginPageComponent } from './login.page';
+
+import { AuthState } from '../../../store/reducers/auth';
 
 const initialState = {
   auth: {
@@ -13,24 +16,21 @@ const initialState = {
       firstName: '',
       lastName: '',
     },
+    token: '',
   },
 };
-
-class MockRouter {
-  navigate() {}
-}
 
 describe('LoginPageComponent', () => {
   let component: LoginPageComponent;
   let fixture: ComponentFixture<LoginPageComponent>;
-  let router: Router;
+  let store: MockStore<AuthState>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [LoginPageComponent],
+      imports: [FormsModule],
       providers: [
         provideMockStore({ initialState }),
-        { provide: Router, useClass: MockRouter },
       ],
     })
     .compileComponents();
@@ -39,7 +39,7 @@ describe('LoginPageComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(LoginPageComponent);
     component = fixture.componentInstance;
-    router = TestBed.get(Router);
+    store = TestBed.get(Store);
     fixture.detectChanges();
   });
 
@@ -47,10 +47,10 @@ describe('LoginPageComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should login and redirect to courses page once logging in', () => {
-    spyOn(router, 'navigate');
+  it('should call login action once clicking login', () => {
+    spyOn(store, 'dispatch');
 
     fixture.debugElement.query(By.css('button')).triggerEventHandler('click', null);
-    expect(router.navigate).toHaveBeenCalledWith(['']);
+    expect(store.dispatch).toHaveBeenCalled();
   });
 });
