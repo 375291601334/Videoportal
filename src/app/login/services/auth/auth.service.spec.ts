@@ -21,10 +21,6 @@ describe('AuthService', () => {
     httpTestingController.verify();
   });
 
-  it('should be created', () => {
-    expect(service).toBeTruthy();
-  });
-
   it('should send POST request once login', () => {
     service.login('email', 'password')
       .subscribe(token => {
