@@ -7,14 +7,9 @@ import { FormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 
-import { CoursesService } from '../../services/courses/courses.service';
-
 import { CoursesState } from '../../../store/reducers/courses';
 
 import { CoursesListComponent } from './courses-list.component';
-
-import { FilterPipe } from '../../../shared/pipes/filter/filter.pipe';
-import { OrderByPipe } from '../../../shared/pipes/order-by/order-by.pipe';
 
 import { Course } from '../../models/course.model';
 
@@ -26,27 +21,29 @@ describe('CoursesListComponent', () => {
   const initialState = {
     courses: {
       isCoursesFetched: true,
+      start: 0,
+      count: 4,
+      sort: '',
+      textFragment: '',
+      authors: [],
       items: [
-        new Course('0', 'Javascript', new Date(2019, 10, 9), '...', 807, true),
-        new Course('1', 'Programming: Angular', new Date(2019, 9, 29), '...', 18),
-        new Course('2', 'Python', new Date(2018, 10, 9), '...', 109, true),
-        new Course('2', 'Programming: C#', new Date(2018, 10, 9), '...', 60, true),
+        new Course('0', 'Javascript', new Date(2019, 10, 9), '...', 807, true, []),
+        new Course('1', 'Programming: Angular', new Date(2019, 9, 29), '...', 18, false, []),
+        new Course('2', 'Python', new Date(2018, 10, 9), '...', 109, true, []),
+        new Course('2', 'Programming: C#', new Date(2018, 10, 9), '...', 60, true, []),
       ],
     },
-    searchTerm: '',
   };
 
   let component: CoursesListComponent;
   let fixture: ComponentFixture<CoursesListComponent>;
-  let coursesService: CoursesService;
+  let store: MockStore<CoursesState>;
   let router: Router;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [CoursesListComponent],
       providers: [
-        FilterPipe,
-        OrderByPipe,
         provideMockStore({ initialState }),
         { provide: Router, useClass: MockRouter },
       ],
@@ -59,23 +56,14 @@ describe('CoursesListComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(CoursesListComponent);
     component = fixture.componentInstance;
-    coursesService = TestBed.get(CoursesService);
     router = TestBed.get(Router);
+    store = TestBed.get(Store);
     fixture.detectChanges();
   });
 
   it('should create', () => {
     expect(component).toBeTruthy();
   });
-
-  // it('should delete course once deleting course', () => {
-  //   const coursesAmount = component.courses.length;
-  //   const course = new Course('0', 'Javascript', new Date(2019, 10, 9), '...', 807, true);
-
-  //   fixture.debugElement.query(By.css('app-course-card')).triggerEventHandler('deleteCourse', course);
-  //   fixture.detectChanges();
-  //   expect(component.courses.length).toEqual(coursesAmount - 1);
-  // });
 
   it('should redirect to new page once click Edit course', () => {
     spyOn(router, 'navigate');
@@ -109,12 +97,25 @@ describe('CoursesListComponent', () => {
 
     expect(component.onSortingSelect).toHaveBeenCalledWith(selectedOrder);
   });
+
+  it('should dispatch action once called onSortingSelect', () => {
+    spyOn(store, 'dispatch');
+
+    component.onSortingSelect({ name: 'Title', prop: 'name' });
+
+    expect(store.dispatch).toHaveBeenCalled();
+  });
 });
 
 describe('CoursesListComponent without courses in store:', () => {
   const initialState = {
     courses: {
       isCoursesFetched: false,
+      start: 0,
+      count: 4,
+      sort: 'name',
+      textFragment: 'test',
+      authors: [],
       items: [],
     },
     searchTerm: '',
@@ -122,7 +123,6 @@ describe('CoursesListComponent without courses in store:', () => {
 
   let component: CoursesListComponent;
   let fixture: ComponentFixture<CoursesListComponent>;
-  let coursesService: CoursesService;
   let router: Router;
   let store: MockStore<CoursesState>;
 
@@ -130,8 +130,6 @@ describe('CoursesListComponent without courses in store:', () => {
     TestBed.configureTestingModule({
       declarations: [CoursesListComponent],
       providers: [
-        FilterPipe,
-        OrderByPipe,
         provideMockStore({ initialState }),
         { provide: Router, useClass: MockRouter },
       ],
@@ -144,7 +142,6 @@ describe('CoursesListComponent without courses in store:', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(CoursesListComponent);
     component = fixture.componentInstance;
-    coursesService = TestBed.get(CoursesService);
     router = TestBed.get(Router);
     store = TestBed.get(Store);
   });

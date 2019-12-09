@@ -1,18 +1,56 @@
-// import { AuthService } from './auth.service';
-// import { User, IUser } from '../../models/user.model';
+import { TestBed, async } from '@angular/core/testing';
+import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 
-// describe('AuthService', () => {
-//   let service: AuthService;
+import { AuthService } from './auth.service';
 
-//   beforeEach(() => {
-//     service = new AuthService();
-//   });
+describe('AuthService', () => {
+  let httpTestingController: HttpTestingController;
+  let service: AuthService;
 
-//   it('should be created', () => {
-//     expect(service).toBeTruthy();
-//   });
+  beforeEach(async() => {
+    TestBed.configureTestingModule({
+      providers: [AuthService],
+      imports: [HttpClientTestingModule],
+    });
 
-//   it('should save user info in localStorage once login', () => {
-//     expect(service.login('flastname', 'flastname')).toEqual({ token: 'testToken' });
-//   });
-// });
+    httpTestingController = TestBed.get(HttpTestingController);
+    service = TestBed.get(AuthService);
+  });
+
+  afterEach(async() => {
+    httpTestingController.verify();
+  });
+
+  it('should be created', () => {
+    expect(service).toBeTruthy();
+  });
+
+  it('should send POST request once login', () => {
+    service.login('email', 'password')
+      .subscribe(token => {
+        expect(token).toEqual({ token: 'test token' });
+      });
+
+    const req = httpTestingController.expectOne('https://videoportal-app.herokuapp.com/auth/login');
+
+    expect(req.request.method).toEqual('POST');
+
+    req.flush({ token: 'test token' });
+  });
+
+  it('should send GET request when get user info', () => {
+    const mockUserInfo = { id: '1', firstName: 'Mock', lastName: 'User' };
+    const token = 'test token';
+
+    service.getUserInfo('test token')
+      .subscribe(userData => {
+        expect(userData).toEqual({ token, user: mockUserInfo });
+      });
+
+    const req = httpTestingController.expectOne('https://videoportal-app.herokuapp.com/auth/userinfo');
+
+    expect(req.request.method).toEqual('POST');
+
+    req.flush({ token, user: mockUserInfo });
+  });
+});

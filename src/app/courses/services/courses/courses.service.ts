@@ -23,8 +23,8 @@ export class CoursesService {
     };
   }
 
-  getCourses(query: string) {
-    return this.http.get(`https://videoportal-app.herokuapp.com/courses?${query}`)
+  getCourses(query: string): Observable<ICourse[]> {
+    return this.http.get<ICourse[]>(`https://videoportal-app.herokuapp.com/courses?${query}`)
       .pipe(
         map((courses: any[]) => courses.map(
           course => this.mapCourse(course),
@@ -32,8 +32,8 @@ export class CoursesService {
       );
   }
 
-  getAuthors(): Observable<{ id: string, name: string, lastName: string }[]> {
-    return this.http.get<{ id: string, name: string, lastName: string }[]>('https://videoportal-app.herokuapp.com/authors');
+  getAuthors(): Observable<{ id: string, name: string }[]> {
+    return this.http.get<{ id: string, name: string }[]>('https://videoportal-app.herokuapp.com/authors');
   }
 
   getCourse(id: string): Observable<ICourse> {
