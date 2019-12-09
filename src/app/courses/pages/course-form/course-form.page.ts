@@ -73,7 +73,7 @@ export class CourseFormPageComponent implements OnInit {
 
   addNewCourse() {
     const newCourse = new Course(
-      '',
+      Math.random().toString(36).substr(2, 9),
       this.title,
       new Date(this.dateElement.date),
       this.description,
@@ -86,8 +86,10 @@ export class CourseFormPageComponent implements OnInit {
   }
 
   updateCourse() {
+    const id = this.activatedRoute.snapshot.params.id;
+
     const updatedCourse = new Course(
-      this.activatedRoute.snapshot.params.id,
+      id,
       this.title,
       new Date(this.dateElement.date),
       this.description,
@@ -96,6 +98,6 @@ export class CourseFormPageComponent implements OnInit {
       this.authorsElement.selectedOptions || [],
     );
 
-    this.store.dispatch(CoursesActions.UpdateCourse({course: updatedCourse }));
+    this.store.dispatch(CoursesActions.UpdateCourse({ course: updatedCourse }));
   }
 }

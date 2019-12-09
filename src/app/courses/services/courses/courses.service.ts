@@ -47,7 +47,7 @@ export class CoursesService {
     return this.http.post(
       'https://videoportal-app.herokuapp.com/courses',
       {
-        id: Math.random().toString(36).substr(2, 9),
+        id: course.id,
         name: course.title,
         date: course.date,
         length: course.duration,

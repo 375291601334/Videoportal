@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
-import { map, switchMap, catchError, withLatestFrom } from 'rxjs/operators';
+import { map, switchMap, withLatestFrom, combineLatest } from 'rxjs/operators';
 import { Store, select } from '@ngrx/store';
 
 import { CoursesService } from '../../courses/services/courses/courses.service';
@@ -8,6 +8,7 @@ import { CoursesService } from '../../courses/services/courses/courses.service';
 import * as fromCourses from '../reducers/courses';
 
 import * as CoursesActions from '../actions/courses';
+import { concat } from 'rxjs';
 
 @Injectable()
 export class CoursesEffects {
@@ -22,7 +23,6 @@ export class CoursesEffects {
       ofType(CoursesActions.FetchCourses),
       switchMap(({ query }) => this.coursesService.getCourses(query)),
       map((courses) => CoursesActions.FetchCoursesSuccess({ courses })),
-      // catchError(err= > console.log(err)),
     ),
   );
 
@@ -31,7 +31,6 @@ export class CoursesEffects {
       ofType(CoursesActions.FetchCourse),
       switchMap(({ id }) => this.coursesService.getCourse(id)),
       map((course) => CoursesActions.FetchCoursesSuccess({ courses: [course] })),
-      // catchError(err= > console.log(err)),
     ),
   );
 
@@ -40,7 +39,6 @@ export class CoursesEffects {
       ofType(CoursesActions.FetchAuthors),
       switchMap(() => this.coursesService.getAuthors()),
       map((authors) => CoursesActions.FetchAuthorsSuccess({ authors })),
-      // catchError(err= > console.log(err)),
     ),
   );
 
@@ -53,7 +51,7 @@ export class CoursesEffects {
         this.store.pipe(select(fromCourses.getSortField)),
         this.store.pipe(select(fromCourses.getCoursesCount)),
       ),
-      map(([searchTerm, sortField, coursesCount]) => {
+      map(([_, searchTerm, sortField, coursesCount]) => {
         const query = `start=0&count=${coursesCount}` +
           (searchTerm !== '' ? `&textFragment=${searchTerm}` : ``) +
           (sortField !== '' ? `&sort=${sortField}` : ``);
@@ -66,13 +64,16 @@ export class CoursesEffects {
   updateCourse$ = createEffect(() =>
     this.actions$.pipe(
       ofType(CoursesActions.UpdateCourse),
-      switchMap(({ course }) => this.coursesService.updateCourse(course)),
+      switchMap(({ course }) => concat(
+        this.coursesService.deleteCourse(course.id),
+        this.coursesService.addCourse(course),
+      )),
       withLatestFrom(
         this.store.pipe(select(fromCourses.getSearchTerm)),
         this.store.pipe(select(fromCourses.getSortField)),
         this.store.pipe(select(fromCourses.getCoursesCount)),
       ),
-      map(([searchTerm, sortField, coursesCount]) => {
+      map(([_, searchTerm, sortField, coursesCount]) => {
         const query = `start=0&count=${coursesCount}` +
           (searchTerm !== '' ? `&textFragment=${searchTerm}` : ``) +
           (sortField !== '' ? `&sort=${sortField}` : ``);
@@ -91,7 +92,8 @@ export class CoursesEffects {
         this.store.pipe(select(fromCourses.getSortField)),
         this.store.pipe(select(fromCourses.getCoursesCount)),
       ),
-      map(([searchTerm, sortField, coursesCount]) => {
+      map(([_, searchTerm, sortField, coursesCount]) => {
+        console.log(searchTerm + ' ' + sortField + ' ' + coursesCount);
         const query = `start=0&count=${coursesCount}` +
           (searchTerm !== '' ? `&textFragment=${searchTerm}` : ``) +
           (sortField !== '' ? `&sort=${sortField}` : ``);
