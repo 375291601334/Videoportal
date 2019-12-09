@@ -99,7 +99,7 @@ describe('CoursesService', () => {
       {
         id: '1',
         title: 'Course 1',
-        date: new Date(2017, 8, 28, 7, 39, 24),
+        date: new Date(2017, 8, 28, 4, 39, 24),
         description: 'Description',
         duration: 78,
         topRated: false,
@@ -108,7 +108,7 @@ describe('CoursesService', () => {
       {
         id: '2',
         title: 'Course 2',
-        date: new Date(2019, 2, 8, 7, 39, 24),
+        date: new Date(2019, 2, 8, 4, 39, 24),
         description: 'Description',
         duration: 91,
         topRated: true,
@@ -144,7 +144,7 @@ describe('CoursesService', () => {
     const mockMappedCourse = {
       id: '1',
       title: 'Course 1',
-      date: new Date(2017, 8, 28, 7, 39, 24),
+      date: new Date(2017, 8, 28, 4, 39, 24),
       description: 'Description',
       duration: 78,
       topRated: false,
