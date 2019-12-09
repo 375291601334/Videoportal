@@ -1,5 +1,4 @@
 import { createReducer, createSelector, on, Action } from '@ngrx/store';
-import { Guid } from 'guid-typescript';
 
 import * as fromRoot from './index';
 import * as CoursesActions from '../actions/courses';
@@ -12,34 +11,52 @@ export interface State extends fromRoot.State {
 
 export interface CoursesState {
   isCoursesFetched: boolean;
+  start: number;
+  count: number;
+  sort: string;
+  textFragment: string;
   items: ICourse[];
+  authors: { id: string, name: string }[];
 }
 
 const initialState: CoursesState = {
   isCoursesFetched: false,
+  start: 0,
+  count: 4,
+  sort: '',
+  textFragment: '',
   items: [],
+  authors: [],
 };
 
 export const coursesReducer = createReducer(
   initialState,
   on(CoursesActions.FetchCoursesSuccess, (state, { courses }) => ({
+    ...state,
     isCoursesFetched: true,
-    items: [...state.items, ...courses],
+    items: courses,
   })),
-  on(CoursesActions.AddNewCourse, (state, { course }) => ({
+  on(CoursesActions.ClearCourses, (state) => ({
     ...state,
-    items: [
-      ...state.items,
-      { ...course, id: Guid.create().toString() },
-    ],
+    count: 4,
+    isCoursesFetched: false,
+    items: [],
   })),
-  on(CoursesActions.RemoveCourse, (state, { id }) => ({
+  on(CoursesActions.FetchAuthorsSuccess, (state, { authors }) => ({
     ...state,
-    items: state.items.filter(course => course.id !== id),
+    authors,
   })),
-  on(CoursesActions.UpdateCourse, (state, { id, value }) => ({
+  on(CoursesActions.ChangeSearchTerm, (state, { term }) => ({
     ...state,
-    items: [value, ...state.items.filter(course => course.id !== id)],
+    textFragment: term,
+  })),
+  on(CoursesActions.ChangeSortField, (state, { sort }) => ({
+    ...state,
+    sort,
+  })),
+  on(CoursesActions.ChangeCoursesCount, (state, { count }) => ({
+    ...state,
+    count,
   })),
 );
 
@@ -55,4 +72,20 @@ export const getCourses = createSelector(
 
 export const isCoursesFetched = createSelector(
   getCoursesState, (state: CoursesState) => state.isCoursesFetched,
+);
+
+export const getSearchTerm = createSelector(
+  getCoursesState, (state: CoursesState) => state.textFragment,
+);
+
+export const getCoursesCount = createSelector(
+  getCoursesState, (state: CoursesState) => state.count,
+);
+
+export const getSortField = createSelector(
+  getCoursesState, (state: CoursesState) => state.sort,
+);
+
+export const getAuthors = createSelector(
+  getCoursesState, (state: CoursesState) => state.authors,
 );

@@ -4,7 +4,7 @@ export interface ICourse {
   date: Date;
   description: string;
   duration: number;
-  authors: string[];
+  authors: { id: string, name: string }[];
   topRated: boolean;
 }
 
@@ -14,7 +14,7 @@ export class Course implements ICourse {
   date: Date;
   description: string;
   duration: number;
-  authors: string[];
+  authors: { id: string, name: string }[];
   topRated: boolean;
 
   constructor(
@@ -24,7 +24,7 @@ export class Course implements ICourse {
     description: string,
     duration: number,
     topRated: boolean = false,
-    authors: string[] = [],
+    authors: { id: string, name: string }[] = [],
   ) {
     this.id = id;
     this.title = title;

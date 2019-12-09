@@ -9,6 +9,7 @@ describe('AuthReducer', () => {
       firstName: '',
       lastName: '',
     },
+    token: '',
   };
 
   describe('Undefined Action', () => {
@@ -21,15 +22,28 @@ describe('AuthReducer', () => {
 
   describe('Login Success', () => {
     it('should return user info and change isUserAuthentificated to true', () => {
-      const mockUser = { id: '0', firstName: 'Kate', lastName: 'Sparks'};
-      const action = AuthActions.LoginSuccess({ user: mockUser });
+      const action = AuthActions.LoginSuccess({ token: '12345' });
       const result = reducer(initialState, action);
 
       const state: AuthState = {
+        ...initialState,
         isUserAuthentificated: true,
-        user: mockUser,
+        token: '12345',
       };
       expect(result).toEqual(state);
+    });
+  });
+
+  describe('FetchUserInfoSuccess', () => {
+    it('should return fetched user info', () => {
+      const mockUser = { id: '1', firstName: 'Adam', lastName: 'Black' };
+      const action = AuthActions.FetchUserInfoSuccess({ user: mockUser });
+      const result = reducer(initialState, action);
+
+      expect(result).toEqual({
+        ...initialState,
+        user: mockUser,
+      });
     });
   });
 

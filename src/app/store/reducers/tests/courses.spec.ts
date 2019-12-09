@@ -6,10 +6,20 @@ import { ICourse, Course } from '../../../courses/models/course.model';
 describe('CoursesReducer', () => {
   const initialState: CoursesState = {
     isCoursesFetched: false,
+    start: 0,
+    count: 4,
+    sort: '',
+    textFragment: '',
     items: [],
+    authors: [],
   };
+
   const mockCourses = [
     new Course('7', 'Test course', new Date(2018, 7, 4), 'Test description', 58, true),
+  ];
+
+  const mockAuthors = [
+    { id: '1', name: 'Adam Black' },
   ];
 
   describe('Undefined Action', () => {
@@ -26,53 +36,70 @@ describe('CoursesReducer', () => {
       const result = reducer(initialState, action);
 
       expect(result).toEqual({
+        ...initialState,
         isCoursesFetched: true,
         items: mockCourses,
       });
     });
   });
 
-  describe('Add New Course', () => {
-    it('should add new course', () => {
-      const newCourse = new Course('796', 'New course', new Date(2016, 7, 6), 'Test description', 95, false);
-      const action = CoursesActions.AddNewCourse({ course: newCourse });
+  describe('Clear Courses', () => {
+    it('should clear fetched courses', () => {
+      const action = CoursesActions.ClearCourses();
       const result = reducer(initialState, action);
 
-      expect(result.items.length).toBe(1);
+      expect(result).toEqual(initialState);
     });
   });
 
-  describe('Remove Course', () => {
-    it('should remove course', () => {
-      const action = CoursesActions.RemoveCourse({ id: '7' });
-      const result = reducer(
-        {
-          isCoursesFetched: true,
-          items: mockCourses,
-        },
-        action,
-      );
+  describe('Fetch Authors Success', () => {
+    it('should return fetched authors', () => {
+      const action = CoursesActions.FetchAuthorsSuccess({ authors: mockAuthors });
+      const result = reducer(initialState, action);
 
       expect(result).toEqual({
-        isCoursesFetched: true,
-        items: [],
+        ...initialState,
+        authors: mockAuthors,
       });
     });
   });
 
-  describe('Update Course', () => {
-    it('should update course', () => {
-      const newCourse = new Course('796', 'New course', new Date(2016, 7, 6), 'Test description', 95, false);
-      const action = CoursesActions.UpdateCourse({ id: '7', value: newCourse });
-      const result = reducer(
-        {
-          isCoursesFetched: true,
-          items: mockCourses,
-        },
-        action,
-      );
+  describe('Change Search Term', () => {
+    it('should change search term', () => {
+      const term = 'test';
+      const action = CoursesActions.ChangeSearchTerm({ term });
+      const result = reducer(initialState, action);
 
-      expect(result.items).toEqual([newCourse]);
+      expect(result).toEqual({
+        ...initialState,
+        textFragment: term,
+      });
+    });
+  });
+
+  describe('Change Sort Field', () => {
+    it('should change sort field', () => {
+      const sort = 'name';
+      const action = CoursesActions.ChangeSortField({ sort });
+      const result = reducer(initialState, action);
+
+      expect(result).toEqual({
+        ...initialState,
+        sort,
+      });
+    });
+  });
+
+  describe('Change Courses Count', () => {
+    it('should change search term', () => {
+      const count = 7;
+      const action = CoursesActions.ChangeCoursesCount({ count });
+      const result = reducer(initialState, action);
+
+      expect(result).toEqual({
+        ...initialState,
+        count,
+      });
     });
   });
 });

@@ -32,7 +32,7 @@ export class HeaderComponent {
     this.isUserAuthentificatedSubscription = this.store.pipe(select(fromAuth.isUserAuthentificated)).subscribe(
       isUserAuthentificated => this.isUserAuthentificated = isUserAuthentificated,
     );
-    this.userSubscription = this.store.pipe(select(fromAuth.getUserIngo)).subscribe(
+    this.userSubscription = this.store.pipe(select(fromAuth.getUserInfo)).subscribe(
       user => this.user = user,
     );
   }
