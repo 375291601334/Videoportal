@@ -1,7 +1,5 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { async, ComponentFixture, TestBed, tick, fakeAsync } from '@angular/core/testing';
 import { provideMockStore } from '@ngrx/store/testing';
-import { FormsModule } from '@angular/forms';
-import { By } from '@angular/platform-browser';
 
 import { SearchBarComponent } from './search-bar.component';
 
@@ -24,7 +22,6 @@ describe('SearchBarComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [SearchBarComponent],
-      imports: [FormsModule],
       providers: provideMockStore({ initialState }),
     })
     .compileComponents();
@@ -40,10 +37,23 @@ describe('SearchBarComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should change search term once clicking Search', () => {
-    component.searchTearm = 'test';
+  it('should not change search term once typing less than 3 chars', fakeAsync(() => {
+    component.searchTearm = '';
 
-    fixture.debugElement.query(By.css('button')).triggerEventHandler('click', null);
+    component.onChangeSearchTerm('te');
+    tick(2100);
+    fixture.detectChanges();
+
+    expect(component.searchTearm).toEqual('');
+  }));
+
+  it('should change search term once typing more than 2 chars', fakeAsync(() => {
+    component.searchTearm = '';
+
+    component.onChangeSearchTerm('test');
+    tick(2100);
+    fixture.detectChanges();
+
     expect(component.searchTearm).toEqual('test');
-  });
+  }));
 });

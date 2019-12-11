@@ -9,6 +9,7 @@ import { BreadcrumbsComponent } from './components/breadcrumbs/breadcrumbs.compo
 import { MultiSelectComponent } from '../shared/components/multi-select/multi-select.component';
 import { DateInputComponent } from '../shared/components/date-input/date-input.component';
 import { DurationInputComponent } from '../shared/components/duration-input/duration-input.component';
+import { SpinnerComponent } from './components/spinner/spinner.component';
 
 // Pipes
 import { TimePipe } from './pipes/time/time.pipe';
@@ -25,6 +26,7 @@ import { OrderByPipe } from './pipes/order-by/order-by.pipe';
     TimePipe,
     FilterPipe,
     OrderByPipe,
+    SpinnerComponent,
   ],
   imports: [
     CommonModule,
@@ -44,6 +46,7 @@ import { OrderByPipe } from './pipes/order-by/order-by.pipe';
     TimePipe,
     FilterPipe,
     OrderByPipe,
+    SpinnerComponent,
   ],
 })
 export class SharedModule { }
