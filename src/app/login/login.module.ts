@@ -3,6 +3,8 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 
+import { SharedModule } from '../shared/shared.module';
+
 import { LoginPageComponent } from './pages/login/login.page';
 
 import { TokenInterceptor } from './interceptors/auth.interceptor';
@@ -14,6 +16,7 @@ import { TokenInterceptor } from './interceptors/auth.interceptor';
   imports: [
     CommonModule,
     FormsModule,
+    SharedModule,
   ],
   providers: [
     {

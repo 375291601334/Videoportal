@@ -5,7 +5,7 @@ import { ICourse, Course } from '../../../courses/models/course.model';
 
 describe('CoursesReducer', () => {
   const initialState: CoursesState = {
-    isCoursesFetched: false,
+    isCoursesFetching: false,
     start: 0,
     count: 4,
     sort: '',
@@ -30,6 +30,18 @@ describe('CoursesReducer', () => {
     });
   });
 
+  describe('Fetch Courses', () => {
+    it('should change isCoursesFetching to true', () => {
+      const action = CoursesActions.FetchCourses({ query: 'start=0&count=4' });
+      const result = reducer(initialState, action);
+
+      expect(result).toEqual({
+        ...initialState,
+        isCoursesFetching: true,
+      });
+    });
+  });
+
   describe('Fetch Courses Success', () => {
     it('should return fetched courses', () => {
       const action = CoursesActions.FetchCoursesSuccess({ courses: mockCourses });
@@ -37,7 +49,7 @@ describe('CoursesReducer', () => {
 
       expect(result).toEqual({
         ...initialState,
-        isCoursesFetched: true,
+        isCoursesFetching: false,
         items: mockCourses,
       });
     });

@@ -1,4 +1,4 @@
-<app-spinner *ngIf="!(isCoursesFetched | async)"></app-spinner>
+<app-spinner *ngIf="isCoursesFetching | async"></app-spinner>
 
 <div class="d-flex justify-content-end add-course-button-container">
   <button (click)="goToNewCoursePage()">

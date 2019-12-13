@@ -4,11 +4,7 @@ import * as AuthActions from '../../actions/auth';
 describe('AuthReducer', () => {
   const initialState: AuthState = {
     isUserAuthentificated: false,
-    user: {
-      id: '',
-      firstName: '',
-      lastName: '',
-    },
+    isUserAuthentificating: false,
     token: '',
   };
 
@@ -20,6 +16,19 @@ describe('AuthReducer', () => {
     });
   });
 
+  describe('Login', () => {
+    it('should change isUserAuthentificating to true', () => {
+      const action = AuthActions.Login({ email: 'test', password: '123' });
+      const result = reducer(initialState, action);
+
+      const state: AuthState = {
+        ...initialState,
+        isUserAuthentificating: true,
+      };
+      expect(result).toEqual(state);
+    });
+  });
+
   describe('Login Success', () => {
     it('should return user info and change isUserAuthentificated to true', () => {
       const action = AuthActions.LoginSuccess({ token: '12345' });
@@ -28,22 +37,10 @@ describe('AuthReducer', () => {
       const state: AuthState = {
         ...initialState,
         isUserAuthentificated: true,
+        isUserAuthentificating: false,
         token: '12345',
       };
       expect(result).toEqual(state);
-    });
-  });
-
-  describe('FetchUserInfoSuccess', () => {
-    it('should return fetched user info', () => {
-      const mockUser = { id: '1', firstName: 'Adam', lastName: 'Black' };
-      const action = AuthActions.FetchUserInfoSuccess({ user: mockUser });
-      const result = reducer(initialState, action);
-
-      expect(result).toEqual({
-        ...initialState,
-        user: mockUser,
-      });
     });
   });
 

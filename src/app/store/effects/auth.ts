@@ -6,6 +6,7 @@ import { map, tap, switchMap } from 'rxjs/operators';
 import { AuthService } from '../../login/services/auth/auth.service';
 
 import * as AuthActions from '../actions/auth';
+import * as UserActions from '../actions/user';
 
 @Injectable()
 export class AuthEffects {
@@ -23,19 +24,11 @@ export class AuthEffects {
     ),
   );
 
-  fetchUserInfo$ = createEffect(() =>
-    this.actions$.pipe(
-      ofType(AuthActions.FetchUserInfo),
-      switchMap(({ token }) => this.authService.getUserInfo(token)),
-      map(({ user }) => AuthActions.FetchUserInfoSuccess({ user })),
-    ),
-  );
-
   loginSuccess$ = createEffect(() =>
     this.actions$.pipe(
       ofType(AuthActions.LoginSuccess),
-      map(({ token }) => AuthActions.FetchUserInfo({ token })),
+      map(({ token }) => UserActions.FetchUserInfo({ token })),
       tap(() => this.router.navigate(['/'])),
     ),
-   );
+  );
 }

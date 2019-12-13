@@ -7,10 +7,12 @@ import { By } from '@angular/platform-browser';
 import { provideMockStore, MockStore } from '@ngrx/store/testing';
 
 import { AuthState } from '../../../store/reducers/auth';
+import { UserState } from '../../../store/reducers/user';
 
 import { HeaderComponent } from './header.component';
 import { MenuComponent } from '../menu/menu.component';
 import { MenuDirective } from '../../directives/menu/menu.directive';
+import { State } from 'src/app/store/reducers';
 
 class MockRouter {
   navigate() {}
@@ -20,10 +22,15 @@ describe('HeaderComponent: Authentificated', () => {
   const initialState = {
     auth: {
       isUserAuthentificated: true,
-      user: {
-        id: '0',
-        firstName: 'Kate',
-        lastName: 'White',
+      isUserAuthentificating: false,
+      token: '123',
+    },
+    user: {
+      isUserInfoLoading: false,
+      userInfo: {
+        id: '1',
+        firstName: 'First',
+        lastName: 'Name',
       },
     },
   };
@@ -31,7 +38,7 @@ describe('HeaderComponent: Authentificated', () => {
   let component: HeaderComponent;
   let fixture: ComponentFixture<HeaderComponent>;
   let router: Router;
-  let store: MockStore<AuthState>;
+  let store: MockStore<AuthState | UserState>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
@@ -112,11 +119,11 @@ describe('HeaderComponent: Authentificated', () => {
   it('should render user info block if user is authentificated', () => {
     expect(
       fixture.debugElement.queryAll(By.css('.autorization-section>div'))[0].nativeElement.innerText,
-    ).toMatch('Kate White');
+    ).toMatch('First Name');
   });
 
   it('should get user info if user is authentificated', () => {
-    expect(component.user).toEqual({ id: '0', firstName: 'Kate', lastName: 'White' });
+    expect(component.user).toEqual({ id: '1', firstName: 'First', lastName: 'Name' });
   });
 
   it('should logout and redirect to login page after clicking logout', () => {
@@ -134,7 +141,12 @@ describe('HeaderComponent: Nonauthentificated', () => {
   const initialState = {
     auth: {
       isUserAuthentificated: false,
-      user: {
+      isUserAuthentificating: false,
+      token: '',
+    },
+    user: {
+      isUserInfoLoading: false,
+      userInfo: {
         id: '',
         firstName: '',
         lastName: '',

@@ -18,7 +18,7 @@ import { Order } from '../../models/order.model';
 export class CoursesListComponent implements OnInit, OnDestroy {
   coursesSubscription: Subscription;
   querySubscription: Subscription;
-  isCoursesFetched: Observable<boolean>;
+  isCoursesFetching: Observable<boolean>;
   courses: ICourse[];
   maxCoursesNumber = 3;
   coursesCount: number;
@@ -41,7 +41,7 @@ export class CoursesListComponent implements OnInit, OnDestroy {
       courses => this.courses = courses,
     );
 
-    this.isCoursesFetched = this.store.pipe(select(fromCourses.isCoursesFetched));
+    this.isCoursesFetching = this.store.pipe(select(fromCourses.isCoursesFetching));
 
     this.querySubscription = combineLatest([
       this.store.pipe(select(fromCourses.getSearchTerm)),

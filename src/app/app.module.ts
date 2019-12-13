@@ -15,8 +15,7 @@ import { CoursesModule } from './courses/courses.module';
 
 import { AppComponent } from './app.component';
 
-import { AuthEffects } from './store/effects/auth';
-import { CoursesEffects } from './store/effects/courses';
+import { effects } from './store/effects/index';
 import { reducers } from './store/reducers/index';
 
 @NgModule({
@@ -32,7 +31,7 @@ import { reducers } from './store/reducers/index';
     CoreModule,
     CoursesModule,
     StoreModule.forRoot(reducers),
-    EffectsModule.forRoot([AuthEffects, CoursesEffects]),
+    EffectsModule.forRoot(effects),
     StoreDevtoolsModule.instrument({ maxAge: 25, logOnly: environment.production }),
   ],
   providers: [],

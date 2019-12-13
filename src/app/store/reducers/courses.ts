@@ -10,7 +10,7 @@ export interface State extends fromRoot.State {
 }
 
 export interface CoursesState {
-  isCoursesFetched: boolean;
+  isCoursesFetching: boolean;
   start: number;
   count: number;
   sort: string;
@@ -20,7 +20,7 @@ export interface CoursesState {
 }
 
 const initialState: CoursesState = {
-  isCoursesFetched: false,
+  isCoursesFetching: false,
   start: 0,
   count: 4,
   sort: '',
@@ -31,15 +31,19 @@ const initialState: CoursesState = {
 
 export const coursesReducer = createReducer(
   initialState,
+  on(CoursesActions.FetchCourses, (state) => ({
+    ...state,
+    isCoursesFetching: true,
+  })),
   on(CoursesActions.FetchCoursesSuccess, (state, { courses }) => ({
     ...state,
-    isCoursesFetched: true,
+    isCoursesFetching: false,
     items: courses,
   })),
   on(CoursesActions.ClearCourses, (state) => ({
     ...state,
     count: 4,
-    isCoursesFetched: false,
+    isCoursesFetching: false,
     items: [],
   })),
   on(CoursesActions.FetchAuthorsSuccess, (state, { authors }) => ({
@@ -70,8 +74,8 @@ export const getCourses = createSelector(
   getCoursesState, (state: CoursesState) => state.items,
 );
 
-export const isCoursesFetched = createSelector(
-  getCoursesState, (state: CoursesState) => state.isCoursesFetched,
+export const isCoursesFetching = createSelector(
+  getCoursesState, (state: CoursesState) => state.isCoursesFetching,
 );
 
 export const getSearchTerm = createSelector(
