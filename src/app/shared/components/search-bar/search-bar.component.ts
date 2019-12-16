@@ -28,7 +28,7 @@ export class SearchBarComponent implements OnInit {
 
     this.subj.pipe(debounceTime(this.waitingTime)).subscribe(
       term => {
-        if (term.length > this.minTermLength) {
+        if (term.length > this.minTermLength || term === '' ) {
           this.searchTearm = term;
           this.store.dispatch(CoursesActions.ChangeSearchTerm({ term: this.searchTearm }));
         }
