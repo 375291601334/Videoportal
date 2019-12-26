@@ -1,37 +1,83 @@
 <app-breadcrumbs [breadcrumbs]="breadcrumbs"></app-breadcrumbs>
 
-<div class="new-course-container">
+<form [formGroup]="courseForm" (ngSubmit)="onSave()" class="new-course-container">
   <h3>{{pageTitle}}</h3>
 
-  <label for="title">Title:</label>
-  <input type="text" name="title" placeholder="Text input" [(ngModel)]="title">
+  <div class="d-flex justify-content-between align-items-center">
+    <label for="title">Title:</label>
+    <span class="required" [class.error]="courseForm.get('title').touched && courseForm.get('title').invalid">
+      *required
+    </span>
+  </div>
+  <input
+    id="title"
+    formControlName="title"
+    type="text"
+    maxlength="50"
+    placeholder="Text input"
+  >
 
-  <label for="description">Description:</label>
-  <textarea name="description" placeholder="Add description" [(ngModel)]="description"></textarea>
+  <div class="d-flex justify-content-between align-items-center">
+    <label for="description">Description:</label>
+    <span class="required" [class.error]="courseForm.get('description').touched && courseForm.get('description').invalid">
+      *required
+    </span>
+  </div>
+  <textarea
+    id="description"
+    formControlName="description"
+    maxlength="500"
+    placeholder="Add description"
+  ></textarea>
 
   <div class="row">
-    <div class="d-flex flex-column field col-lg-3 col-md-3">
-      <label for="duration">Duration:</label>
-      <app-duration-input #duration name="duration"></app-duration-input>
+    <div class="d-flex flex-column field col-6 col-lg-3">
+      <div class="d-flex justify-content-between align-items-center">
+        <label for="duration">Duration:</label>
+        <span class="required" [class.error]="courseForm.get('duration').touched && courseForm.get('duration').invalid">
+          *required
+        </span>
+      </div>
+      <app-duration-input
+        [durationFormGroup]="courseForm.get('duration')"
+        [prefilledValue]="prefilledData?.duration"
+      ></app-duration-input>
     </div>
   </div>
 
   <div class="row">
     <div class="d-flex flex-column field col-lg-3 col-md-3">
-      <label for="date">Date:</label>
-      <app-date-input #date name="date"></app-date-input>
+      <div class="d-flex justify-content-between align-items-center">
+        <label for="date">Date:</label>
+        <span class="required" [class.error]="courseForm.get('date').touched && courseForm.get('date').invalid">
+          *required
+        </span>
+      </div>
+      <app-date-input
+        [dateFormGroup]="courseForm.get('date')"
+        [prefilledValue]="prefilledData?.date.toISOString().substr(0, 10)"
+      ></app-date-input>
     </div>
   </div>
 
   <div class="row">
     <div class="d-flex flex-column field col-lg-6 col-md-6">
-      <label for="authors">Authors:</label>
-      <app-multi-select #authors name="authors" [options]="authorsOptions"></app-multi-select>
+      <div class="d-flex justify-content-between align-items-center">
+          <label for="authors">Authors:</label>
+        <span class="required" [class.error]="courseForm.get('authors').touched && courseForm.get('authors').invalid">
+          *required
+        </span>
+      </div>
+      <app-multi-select #authors name="authors"
+        [options]="authorsOptions"
+        [multiselectFormGroup]="courseForm.get('authors')"
+        [prefilledValue]="prefilledData?.authors"
+      ></app-multi-select>
     </div>
   </div>
 
   <div class="d-flex justify-content-end">
     <button (click)="onCancel()">Cancel</button>
-    <button (click)="onSave()">Save</button>
+    <button type="submit" [disabled]="courseForm.invalid">Save</button>
   </div>
-</div>
+</form>

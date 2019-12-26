@@ -38,7 +38,7 @@ describe('SearchBarComponent', () => {
   });
 
   it('should not change search term once typing less than 3 chars', fakeAsync(() => {
-    component.searchTearm = '';
+    component.searchTearm = 'tes';
 
     component.onChangeSearchTerm('te');
     tick(2100);

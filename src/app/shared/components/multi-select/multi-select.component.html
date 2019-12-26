@@ -1,7 +1,9 @@
-<ng-select
-  [multiple]="true"
-  [hideSelected]="true"
-  [items]="options"
-  bindLabel="name"
-  [(ngModel)]="selectedOptions">
-</ng-select>
+<ng-container [formGroup]="multiselectFormGroup">
+  <ng-select
+    [multiple]="true"
+    [hideSelected]="true"
+    [items]="options"
+    bindLabel="name"
+    formControlName="value"
+  ></ng-select>
+</ng-container>

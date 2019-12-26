@@ -1,8 +1,8 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { Router, ActivatedRoute } from '@angular/router';
-import { FormsModule } from '@angular/forms';
+import { ReactiveFormsModule, FormGroup, FormControl } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 import { provideMockStore, MockStore } from '@ngrx/store/testing';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
@@ -53,8 +53,8 @@ describe('CourseFormPageComponent:', () => {
           DateInputComponent,
           TimePipe,
         ],
-        imports: [FormsModule, HttpClientTestingModule, NgSelectModule],
-        schemas: [CUSTOM_ELEMENTS_SCHEMA],
+        imports: [ReactiveFormsModule, HttpClientTestingModule, NgSelectModule],
+        schemas: [NO_ERRORS_SCHEMA],
         providers: [
           provideMockStore({ initialState }),
           { provide: Router, useClass: MockRouter },
@@ -72,6 +72,19 @@ describe('CourseFormPageComponent:', () => {
     beforeEach(() => {
       fixture = TestBed.createComponent(CourseFormPageComponent);
       component = fixture.componentInstance;
+      component.courseForm = new FormGroup({
+        title: new FormControl(''),
+        description: new FormControl(''),
+        date:  new FormGroup({
+          value: new FormControl(null),
+        }),
+        duration:  new FormGroup({
+          value: new FormControl(null),
+        }),
+        authors:  new FormGroup({
+          value: new FormControl([]),
+        }),
+      });
       router = TestBed.get(Router);
       activatedRoute = TestBed.get(ActivatedRoute);
       store = TestBed.get(Store);
@@ -85,11 +98,11 @@ describe('CourseFormPageComponent:', () => {
       expect(router.navigate).toHaveBeenCalledWith(['']);
     });
 
-    it('should call addNewCourse method once clicking Save button', () => {
+    it('should call addNewCourse method once calling onSave method', () => {
       spyOn(router, 'navigate');
       spyOn(component, 'addNewCourse');
 
-      fixture.debugElement.queryAll(By.css('button'))[1].triggerEventHandler('click', null);
+      component.onSave();
       expect(component.addNewCourse).toHaveBeenCalled();
       expect(router.navigate).toHaveBeenCalledWith(['']);
     });
@@ -128,8 +141,8 @@ describe('CourseFormPageComponent:', () => {
           DateInputComponent,
           TimePipe,
         ],
-        imports: [FormsModule, HttpClientTestingModule, NgSelectModule],
-        schemas: [CUSTOM_ELEMENTS_SCHEMA],
+        imports: [ReactiveFormsModule, HttpClientTestingModule, NgSelectModule],
+        schemas: [NO_ERRORS_SCHEMA],
         providers: [
           provideMockStore({ initialState }),
           { provide: Router, useClass: MockRouter },
@@ -150,24 +163,30 @@ describe('CourseFormPageComponent:', () => {
     beforeEach(() => {
       fixture = TestBed.createComponent(CourseFormPageComponent);
       component = fixture.componentInstance;
+      component.courseForm = new FormGroup({
+        title: new FormControl(''),
+        description: new FormControl(''),
+        date:  new FormGroup({
+          value: new FormControl(null),
+        }),
+        duration:  new FormGroup({
+          value: new FormControl(null),
+        }),
+        authors:  new FormGroup({
+          value: new FormControl([]),
+        }),
+      });
       router = TestBed.get(Router);
       activatedRoute = TestBed.get(ActivatedRoute);
       store = TestBed.get(Store);
       fixture.detectChanges();
     });
 
-    it('should get course id from url', () => {
-      component.pageTitle = 'Edit course';
-      fixture.detectChanges();
-
-      expect(component.title).toEqual('Javascript');
-    });
-
-    it('should call updateCourse method once clicking Save button', () => {
+    it('should call updateCourse method once calling onSave method', () => {
       spyOn(router, 'navigate');
       spyOn(component, 'updateCourse');
 
-      fixture.debugElement.queryAll(By.css('button'))[1].triggerEventHandler('click', null);
+      component.onSave();
       expect(component.updateCourse).toHaveBeenCalled();
       expect(router.navigate).toHaveBeenCalledWith(['']);
     });
@@ -189,59 +208,4 @@ describe('CourseFormPageComponent:', () => {
       expect(store.dispatch).toHaveBeenCalled();
     });
   });
-
-  // describe('Edit non-existing course', () => {
-  //   let component: CourseFormPageComponent;
-  //   let fixture: ComponentFixture<CourseFormPageComponent>;
-  //   let router: Router;
-  //   let activatedRoute: ActivatedRoute;
-  //   let store: MockStore<CoursesState>;
-
-  //   beforeEach(async(() => {
-  //     TestBed.configureTestingModule({
-  //       declarations: [
-  //         CourseFormPageComponent,
-  //         DurationInputComponent,
-  //         MultiSelectComponent,
-  //         DateInputComponent,
-  //         TimePipe,
-  //       ],
-  //       imports: [FormsModule, HttpClientTestingModule, NgSelectModule],
-  //       schemas: [CUSTOM_ELEMENTS_SCHEMA],
-  //       providers: [
-  //         provideMockStore({ initialState: {
-  //           ...initialState,
-  //           items: [],
-  //         } }),
-  //         { provide: Router, useClass: MockRouter },
-  //         { provide: ActivatedRoute, useValue: {
-  //           snapshot: {
-  //             data: {
-  //               title: 'Edit course',
-  //             },
-  //             params: {
-  //               id: '5654',
-  //             },
-  //           },
-  //         }},
-  //       ],
-  //     }).compileComponents();
-  //   }));
-
-  //   beforeEach(() => {
-  //     fixture = TestBed.createComponent(CourseFormPageComponent);
-  //     component = fixture.componentInstance;
-  //     router = TestBed.get(Router);
-  //     activatedRoute = TestBed.get(ActivatedRoute);
-  //     store = TestBed.get(Store);
-  //     fixture.detectChanges();
-  //   });
-
-  //   it('should not get course by non-existing id', () => {
-  //     component.pageTitle = 'Edit course';
-  //     fixture.detectChanges();
-
-  //     expect(component.title).toEqual('');
-  //   });
-  // });
 });

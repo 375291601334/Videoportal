@@ -5,6 +5,7 @@ describe('AuthReducer', () => {
   const initialState: AuthState = {
     isUserAuthentificated: false,
     isUserAuthentificating: false,
+    isAuthentificationFailed: false,
     token: '',
   };
 
@@ -39,6 +40,19 @@ describe('AuthReducer', () => {
         isUserAuthentificated: true,
         isUserAuthentificating: false,
         token: '12345',
+      };
+      expect(result).toEqual(state);
+    });
+  });
+
+  describe('Login Error', () => {
+    it('should change isAuthentificationFailed to true', () => {
+      const action = AuthActions.LoginError();
+      const result = reducer(initialState, action);
+
+      const state: AuthState = {
+        ...initialState,
+        isAuthentificationFailed: true,
       };
       expect(result).toEqual(state);
     });

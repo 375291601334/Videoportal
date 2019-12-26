@@ -1,1 +1,3 @@
-<input type="date" placeholder="mm-dd-yyyy" [(ngModel)]="date">
+<ng-container [formGroup]="dateFormGroup">
+  <input #date id="date" formControlName="value" type="date" placeholder="mm-dd-yyyy">
+</ng-container>

@@ -1,5 +1,5 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { FormsModule } from '@angular/forms';
+import { ReactiveFormsModule, FormControl, FormGroup } from '@angular/forms';
 
 import { DateInputComponent } from './date-input.component';
 
@@ -10,7 +10,7 @@ describe('DateInputComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [DateInputComponent],
-      imports: [FormsModule],
+      imports: [ReactiveFormsModule],
     })
     .compileComponents();
   }));
@@ -18,6 +18,10 @@ describe('DateInputComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(DateInputComponent);
     component = fixture.componentInstance;
+    component.dateFormGroup = new FormGroup({
+      value: new FormControl(null),
+    });
+    component.prefilledValue = '';
     fixture.detectChanges();
   });
 

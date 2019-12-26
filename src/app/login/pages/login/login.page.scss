@@ -30,9 +30,7 @@
     color: #525462;
   }
 
-  label::after {
-    content: '*required';
-    float: right;
+  .required {
     font-size: 12px;
     font-weight: normal;
     color: #6c7283;
@@ -44,6 +42,10 @@
     padding: 0 12px;
     border-radius: 3px;
     border: solid 1px #d9dbe3;
+
+    &.ng-touched.ng-invalid {
+      border-color: #ff4e33;
+    }
   }
 
   button {
@@ -56,6 +58,14 @@
     font-weight: 600;
     background-color: #30b6dd;
     color: #fff;
+    cursor: pointer;
+
+    &:disabled,
+    &.disabled,
+    &[disabled] {
+      opacity: 0.3;
+      pointer-events: none;
+    }
   }
 
   a {
@@ -63,5 +73,10 @@
     margin: 32px 10px 0;
     font-size: 12px;
     text-decoration: underline;
+  }
+
+  .error {
+    color: #ff4e33;
+    font-weight: bold;
   }
 }

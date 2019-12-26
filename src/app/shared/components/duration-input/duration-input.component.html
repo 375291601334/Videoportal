@@ -1,2 +1,4 @@
-<input type="number" placeholder="minutes" [(ngModel)]="duration">
-<span>{{duration | time}}</span>
+<ng-container [formGroup]="durationFormGroup">
+  <input #duration id="duration" formControlName="value" type="number" placeholder="minutes">
+  <span>{{duration.value | time}}</span>
+</ng-container>

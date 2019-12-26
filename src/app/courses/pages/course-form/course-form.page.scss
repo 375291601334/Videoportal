@@ -6,20 +6,18 @@
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
-  align-items: center;
+  align-items: baseline;
   flex-grow: 1;
   text-align: center;
   background-color: #f2f3f7;
 
   app-breadcrumbs {
     align-self: start;
-    margin-bottom: 20px;
   }
 
   .new-course-container {
     width: 730px;
-    height: 590px;
-    margin-top: -10%;
+    min-height: 590px;
     padding: 25px;
     border-radius: 6px;
     box-shadow: 0 1px 24px 0 rgba(18, 21, 35, 0.08);
@@ -31,25 +29,35 @@
     margin-bottom: 12px;
   }
 
-  label,
-  input,
-  textarea {
-    width: 100%;
-  }
-
   label {
     margin-top: 12px;
     font-weight: bold;
     color: #525462;
   }
 
-  label::after {
-    content: '*required';
-    float: right;
+  .required {
     font-size: 12px;
     font-weight: normal;
     color: #6c7283;
     text-align: right;
+  }
+
+  .field {
+    width: 100%;
+  }
+
+  .error {
+    color: #ff4e33;
+    font-weight: bold;
+  }
+
+  input,
+  textarea {
+    width: 100%;
+
+    &.ng-touched.ng-invalid {
+      border-color: #ff4e33;
+    }
   }
 
   input {
@@ -75,27 +83,21 @@
     font-weight: 600;
     background-color: #d9dbe3;
     color: #5b616f;
+    cursor: pointer;
 
     &:last-child {
       margin-right: 0;
       color: #fff;
       background-color: #9bc837;
     }
-  }
 
-  .field {
-    width: 100%;
-  }
-}
-
-@include media-breakpoint-down(ms) {
-  :host {
-    app-breadcrumbs {
-      margin-bottom: 0;
-    }
-
-    .new-course-container {
-      margin-top: 0;
+    &[type="submit"] {
+      &:disabled,
+      &.disabled,
+      &[disabled] {
+        opacity: 0.3;
+        pointer-events: none;
+      }
     }
   }
 }

@@ -3,3 +3,7 @@
 .ng-dropdown-panel .ng-dropdown-panel-items {
   max-height: 120px;
 }
+
+.ng-select.ng-touched.ng-invalid .ng-select-container {
+  border-color: #ff4e33;
+}

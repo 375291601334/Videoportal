@@ -1,7 +1,7 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { provideMockStore, MockStore } from '@ngrx/store/testing';
-import { FormsModule } from '@angular/forms';
+import { ReactiveFormsModule, FormGroup, FormControl } from '@angular/forms';
 import { Store } from '@ngrx/store';
 import { By } from '@angular/platform-browser';
 
@@ -13,6 +13,7 @@ const initialState = {
   auth: {
     isUserAuthentificated: false,
     isUserAuthentificating: false,
+    isAuthentificationFailed: false,
     token: '',
   },
   user: {
@@ -33,7 +34,7 @@ describe('LoginPageComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [LoginPageComponent],
-      imports: [FormsModule],
+      imports: [ReactiveFormsModule],
       providers: [
         provideMockStore({ initialState }),
       ],
@@ -45,6 +46,10 @@ describe('LoginPageComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(LoginPageComponent);
     component = fixture.componentInstance;
+    component.loginForm = new FormGroup({
+      email: new FormControl('test'),
+      password: new FormControl('test'),
+    });
     store = TestBed.get(Store);
     fixture.detectChanges();
   });
@@ -53,10 +58,10 @@ describe('LoginPageComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should call login action once clicking login', () => {
+  it('should call login action once calling onLogin', () => {
     spyOn(store, 'dispatch');
 
-    fixture.debugElement.query(By.css('button')).triggerEventHandler('click', null);
+    component.onLogin();
     expect(store.dispatch).toHaveBeenCalled();
   });
 });
