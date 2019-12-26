@@ -1,7 +1,7 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
 import { Store, select } from '@ngrx/store';
-import { Subscription, combineLatest } from 'rxjs';
+import { Subscription, combineLatest, Observable } from 'rxjs';
 import Swal from 'sweetalert2';
 
 import * as fromCourses from '../../../store/reducers/courses';
@@ -18,6 +18,7 @@ import { Order } from '../../models/order.model';
 export class CoursesListComponent implements OnInit, OnDestroy {
   coursesSubscription: Subscription;
   querySubscription: Subscription;
+  isCoursesFetching: Observable<boolean>;
   courses: ICourse[];
   maxCoursesNumber = 3;
   coursesCount: number;
@@ -39,6 +40,8 @@ export class CoursesListComponent implements OnInit, OnDestroy {
     this.coursesSubscription = this.store.pipe(select(fromCourses.getCourses)).subscribe(
       courses => this.courses = courses,
     );
+
+    this.isCoursesFetching = this.store.pipe(select(fromCourses.isCoursesFetching));
 
     this.querySubscription = combineLatest([
       this.store.pipe(select(fromCourses.getSearchTerm)),

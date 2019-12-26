@@ -1,7 +1,7 @@
 <app-logo></app-logo>
 
 <div class="autorization-section">
-  <ng-container *ngIf="isUserAuthentificated; then autorized; else unautorized;"></ng-container>
+  <ng-container *ngIf="isUserAuthentificated && !isUserInfoLoading; then autorized; else unautorized;"></ng-container>
   <div class="log-off"  (click)="onLogout()">
     <img src="./assets/icons/ic-exit.png">
     <span>Log off</span>

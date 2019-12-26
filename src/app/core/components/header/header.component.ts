@@ -1,10 +1,11 @@
 import { Component, ComponentFactoryResolver, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
-import { Subscription } from 'rxjs';
+import { Subscription, combineLatest } from 'rxjs';
 import { Store, select } from '@ngrx/store';
 
 import * as fromAuth from '../../../store/reducers/auth';
 import * as AuthActions from '../../../store/actions/auth';
+import * as fromUser from '../../../store/reducers/user';
 
 import { MenuComponent } from '../menu/menu.component';
 import { MenuDirective } from '../../directives/menu/menu.directive';
@@ -23,18 +24,23 @@ export class HeaderComponent {
   userSubscription: Subscription;
   isUserAuthentificatedSubscription: Subscription;
   isUserAuthentificated: boolean;
+  isUserInfoLoading: boolean;
 
   constructor(
     private factoryResolver: ComponentFactoryResolver,
     private router: Router,
-    private store: Store<fromAuth.State>,
+    private store: Store<fromAuth.State | fromUser.State>,
   ) {
     this.isUserAuthentificatedSubscription = this.store.pipe(select(fromAuth.isUserAuthentificated)).subscribe(
       isUserAuthentificated => this.isUserAuthentificated = isUserAuthentificated,
     );
-    this.userSubscription = this.store.pipe(select(fromAuth.getUserInfo)).subscribe(
-      user => this.user = user,
-    );
+    this.userSubscription = combineLatest([
+      this.store.pipe(select(fromUser.isUserInfoLoading)),
+      this.store.pipe(select(fromUser.getUserInfo)),
+    ]).subscribe(([isUserInfoLoading, user]) => {
+      this.user = user;
+      this.isUserInfoLoading = isUserInfoLoading;
+    });
   }
 
   onLogin() {
@@ -47,7 +53,7 @@ export class HeaderComponent {
   }
 
   menuInit(menu: any) {
-    menu.instance.isUserAuthentificated = this.isUserAuthentificated;
+    menu.instance.isUserAuthentificated = this.isUserAuthentificated && !this.isUserInfoLoading;
     menu.instance.user = this.user;
     menu.instance.login.subscribe(() => {
       this.onLogin();

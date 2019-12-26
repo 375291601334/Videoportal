@@ -1,4 +1,5 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { provideMockStore, MockStore } from '@ngrx/store/testing';
 import { FormsModule } from '@angular/forms';
 import { Store } from '@ngrx/store';
@@ -11,12 +12,16 @@ import { AuthState } from '../../../store/reducers/auth';
 const initialState = {
   auth: {
     isUserAuthentificated: false,
-    user: {
+    isUserAuthentificating: false,
+    token: '',
+  },
+  user: {
+    isUserInfoLoading: false,
+    userInfo: {
       id: '',
       firstName: '',
       lastName: '',
     },
-    token: '',
   },
 };
 
@@ -32,6 +37,7 @@ describe('LoginPageComponent', () => {
       providers: [
         provideMockStore({ initialState }),
       ],
+      schemas: [CUSTOM_ELEMENTS_SCHEMA],
     })
     .compileComponents();
   }));
