@@ -78,6 +78,7 @@ describe('CourseFormPageComponent:', () => {
         date:  new FormGroup({
           value: new FormControl(null),
         }),
+        toprated: new FormControl(null),
         duration:  new FormGroup({
           value: new FormControl(null),
         }),

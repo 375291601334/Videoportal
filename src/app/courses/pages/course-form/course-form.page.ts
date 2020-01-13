@@ -56,6 +56,7 @@ export class CourseFormPageComponent implements OnInit {
           this.courseForm.patchValue({
             title: this.prefilledData.title || '',
             description: this.prefilledData.description || '',
+            topRated: this.prefilledData.topRated || false,
           });
       });
     }
@@ -76,6 +77,7 @@ export class CourseFormPageComponent implements OnInit {
         date: this.formBuilder.group({
           value: [null, Validators.required],
         }),
+        topRated: [null],
         duration: this.formBuilder.group({
           value: [null, Validators.required],
         }),
@@ -102,7 +104,7 @@ export class CourseFormPageComponent implements OnInit {
       new Date(this.courseForm.value.date.value),
       this.courseForm.value.description,
       this.courseForm.value.duration.value,
-      false,
+      this.courseForm.value.topRated,
       this.courseForm.value.authors.value,
     );
 
@@ -118,7 +120,7 @@ export class CourseFormPageComponent implements OnInit {
       new Date(this.courseForm.value.date.value),
       this.courseForm.value.description,
       this.courseForm.value.duration.value,
-      false,
+      this.courseForm.value.topRated,
       this.courseForm.value.authors.value,
     );
 
