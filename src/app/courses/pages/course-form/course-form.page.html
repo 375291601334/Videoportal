@@ -4,9 +4,9 @@
   <h3>{{pageTitle}}</h3>
 
   <div class="d-flex justify-content-between align-items-center">
-    <label for="title">Title:</label>
+    <label for="title">{{'Title' | translate}}:</label>
     <span class="required" [class.error]="courseForm.get('title').touched && courseForm.get('title').invalid">
-      *required
+      *{{'required' | translate}}
     </span>
   </div>
   <input
@@ -14,28 +14,28 @@
     formControlName="title"
     type="text"
     maxlength="50"
-    placeholder="Text input"
+    placeholder="{{'Text input' | translate}}"
   >
 
   <div class="d-flex justify-content-between align-items-center">
-    <label for="description">Description:</label>
+    <label for="description">{{'Description' | translate}}:</label>
     <span class="required" [class.error]="courseForm.get('description').touched && courseForm.get('description').invalid">
-      *required
+      *{{'required' | translate}}
     </span>
   </div>
   <textarea
     id="description"
     formControlName="description"
     maxlength="500"
-    placeholder="Add description"
+    placeholder="{{'Add description' | translate}}"
   ></textarea>
 
   <div class="row">
     <div class="d-flex flex-column field col-6 col-lg-3">
       <div class="d-flex justify-content-between align-items-center">
-        <label for="duration">Duration:</label>
+        <label for="duration">{{'Duration' | translate}}:</label>
         <span class="required" [class.error]="courseForm.get('duration').touched && courseForm.get('duration').invalid">
-          *required
+          *{{'required' | translate}}
         </span>
       </div>
       <app-duration-input
@@ -48,9 +48,9 @@
   <div class="row">
     <div class="d-flex flex-column field col-lg-3 col-md-3">
       <div class="d-flex justify-content-between align-items-center">
-        <label for="date">Date:</label>
+        <label for="date">{{'Date' | translate}}:</label>
         <span class="required" [class.error]="courseForm.get('date').touched && courseForm.get('date').invalid">
-          *required
+          *{{'required' | translate}}
         </span>
       </div>
       <app-date-input
@@ -61,7 +61,7 @@
   </div>
 
   <div class="d-flex align-items-center">
-    <label for="topRated">Top-rated:</label>
+    <label for="topRated">{{'Top-rated' | translate}}:</label>
     <input
       id="topRated"
       formControlName="topRated"
@@ -72,9 +72,9 @@
   <div class="row">
     <div class="d-flex flex-column field col-lg-6 col-md-6">
       <div class="d-flex justify-content-between align-items-center">
-          <label for="authors">Authors:</label>
+          <label for="authors">{{'Authors' | translate}}:</label>
         <span class="required" [class.error]="courseForm.get('authors').touched && courseForm.get('authors').invalid">
-          *required
+          *{{'required' | translate}}
         </span>
       </div>
       <app-multi-select #authors name="authors"
@@ -86,7 +86,7 @@
   </div>
 
   <div class="d-flex justify-content-end">
-    <button (click)="onCancel()">Cancel</button>
-    <button type="submit" [disabled]="courseForm.invalid">Save</button>
+    <button (click)="onCancel()">{{'Cancel' | translate}}</button>
+    <button type="submit" [disabled]="courseForm.invalid">{{'Save' | translate}}</button>
   </div>
 </form>

@@ -2,6 +2,10 @@ import { Component, ComponentFactoryResolver, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { Subscription, combineLatest } from 'rxjs';
 import { Store, select } from '@ngrx/store';
+import { TranslateService } from '@ngx-translate/core';
+import { registerLocaleData } from '@angular/common';
+import localeEn from '@angular/common/locales/en';
+import localeRu from '@angular/common/locales/ru';
 
 import * as fromAuth from '../../../store/reducers/auth';
 import * as AuthActions from '../../../store/actions/auth';
@@ -30,6 +34,7 @@ export class HeaderComponent {
     private factoryResolver: ComponentFactoryResolver,
     private router: Router,
     private store: Store<fromAuth.State | fromUser.State>,
+    private translate: TranslateService,
   ) {
     this.isUserAuthentificatedSubscription = this.store.pipe(select(fromAuth.isUserAuthentificated)).subscribe(
       isUserAuthentificated => this.isUserAuthentificated = isUserAuthentificated,
@@ -71,5 +76,9 @@ export class HeaderComponent {
 
     const componentRef = viewContainerRef.createComponent(componentFactory);
     this.menuInit(componentRef);
+  }
+
+  onLanguageSelect(language: string) {
+    this.translate.use(language);
   }
 }

@@ -14,8 +14,6 @@ export class CourseCardComponent {
   @Output() editCourse = new EventEmitter();
   @Output() deleteCourse = new EventEmitter();
 
-  constructor() {}
-
   onEdit() {
     this.editCourse.emit(this.course.id);
   }

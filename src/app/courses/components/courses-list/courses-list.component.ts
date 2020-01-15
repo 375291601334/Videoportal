@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { Store, select } from '@ngrx/store';
 import { Subscription, combineLatest, Observable } from 'rxjs';
 import Swal from 'sweetalert2';
+import { TranslateService } from '@ngx-translate/core';
 
 import * as fromCourses from '../../../store/reducers/courses';
 import * as CoursesActions from '../../../store/actions/courses';
@@ -23,20 +24,23 @@ export class CoursesListComponent implements OnInit, OnDestroy {
   maxCoursesNumber = 3;
   coursesCount: number;
 
-  orders: Order[] = [
-    { name: 'Duration', prop: 'length' },
-    { name: 'Start date', prop: 'date'},
-    { name: 'Title', prop: 'name' },
-  ];
+  orders: Order[];
   defaultOrder: Order = { name: '', prop: '' };
   selectedOrder: Order = this.defaultOrder;
 
   constructor(
     private store: Store<fromCourses.State>,
     private router: Router,
+    private translate: TranslateService,
   ) {}
 
   ngOnInit() {
+    this.orders = [
+      { name: this.translate.instant('Duration'), prop: 'length' },
+      { name: this.translate.instant('Start date'), prop: 'date'},
+      { name: this.translate.instant('Title'), prop: 'name' },
+    ];
+
     this.coursesSubscription = this.store.pipe(select(fromCourses.getCourses)).subscribe(
       courses => this.courses = courses,
     );

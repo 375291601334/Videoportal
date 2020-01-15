@@ -3,13 +3,13 @@
 <div class="d-flex justify-content-end add-course-button-container">
   <button (click)="goToNewCoursePage()">
     <img src='./assets/icons/ic-plus.svg' class="icon">
-    Add course
+    {{'Add course' | translate}}
   </button>
 
   <label>
-    Sort by:
+    {{'Sort by' | translate}}:
     <select [ngModel]="selectedOrder" (ngModelChange)="onSortingSelect($event)">
-      <option [ngValue]="defaultOrder" selected disabled hidden>Please select</option>
+      <option [ngValue]="defaultOrder" selected disabled hidden>{{'Please select' | translate}}</option>
       <option *ngFor="let order of orders" [ngValue]="order">{{order.name}}</option>
     </select>
   </label>
@@ -23,9 +23,9 @@
 ></app-course-card>
 
 <div *ngIf="courses.length > maxCoursesNumber" class="load-more-block" (click)="loadMoreCourses()">
-  {{'Load more' | uppercase }}
+  {{'Load more' | translate | uppercase }}
 </div>
 
 <div *ngIf="!courses.length" class="add-course-block" (click)="goToNewCoursePage()">
-  {{'No data, feel free to add new course' | uppercase}}
+  {{'No data, feel free to add new course' | translate | uppercase}}
 </div>

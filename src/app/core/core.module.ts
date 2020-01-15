@@ -1,5 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
+import { TranslateModule } from '@ngx-translate/core';
 
 import { LoginModule } from '../login/login.module';
 
@@ -23,6 +25,8 @@ import { MenuDirective } from './directives/menu/menu.directive';
   ],
   imports: [
     CommonModule,
+    TranslateModule,
+    FormsModule,
     LoginModule,
   ],
   exports: [

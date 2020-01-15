@@ -4,8 +4,13 @@
   <ng-container *ngIf="isUserAuthentificated && !isUserInfoLoading; then autorized; else unautorized;"></ng-container>
   <div class="log-off"  (click)="onLogout()">
     <img src="./assets/icons/ic-exit.png">
-    <span>Log off</span>
+    <span>{{'Log off' | translate}}</span>
   </div>
+
+  <select [ngModel]="'en'" (ngModelChange)="onLanguageSelect($event)">
+    <option [ngValue]="'en'">En</option>
+    <option [ngValue]="'ru'">Ru</option>
+  </select>
 </div>
 
 <div class="mobile-autorization-section">
@@ -23,6 +28,6 @@
 <ng-template #unautorized>
   <div class="log-in" (click)="onLogin()">
     <img src="./assets/icons/ic-user.png">
-    Login
+    {{'Login' | translate}}
   </div>
 </ng-template>

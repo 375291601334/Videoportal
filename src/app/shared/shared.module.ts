@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NgSelectModule } from '@ng-select/ng-select';
+import { TranslateModule } from '@ngx-translate/core';
 
 // Components
 import { SearchBarComponent } from './components/search-bar/search-bar.component';
@@ -30,6 +31,7 @@ import { OrderByPipe } from './pipes/order-by/order-by.pipe';
   ],
   imports: [
     CommonModule,
+    TranslateModule,
     NgSelectModule,
     FormsModule,
     ReactiveFormsModule,
@@ -39,6 +41,7 @@ import { OrderByPipe } from './pipes/order-by/order-by.pipe';
     OrderByPipe,
   ],
   exports: [
+    TranslateModule,
     SearchBarComponent,
     BreadcrumbsComponent,
     MultiSelectComponent,
