@@ -6,6 +6,7 @@ import { CUSTOM_ELEMENTS_SCHEMA, Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { TranslateTestingModule } from 'ngx-translate-testing';
 
 import { CoursesState } from '../../../store/reducers/courses';
 
@@ -42,12 +43,20 @@ describe('CoursesListComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [CoursesListComponent],
+      declarations: [
+        CoursesListComponent,
+      ],
       providers: [
         provideMockStore({ initialState }),
         { provide: Router, useClass: MockRouter },
       ],
-      imports: [FormsModule, HttpClientTestingModule],
+      imports: [
+        FormsModule,
+        HttpClientTestingModule,
+        TranslateTestingModule
+          .withTranslations('en', require('../../../../assets/i18n/en.json'))
+          .withTranslations('ru', require('../../../../assets/i18n/ru.json')),
+      ],
       schemas: [CUSTOM_ELEMENTS_SCHEMA],
     })
     .compileComponents();
@@ -128,12 +137,20 @@ describe('CoursesListComponent without courses in store:', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [CoursesListComponent],
+      declarations: [
+        CoursesListComponent,
+      ],
       providers: [
         provideMockStore({ initialState }),
         { provide: Router, useClass: MockRouter },
       ],
-      imports: [FormsModule, HttpClientTestingModule],
+      imports: [
+        FormsModule,
+        HttpClientTestingModule,
+        TranslateTestingModule
+          .withTranslations('en', require('../../../../assets/i18n/en.json'))
+          .withTranslations('ru', require('../../../../assets/i18n/ru.json')),
+      ],
       schemas: [CUSTOM_ELEMENTS_SCHEMA],
     })
     .compileComponents();

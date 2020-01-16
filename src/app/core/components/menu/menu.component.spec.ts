@@ -1,5 +1,6 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
+import { TranslateTestingModule } from 'ngx-translate-testing';
 
 import { MenuComponent } from './menu.component';
 
@@ -12,6 +13,11 @@ describe('MenuComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [MenuComponent],
+      imports: [
+        TranslateTestingModule
+          .withTranslations('en', require('../../../../assets/i18n/en.json'))
+          .withTranslations('ru', require('../../../../assets/i18n/ru.json')),
+      ],
     })
     .compileComponents();
   }));

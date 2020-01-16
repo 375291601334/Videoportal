@@ -3,7 +3,7 @@ import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { provideMockStore, MockStore } from '@ngrx/store/testing';
 import { ReactiveFormsModule, FormGroup, FormControl } from '@angular/forms';
 import { Store } from '@ngrx/store';
-import { By } from '@angular/platform-browser';
+import { TranslateTestingModule } from 'ngx-translate-testing';
 
 import { LoginPageComponent } from './login.page';
 
@@ -34,7 +34,12 @@ describe('LoginPageComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [LoginPageComponent],
-      imports: [ReactiveFormsModule],
+      imports: [
+        ReactiveFormsModule,
+        TranslateTestingModule
+          .withTranslations('en', require('../../../../assets/i18n/en.json'))
+          .withTranslations('ru', require('../../../../assets/i18n/ru.json')),
+      ],
       providers: [
         provideMockStore({ initialState }),
       ],

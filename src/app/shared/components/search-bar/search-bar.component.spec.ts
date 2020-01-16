@@ -1,5 +1,6 @@
 import { async, ComponentFixture, TestBed, tick, fakeAsync } from '@angular/core/testing';
 import { provideMockStore } from '@ngrx/store/testing';
+import { TranslateTestingModule } from 'ngx-translate-testing';
 
 import { SearchBarComponent } from './search-bar.component';
 
@@ -23,6 +24,11 @@ describe('SearchBarComponent', () => {
     TestBed.configureTestingModule({
       declarations: [SearchBarComponent],
       providers: provideMockStore({ initialState }),
+      imports: [
+        TranslateTestingModule
+          .withTranslations('en', require('../../../../assets/i18n/en.json'))
+          .withTranslations('ru', require('../../../../assets/i18n/ru.json')),
+      ],
     })
     .compileComponents();
   }));
