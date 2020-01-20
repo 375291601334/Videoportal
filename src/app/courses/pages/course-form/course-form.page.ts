@@ -1,15 +1,15 @@
 import { Component, ViewChild, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { Store, select } from '@ngrx/store';
+import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 
-import { DurationInputComponent } from '../../../shared/components/duration-input/duration-input.component';
 import { MultiSelectComponent } from '../../../shared/components/multi-select/multi-select.component';
 import { DateInputComponent } from '../../../shared/components/date-input/date-input.component';
 
 import * as fromCourses from '../../../store/reducers/courses';
 import * as CoursesActions from '../../../store/actions/courses';
 
-import { Course } from '../../models/course.model';
+import { Course, ICourse } from '../../models/course.model';
 
 @Component({
   selector: 'app-course-form',
@@ -17,26 +17,25 @@ import { Course } from '../../models/course.model';
   styleUrls: ['./course-form.page.scss'],
 })
 export class CourseFormPageComponent implements OnInit {
-  @ViewChild('duration', { static: true }) durationElement: DurationInputComponent;
   @ViewChild('authors', { static: true }) authorsElement: MultiSelectComponent;
   @ViewChild('date', { static: true }) dateElement: DateInputComponent;
 
   pageTitle: string;
   breadcrumbs = [{text: 'Courses', url: '/courses'}, {text: 'New', url: ''}];
-  title = '';
-  description = '';
   authorsOptions: { id: string, name: string }[];
+  courseForm: FormGroup;
+  prefilledData: ICourse;
 
   constructor(
     private route: Router,
     private activatedRoute: ActivatedRoute,
     private store: Store<fromCourses.State>,
-  ) {}
+    private formBuilder: FormBuilder,
+  ) {
+    this.courseForm = this.initForm();
 
-  ngOnInit() {
-    this.store.dispatch(CoursesActions.FetchAuthors());
-    this.store.pipe(select(fromCourses.getAuthors)).subscribe(
-      authors => this.authorsOptions = authors,
+    this.store.pipe(select(fromCourses.getCourses)).subscribe(
+      courses => this.prefilledData = courses[0],
     );
 
     this.pageTitle = this.activatedRoute.snapshot.data.title;
@@ -48,18 +47,45 @@ export class CourseFormPageComponent implements OnInit {
 
       this.store.pipe(select(fromCourses.getCourses)).subscribe(
         courses => {
-          const currentCourse = courses[0];
+          this.prefilledData = courses[0];
 
-          if (!currentCourse) { return; }
+          if (!this.prefilledData) { return; }
 
-          this.breadcrumbs = [{text: 'Courses', url: '/courses'}, {text: currentCourse.title, url: ''}];
-          this.title = currentCourse.title;
-          this.description = currentCourse.description;
-          this.dateElement.date = currentCourse.date.toISOString().substr(0, 10);
-          this.durationElement.duration = currentCourse.duration;
-          this.authorsElement.selectedOptions = currentCourse.authors;
+          this.breadcrumbs = [{text: 'Courses', url: '/courses'}, {text: this.prefilledData.title, url: ''}];
+
+          this.courseForm.patchValue({
+            title: this.prefilledData.title || '',
+            description: this.prefilledData.description || '',
+            topRated: this.prefilledData.topRated || false,
+          });
       });
     }
+  }
+
+  ngOnInit() {
+    this.store.dispatch(CoursesActions.FetchAuthors());
+    this.store.pipe(select(fromCourses.getAuthors)).subscribe(
+      authors => this.authorsOptions = authors,
+    );
+  }
+
+  initForm() {
+    return this.formBuilder.group(
+      {
+        title: ['', Validators.required],
+        description: ['', Validators.required],
+        date: this.formBuilder.group({
+          value: [null, Validators.required],
+        }),
+        topRated: [null],
+        duration: this.formBuilder.group({
+          value: [null, Validators.required],
+        }),
+        authors: this.formBuilder.group({
+          value: [[], Validators.required],
+        }),
+      },
+    );
   }
 
   onSave() {
@@ -74,12 +100,12 @@ export class CourseFormPageComponent implements OnInit {
   addNewCourse() {
     const newCourse = new Course(
       Math.random().toString(36).substr(2, 9),
-      this.title,
-      new Date(this.dateElement.date),
-      this.description,
-      this.durationElement.duration,
-      false,
-      this.authorsElement.selectedOptions || [],
+      this.courseForm.value.title,
+      new Date(this.courseForm.value.date.value),
+      this.courseForm.value.description,
+      this.courseForm.value.duration.value,
+      this.courseForm.value.topRated,
+      this.courseForm.value.authors.value,
     );
 
     this.store.dispatch(CoursesActions.AddNewCourse({ course: newCourse }));
@@ -90,12 +116,12 @@ export class CourseFormPageComponent implements OnInit {
 
     const updatedCourse = new Course(
       id,
-      this.title,
-      new Date(this.dateElement.date),
-      this.description,
-      this.durationElement.duration,
-      false,
-      this.authorsElement.selectedOptions || [],
+      this.courseForm.value.title,
+      new Date(this.courseForm.value.date.value),
+      this.courseForm.value.description,
+      this.courseForm.value.duration.value,
+      this.courseForm.value.topRated,
+      this.courseForm.value.authors.value,
     );
 
     this.store.dispatch(CoursesActions.UpdateCourse({ course: updatedCourse }));

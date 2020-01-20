@@ -1,5 +1,5 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { FormsModule } from '@angular/forms';
+import { ReactiveFormsModule, FormControl, FormGroup } from '@angular/forms';
 
 import { DurationInputComponent } from './duration-input.component';
 
@@ -12,7 +12,7 @@ describe('DurationInputComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [DurationInputComponent, TimePipe],
-      imports: [FormsModule],
+      imports: [ReactiveFormsModule],
     })
     .compileComponents();
   }));
@@ -20,6 +20,10 @@ describe('DurationInputComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(DurationInputComponent);
     component = fixture.componentInstance;
+    component.durationFormGroup = new FormGroup({
+      value: new FormControl(null),
+    });
+    component.prefilledValue = 45;
     fixture.detectChanges();
   });
 

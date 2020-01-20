@@ -5,6 +5,10 @@
     padding: 0 12px;
     border-radius: 3px;
     border: solid 1px #d9dbe3;
+
+    &.ng-touched.ng-invalid {
+      border-color: #ff4e33;
+    }
   }
 
   span {
