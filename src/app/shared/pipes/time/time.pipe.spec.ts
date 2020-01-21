@@ -1,18 +1,18 @@
 import { inject, TestBed, async } from '@angular/core/testing';
-import { TranslateTestingModule } from 'ngx-translate-testing';
 import { TranslateService } from '@ngx-translate/core';
 
 import { TimePipe } from './time.pipe';
 
+class MockTranslateService {
+  instant(value: string) {
+    return value;
+  }
+}
+
 describe('TimePipe', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [
-        TranslateTestingModule
-          .withTranslations('en', require('../../../../assets/i18n/en.json'))
-          .withTranslations('ru', require('../../../../assets/i18n/ru.json')),
-      ],
-      providers: [TranslateService],
+      providers: [{ provide: TranslateService, useClass: MockTranslateService}],
     })
     .compileComponents();
   }));
