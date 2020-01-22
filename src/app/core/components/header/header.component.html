@@ -14,6 +14,11 @@
 </div>
 
 <div class="mobile-autorization-section">
+  <select [ngModel]="currentLang" (ngModelChange)="onLanguageSelect($event)">
+    <option [ngValue]="'en'">En</option>
+    <option [ngValue]="'ru'">Ru</option>
+  </select>
+
   <img src="./assets/icons/ic-menu.svg" alt="" (click)="openMenu()">
   <ng-template appMenu></ng-template>
 </div>
