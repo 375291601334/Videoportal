@@ -1,4 +1,4 @@
-import { Component, ComponentFactoryResolver, ViewChild } from '@angular/core';
+import { Component, ComponentFactoryResolver, ViewChild, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Subscription, combineLatest } from 'rxjs';
 import { Store, select } from '@ngrx/store';
@@ -21,7 +21,7 @@ import { IUser } from '../../../login/models/user.model';
   templateUrl: './header.component.html',
   styleUrls: ['./header.component.scss'],
 })
-export class HeaderComponent {
+export class HeaderComponent implements OnInit {
   @ViewChild(MenuDirective, {static: true}) public adHost: MenuDirective;
 
   user: IUser;
@@ -29,6 +29,7 @@ export class HeaderComponent {
   isUserAuthentificatedSubscription: Subscription;
   isUserAuthentificated: boolean;
   isUserInfoLoading: boolean;
+  currentLang: string;
 
   constructor(
     private factoryResolver: ComponentFactoryResolver,
@@ -46,6 +47,10 @@ export class HeaderComponent {
       this.user = user;
       this.isUserInfoLoading = isUserInfoLoading;
     });
+  }
+
+  ngOnInit() {
+    this.currentLang = this.translate.defaultLang;
   }
 
   onLogin() {

@@ -11,7 +11,7 @@
       </span>
       <span>
         <img src='./assets/icons/ic-calendar.svg' class="icon">
-        {{course.date | date}}
+        {{course.date | date: 'mediumDate' : '' : currentLang}}
       </span>
     </div>
   </div>

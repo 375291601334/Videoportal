@@ -7,7 +7,7 @@
     <span>{{'Log off' | translate}}</span>
   </div>
 
-  <select [ngModel]="'en'" (ngModelChange)="onLanguageSelect($event)">
+  <select [ngModel]="currentLang" (ngModelChange)="onLanguageSelect($event)">
     <option [ngValue]="'en'">En</option>
     <option [ngValue]="'ru'">Ru</option>
   </select>

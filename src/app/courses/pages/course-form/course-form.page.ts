@@ -2,7 +2,7 @@ import { Component, ViewChild, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { Store, select } from '@ngrx/store';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
-import { TranslateService } from '@ngx-translate/core';
+import { TranslateService, LangChangeEvent } from '@ngx-translate/core';
 
 import { MultiSelectComponent } from '../../../shared/components/multi-select/multi-select.component';
 import { DateInputComponent } from '../../../shared/components/date-input/date-input.component';
@@ -40,7 +40,13 @@ export class CourseFormPageComponent implements OnInit {
       courses => this.prefilledData = courses[0],
     );
 
-    this.pageTitle = this.translate.instant(this.activatedRoute.snapshot.data.title);
+    this.translate.onLangChange.subscribe((event: LangChangeEvent) => {
+      this.pageTitle = this.translate.instant(this.activatedRoute.snapshot.data.title);
+
+      this.breadcrumbs = this.activatedRoute.snapshot.data.title === 'Edit course'
+      ? [{text: this.translate.instant('Courses'), url: '/courses'}, {text: this.prefilledData.title, url: ''}]
+      : [{text: this.translate.instant('Courses'), url: '/courses'}, {text: this.translate.instant('New'), url: ''}];
+    });
 
     if (this.activatedRoute.snapshot.data.title === 'Edit course') {
       const courseId = this.activatedRoute.snapshot.params.id;
@@ -53,6 +59,8 @@ export class CourseFormPageComponent implements OnInit {
 
           if (!this.prefilledData) { return; }
 
+          this.breadcrumbs = [{text: this.translate.instant('Courses'), url: '/courses'}, {text: this.prefilledData.title, url: ''}];
+
           this.courseForm.patchValue({
             title: this.prefilledData.title || '',
             description: this.prefilledData.description || '',
@@ -63,8 +71,10 @@ export class CourseFormPageComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.pageTitle = this.translate.instant(this.activatedRoute.snapshot.data.title);
+
     this.breadcrumbs = this.activatedRoute.snapshot.data.title === 'Edit course'
-      ? [{text: this.translate.instant('Courses'), url: '/courses'}, {text: this.prefilledData.title, url: ''}]
+      ? [{text: this.translate.instant('Courses'), url: '/courses'}, {text: this.prefilledData && this.prefilledData.title, url: ''}]
       : [{text: this.translate.instant('Courses'), url: '/courses'}, {text: this.translate.instant('New'), url: ''}];
 
     this.store.dispatch(CoursesActions.FetchAuthors());

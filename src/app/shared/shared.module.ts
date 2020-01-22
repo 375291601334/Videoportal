@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NgSelectModule } from '@ng-select/ng-select';
 import { TranslateModule } from '@ngx-translate/core';
+import { RouterModule } from '@angular/router';
 
 // Components
 import { SearchBarComponent } from './components/search-bar/search-bar.component';
@@ -35,6 +36,7 @@ import { OrderByPipe } from './pipes/order-by/order-by.pipe';
     NgSelectModule,
     FormsModule,
     ReactiveFormsModule,
+    RouterModule,
   ],
   providers: [
     FilterPipe,

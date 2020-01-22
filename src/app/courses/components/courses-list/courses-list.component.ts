@@ -3,7 +3,7 @@ import { Router } from '@angular/router';
 import { Store, select } from '@ngrx/store';
 import { Subscription, combineLatest, Observable } from 'rxjs';
 import Swal from 'sweetalert2';
-import { TranslateService } from '@ngx-translate/core';
+import { TranslateService, LangChangeEvent } from '@ngx-translate/core';
 
 import * as fromCourses from '../../../store/reducers/courses';
 import * as CoursesActions from '../../../store/actions/courses';
@@ -19,6 +19,7 @@ import { Order } from '../../models/order.model';
 export class CoursesListComponent implements OnInit, OnDestroy {
   coursesSubscription: Subscription;
   querySubscription: Subscription;
+  query: string;
   isCoursesFetching: Observable<boolean>;
   courses: ICourse[];
   maxCoursesNumber = 3;
@@ -32,7 +33,17 @@ export class CoursesListComponent implements OnInit, OnDestroy {
     private store: Store<fromCourses.State>,
     private router: Router,
     private translate: TranslateService,
-  ) {}
+  ) {
+    this.translate.onLangChange.subscribe((event: LangChangeEvent) => {
+      this.orders = [
+        { name: this.translate.instant('Duration'), prop: 'length' },
+        { name: this.translate.instant('Start date'), prop: 'date'},
+        { name: this.translate.instant('Title'), prop: 'name' },
+      ];
+
+      this.store.dispatch(CoursesActions.FetchCourses({ query: this.query }));
+    });
+  }
 
   ngOnInit() {
     this.orders = [
@@ -52,7 +63,7 @@ export class CoursesListComponent implements OnInit, OnDestroy {
       this.store.pipe(select(fromCourses.getCoursesCount)),
       this.store.pipe(select(fromCourses.getSortField)),
     ]).subscribe(([searchTerm, coursesCount, sortField]) => {
-      const query = `start=0&count=${coursesCount}` +
+      this.query = `start=0&count=${coursesCount}` +
         (searchTerm !== '' ? `&textFragment=${searchTerm}` : ``) +
         (sortField !== '' ? `&sort=${sortField}` : ``);
 
@@ -63,7 +74,7 @@ export class CoursesListComponent implements OnInit, OnDestroy {
       }
 
       this.coursesCount = coursesCount;
-      this.store.dispatch(CoursesActions.FetchCourses({ query }));
+      this.store.dispatch(CoursesActions.FetchCourses({ query: this.query }));
     });
   }
 

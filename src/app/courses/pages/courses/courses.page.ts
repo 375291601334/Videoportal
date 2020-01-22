@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { TranslateService } from '@ngx-translate/core';
+import { TranslateService, LangChangeEvent } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-courses-page',
@@ -11,7 +11,13 @@ export class CoursesPageComponent implements OnInit {
 
   constructor(
     private translate: TranslateService,
-  ) {}
+  ) {
+    this.translate.onLangChange.subscribe((event: LangChangeEvent) => {
+      this.breadcrumbs = [
+        { text: this.translate.instant('Courses'), url: '' },
+      ];
+    });
+  }
 
   ngOnInit() {
     this.breadcrumbs = [
