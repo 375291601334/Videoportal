@@ -1,3 +1,10 @@
 <ng-container [formGroup]="dateFormGroup">
-  <input #date id="date" formControlName="value" type="date" placeholder="{{'mm-dd-yyyy' | translate}}">
+  <input
+    [dpDayPicker]="config"
+    theme="dp-material"
+    #date
+    id="date"
+    formControlName="value"
+    placeholder="{{'mm-dd-yyyy' | translate}}"
+  >
 </ng-container>

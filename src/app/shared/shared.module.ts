@@ -4,6 +4,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NgSelectModule } from '@ng-select/ng-select';
 import { TranslateModule } from '@ngx-translate/core';
 import { RouterModule } from '@angular/router';
+import { DpDatePickerModule } from 'ng2-date-picker';
 
 // Components
 import { SearchBarComponent } from './components/search-bar/search-bar.component';
@@ -37,6 +38,7 @@ import { OrderByPipe } from './pipes/order-by/order-by.pipe';
     FormsModule,
     ReactiveFormsModule,
     RouterModule,
+    DpDatePickerModule,
   ],
   providers: [
     FilterPipe,

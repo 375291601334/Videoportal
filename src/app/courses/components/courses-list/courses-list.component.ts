@@ -19,6 +19,7 @@ import { Order } from '../../models/order.model';
 export class CoursesListComponent implements OnInit, OnDestroy {
   coursesSubscription: Subscription;
   querySubscription: Subscription;
+  languageSubscription: Subscription;
   query: string;
   isCoursesFetching: Observable<boolean>;
   courses: ICourse[];
@@ -34,7 +35,7 @@ export class CoursesListComponent implements OnInit, OnDestroy {
     private router: Router,
     private translate: TranslateService,
   ) {
-    this.translate.onLangChange.subscribe((event: LangChangeEvent) => {
+    this.languageSubscription = this.translate.onLangChange.subscribe((event: LangChangeEvent) => {
       this.orders = [
         { name: this.translate.instant('Duration'), prop: 'length' },
         { name: this.translate.instant('Start date'), prop: 'date'},
@@ -79,10 +80,11 @@ export class CoursesListComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    this.store.dispatch(CoursesActions.ClearCourses());
-
     this.coursesSubscription.unsubscribe();
     this.querySubscription.unsubscribe();
+    this.languageSubscription.unsubscribe();
+
+    this.store.dispatch(CoursesActions.ClearCourses());
   }
 
   goToNewCoursePage() {

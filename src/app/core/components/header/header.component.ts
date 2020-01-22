@@ -1,11 +1,8 @@
-import { Component, ComponentFactoryResolver, ViewChild, OnInit } from '@angular/core';
+import { Component, ComponentFactoryResolver, ViewChild, OnInit, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
 import { Subscription, combineLatest } from 'rxjs';
 import { Store, select } from '@ngrx/store';
 import { TranslateService } from '@ngx-translate/core';
-import { registerLocaleData } from '@angular/common';
-import localeEn from '@angular/common/locales/en';
-import localeRu from '@angular/common/locales/ru';
 
 import * as fromAuth from '../../../store/reducers/auth';
 import * as AuthActions from '../../../store/actions/auth';
@@ -21,7 +18,7 @@ import { IUser } from '../../../login/models/user.model';
   templateUrl: './header.component.html',
   styleUrls: ['./header.component.scss'],
 })
-export class HeaderComponent implements OnInit {
+export class HeaderComponent implements OnInit, OnDestroy {
   @ViewChild(MenuDirective, {static: true}) public adHost: MenuDirective;
 
   user: IUser;
@@ -51,6 +48,11 @@ export class HeaderComponent implements OnInit {
 
   ngOnInit() {
     this.currentLang = this.translate.defaultLang;
+  }
+
+  ngOnDestroy() {
+    this.isUserAuthentificatedSubscription.unsubscribe();
+    this.userSubscription.unsubscribe();
   }
 
   onLogin() {

@@ -93,7 +93,6 @@ export class CoursesEffects {
         this.store.pipe(select(fromCourses.getCoursesCount)),
       ),
       map(([_, searchTerm, sortField, coursesCount]) => {
-        console.log(searchTerm + ' ' + sortField + ' ' + coursesCount);
         const query = `start=0&count=${coursesCount}` +
           (searchTerm !== '' ? `&textFragment=${searchTerm}` : ``) +
           (sortField !== '' ? `&sort=${sortField}` : ``);
