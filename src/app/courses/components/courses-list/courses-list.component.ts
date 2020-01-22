@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { Store, select } from '@ngrx/store';
 import { Subscription, combineLatest, Observable } from 'rxjs';
 import Swal from 'sweetalert2';
+import { TranslateService, LangChangeEvent } from '@ngx-translate/core';
 
 import * as fromCourses from '../../../store/reducers/courses';
 import * as CoursesActions from '../../../store/actions/courses';
@@ -18,25 +19,40 @@ import { Order } from '../../models/order.model';
 export class CoursesListComponent implements OnInit, OnDestroy {
   coursesSubscription: Subscription;
   querySubscription: Subscription;
+  languageSubscription: Subscription;
+  query: string;
   isCoursesFetching: Observable<boolean>;
   courses: ICourse[];
   maxCoursesNumber = 3;
   coursesCount: number;
 
-  orders: Order[] = [
-    { name: 'Duration', prop: 'length' },
-    { name: 'Start date', prop: 'date'},
-    { name: 'Title', prop: 'name' },
-  ];
+  orders: Order[];
   defaultOrder: Order = { name: '', prop: '' };
   selectedOrder: Order = this.defaultOrder;
 
   constructor(
     private store: Store<fromCourses.State>,
     private router: Router,
-  ) {}
+    private translate: TranslateService,
+  ) {
+    this.languageSubscription = this.translate.onLangChange.subscribe((event: LangChangeEvent) => {
+      this.orders = [
+        { name: this.translate.instant('Duration'), prop: 'length' },
+        { name: this.translate.instant('Start date'), prop: 'date'},
+        { name: this.translate.instant('Title'), prop: 'name' },
+      ];
+
+      this.store.dispatch(CoursesActions.FetchCourses({ query: this.query }));
+    });
+  }
 
   ngOnInit() {
+    this.orders = [
+      { name: this.translate.instant('Duration'), prop: 'length' },
+      { name: this.translate.instant('Start date'), prop: 'date'},
+      { name: this.translate.instant('Title'), prop: 'name' },
+    ];
+
     this.coursesSubscription = this.store.pipe(select(fromCourses.getCourses)).subscribe(
       courses => this.courses = courses,
     );
@@ -48,7 +64,7 @@ export class CoursesListComponent implements OnInit, OnDestroy {
       this.store.pipe(select(fromCourses.getCoursesCount)),
       this.store.pipe(select(fromCourses.getSortField)),
     ]).subscribe(([searchTerm, coursesCount, sortField]) => {
-      const query = `start=0&count=${coursesCount}` +
+      this.query = `start=0&count=${coursesCount}` +
         (searchTerm !== '' ? `&textFragment=${searchTerm}` : ``) +
         (sortField !== '' ? `&sort=${sortField}` : ``);
 
@@ -59,15 +75,16 @@ export class CoursesListComponent implements OnInit, OnDestroy {
       }
 
       this.coursesCount = coursesCount;
-      this.store.dispatch(CoursesActions.FetchCourses({ query }));
+      this.store.dispatch(CoursesActions.FetchCourses({ query: this.query }));
     });
   }
 
   ngOnDestroy() {
-    this.store.dispatch(CoursesActions.ClearCourses());
-
     this.coursesSubscription.unsubscribe();
     this.querySubscription.unsubscribe();
+    this.languageSubscription.unsubscribe();
+
+    this.store.dispatch(CoursesActions.ClearCourses());
   }
 
   goToNewCoursePage() {

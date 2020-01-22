@@ -1,5 +1,7 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { ReactiveFormsModule, FormControl, FormGroup } from '@angular/forms';
+import { TranslateTestingModule } from 'ngx-translate-testing';
+import { DpDatePickerModule } from 'ng2-date-picker';
 
 import { DateInputComponent } from './date-input.component';
 
@@ -10,7 +12,13 @@ describe('DateInputComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [DateInputComponent],
-      imports: [ReactiveFormsModule],
+      imports: [
+        DpDatePickerModule,
+        ReactiveFormsModule,
+        TranslateTestingModule
+          .withTranslations('en', require('../../../../assets/i18n/en.json'))
+          .withTranslations('ru', require('../../../../assets/i18n/ru.json')),
+      ],
     })
     .compileComponents();
   }));

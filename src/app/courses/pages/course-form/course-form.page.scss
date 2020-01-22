@@ -81,9 +81,10 @@
   }
 
   button {
-    width: 68px;
+    min-width: 68px;
     height: 36px;
     margin: 24px 12px 0 0;
+    padding: 0 10px;
     border-radius: 3px;
     border: solid 1px #d9dbe3;
     font-weight: 600;

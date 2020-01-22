@@ -7,6 +7,7 @@ import { By } from '@angular/platform-browser';
 import { provideMockStore, MockStore } from '@ngrx/store/testing';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { NgSelectModule } from '@ng-select/ng-select';
+import { TranslateTestingModule } from 'ngx-translate-testing';
 
 import { CourseFormPageComponent } from './course-form.page';
 import { DurationInputComponent } from '../../../shared/components/duration-input/duration-input.component';
@@ -53,7 +54,14 @@ describe('CourseFormPageComponent:', () => {
           DateInputComponent,
           TimePipe,
         ],
-        imports: [ReactiveFormsModule, HttpClientTestingModule, NgSelectModule],
+        imports: [
+          ReactiveFormsModule,
+          HttpClientTestingModule,
+          NgSelectModule,
+          TranslateTestingModule
+            .withTranslations('en', require('../../../../assets/i18n/en.json'))
+            .withTranslations('ru', require('../../../../assets/i18n/ru.json')),
+        ],
         schemas: [NO_ERRORS_SCHEMA],
         providers: [
           provideMockStore({ initialState }),
@@ -142,7 +150,14 @@ describe('CourseFormPageComponent:', () => {
           DateInputComponent,
           TimePipe,
         ],
-        imports: [ReactiveFormsModule, HttpClientTestingModule, NgSelectModule],
+        imports: [
+          ReactiveFormsModule,
+          HttpClientTestingModule,
+          NgSelectModule,
+          TranslateTestingModule
+            .withTranslations('en', require('../../../../assets/i18n/en.json'))
+            .withTranslations('ru', require('../../../../assets/i18n/ru.json')),
+        ],
         schemas: [NO_ERRORS_SCHEMA],
         providers: [
           provideMockStore({ initialState }),

@@ -2,27 +2,27 @@
 
 <form [formGroup]="loginForm" (ngSubmit)="onLogin()" class="login-container">
   <div class="d-flex justify-content-between align-items-center">
-    <h3>Login</h3>
-    <span *ngIf="isAuthentificationFailed | async" class="error">Wrong e-mail or password</span>
+    <h3>{{'Login' | translate}}</h3>
+    <span *ngIf="isAuthentificationFailed | async" class="error">{{'Wrong e-mail or password' | translate}}</span>
   </div>
 
   <div class="d-flex justify-content-between align-items-center">
-    <label for="email">E-mail:</label>
+    <label for="email">{{'E-mail' | translate}}:</label>
     <span class="required" [class.error]="loginForm.get('email').touched && loginForm.get('email').invalid">
-      *required
+      *{{'required' | translate}}
     </span>
   </div>
-  <input id="email" formControlName="email" type="text" placeholder="Enter e-mail">
+  <input id="email" formControlName="email" type="text" placeholder="{{'Enter e-mail' | translate}}">
 
   <div class="d-flex justify-content-between align-items-center">
-    <label for="password">Password:</label>
+    <label for="password">{{'Password' | translate}}:</label>
     <span class="required" [class.error]="loginForm.get('password').touched && loginForm.get('password').invalid">
-      *required
+      *{{'required' | translate}}
     </span>
   </div>
-  <input id="password" formControlName="password" type="password" placeholder="Enter password">
+  <input id="password" formControlName="password" type="password" placeholder="{{'Enter password' | translate}}">
 
-  <a href="/">Fogot password?</a>
+  <a href="/">{{'Fogot password' | translate}}?</a>
 
-  <button type="submit" [disabled]="loginForm.invalid">Login</button>
+  <button type="submit" [disabled]="loginForm.invalid">{{'Login' | translate}}</button>
 </form>

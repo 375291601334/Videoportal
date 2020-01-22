@@ -5,6 +5,8 @@ import { BrowserDynamicTestingModule } from '@angular/platform-browser-dynamic/t
 import { Router } from '@angular/router';
 import { By } from '@angular/platform-browser';
 import { provideMockStore, MockStore } from '@ngrx/store/testing';
+import { TranslateTestingModule } from 'ngx-translate-testing';
+import { FormsModule } from '@angular/forms';
 
 import { AuthState } from '../../../store/reducers/auth';
 import { UserState } from '../../../store/reducers/user';
@@ -12,7 +14,6 @@ import { UserState } from '../../../store/reducers/user';
 import { HeaderComponent } from './header.component';
 import { MenuComponent } from '../menu/menu.component';
 import { MenuDirective } from '../../directives/menu/menu.directive';
-import { State } from 'src/app/store/reducers';
 
 class MockRouter {
   navigate() {}
@@ -46,6 +47,12 @@ describe('HeaderComponent: Authentificated', () => {
       providers: [
         provideMockStore({ initialState }),
         { provide: Router, useClass: MockRouter },
+      ],
+      imports: [
+        FormsModule,
+        TranslateTestingModule
+          .withTranslations('en', require('../../../../assets/i18n/en.json'))
+          .withTranslations('ru', require('../../../../assets/i18n/ru.json')),
       ],
       schemas: [CUSTOM_ELEMENTS_SCHEMA],
     });
@@ -164,6 +171,12 @@ describe('HeaderComponent: Nonauthentificated', () => {
       providers: [
         provideMockStore({ initialState }),
         { provide: Router, useClass: MockRouter },
+      ],
+      imports: [
+        FormsModule,
+        TranslateTestingModule
+          .withTranslations('en', require('../../../../assets/i18n/en.json'))
+          .withTranslations('ru', require('../../../../assets/i18n/ru.json')),
       ],
       schemas: [CUSTOM_ELEMENTS_SCHEMA],
     });

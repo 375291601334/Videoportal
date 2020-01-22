@@ -9,7 +9,7 @@
     <ng-container *ngIf="isUserAuthentificated; then autorized; else unautorized;"></ng-container>
     <div class="log-off" (click)="onLogout()">
       <img src="./assets/icons/ic-exit.png">
-      <span>Log off</span>
+      <span>{{'Log off' | translate}}</span>
     </div>
   </div>
 </div>
@@ -24,6 +24,6 @@
   <ng-template #unautorized>
     <div class="log-in" (click)="onLogin()">
       <img src="./assets/icons/ic-user.png">
-      Login
+      {{'Login' | translate}}
     </div>
   </ng-template>

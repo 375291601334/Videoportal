@@ -1,6 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Store, select } from '@ngrx/store';
-import { Subject } from 'rxjs';
+import { Subject, Subscription } from 'rxjs';
 import { debounceTime } from 'rxjs/operators';
 
 import * as fromCourses from '../../../store/reducers/courses';
@@ -11,10 +11,12 @@ import * as CoursesActions from '../../../store/actions/courses';
   templateUrl: './search-bar.component.html',
   styleUrls: ['./search-bar.component.scss'],
 })
-export class SearchBarComponent implements OnInit {
+export class SearchBarComponent implements OnInit, OnDestroy {
+  searchTermSubscription: Subscription;
   searchTearm = '';
   waitingTime = 2000;
   minTermLength = 2;
+  subjSubscription: Subscription;
   private subj = new Subject<string>();
 
   constructor(
@@ -22,11 +24,11 @@ export class SearchBarComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    this.store.pipe(select(fromCourses.getSearchTerm)).subscribe(
+    this.searchTermSubscription = this.store.pipe(select(fromCourses.getSearchTerm)).subscribe(
       term => this.searchTearm = term,
     );
 
-    this.subj.pipe(debounceTime(this.waitingTime)).subscribe(
+    this.subjSubscription = this.subj.pipe(debounceTime(this.waitingTime)).subscribe(
       term => {
         if (term.length > this.minTermLength) {
           this.searchTearm = term;
@@ -39,6 +41,11 @@ export class SearchBarComponent implements OnInit {
         }
       },
     );
+  }
+
+  ngOnDestroy() {
+    this.searchTermSubscription.unsubscribe();
+    this.subjSubscription.unsubscribe();
   }
 
   onChangeSearchTerm(term: string) {

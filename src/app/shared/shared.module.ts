@@ -2,6 +2,9 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NgSelectModule } from '@ng-select/ng-select';
+import { TranslateModule } from '@ngx-translate/core';
+import { RouterModule } from '@angular/router';
+import { DpDatePickerModule } from 'ng2-date-picker';
 
 // Components
 import { SearchBarComponent } from './components/search-bar/search-bar.component';
@@ -30,15 +33,19 @@ import { OrderByPipe } from './pipes/order-by/order-by.pipe';
   ],
   imports: [
     CommonModule,
+    TranslateModule,
     NgSelectModule,
     FormsModule,
     ReactiveFormsModule,
+    RouterModule,
+    DpDatePickerModule,
   ],
   providers: [
     FilterPipe,
     OrderByPipe,
   ],
   exports: [
+    TranslateModule,
     SearchBarComponent,
     BreadcrumbsComponent,
     MultiSelectComponent,

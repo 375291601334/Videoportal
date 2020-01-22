@@ -1,7 +1,8 @@
-import { Component, ComponentFactoryResolver, ViewChild } from '@angular/core';
+import { Component, ComponentFactoryResolver, ViewChild, OnInit, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
 import { Subscription, combineLatest } from 'rxjs';
 import { Store, select } from '@ngrx/store';
+import { TranslateService } from '@ngx-translate/core';
 
 import * as fromAuth from '../../../store/reducers/auth';
 import * as AuthActions from '../../../store/actions/auth';
@@ -17,7 +18,7 @@ import { IUser } from '../../../login/models/user.model';
   templateUrl: './header.component.html',
   styleUrls: ['./header.component.scss'],
 })
-export class HeaderComponent {
+export class HeaderComponent implements OnInit, OnDestroy {
   @ViewChild(MenuDirective, {static: true}) public adHost: MenuDirective;
 
   user: IUser;
@@ -25,11 +26,13 @@ export class HeaderComponent {
   isUserAuthentificatedSubscription: Subscription;
   isUserAuthentificated: boolean;
   isUserInfoLoading: boolean;
+  currentLang: string;
 
   constructor(
     private factoryResolver: ComponentFactoryResolver,
     private router: Router,
     private store: Store<fromAuth.State | fromUser.State>,
+    private translate: TranslateService,
   ) {
     this.isUserAuthentificatedSubscription = this.store.pipe(select(fromAuth.isUserAuthentificated)).subscribe(
       isUserAuthentificated => this.isUserAuthentificated = isUserAuthentificated,
@@ -41,6 +44,15 @@ export class HeaderComponent {
       this.user = user;
       this.isUserInfoLoading = isUserInfoLoading;
     });
+  }
+
+  ngOnInit() {
+    this.currentLang = this.translate.defaultLang;
+  }
+
+  ngOnDestroy() {
+    this.isUserAuthentificatedSubscription.unsubscribe();
+    this.userSubscription.unsubscribe();
   }
 
   onLogin() {
@@ -71,5 +83,9 @@ export class HeaderComponent {
 
     const componentRef = viewContainerRef.createComponent(componentFactory);
     this.menuInit(componentRef);
+  }
+
+  onLanguageSelect(language: string) {
+    this.translate.use(language);
   }
 }
